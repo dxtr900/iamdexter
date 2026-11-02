@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <title>Projects Admin — Tristan Dexter</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Geist', 'Inter', system-ui, sans-serif; background: #FAFAFA; color: #18181B; -webkit-font-smoothing: antialiased; }
+    :root {
+      --font-display: ui-monospace, monospace;
+      --font-body: 'Geist', 'Inter', system-ui, sans-serif;
+      --bg: #FAFAFA; --surface: #FFFFFF; --surface-2: #F4F4F5;
+      --border: #E4E4E7; --border-strong: #D4D4D8;
+      --text: #18181B; --text-secondary: #71717A; --text-tertiary: #A1A1AA;
+      --text-inverse: #FAFAFA; --ink: #18181B; --ink-hover: #27272A;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,.04);
+      --shadow-md: 0 4px 16px rgba(0,0,0,.06);
+    }
+    [data-theme="dark"] {
+      --bg: #09090B; --surface: #18181B; --surface-2: #27272A;
+      --border: #27272A; --border-strong: #3F3F46;
+      --text: #FAFAFA; --text-secondary: #A1A1AA; --text-tertiary: #71717A;
+      --text-inverse: #18181B; --ink: #FAFAFA; --ink-hover: #E4E4E7;
+      --shadow-sm: none; --shadow-md: none;
+    }
+    body { background: var(--bg); color: var(--text); }
+    px-icon { display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; color: inherit; line-height: 0; }
+    px-icon svg { display: block; image-rendering: pixelated; image-rendering: crisp-edges; }
+    .admin-wrap { max-width: 920px; margin: 0 auto; padding: 32px 24px 80px; }
+    .admin-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
+    .admin-top h1 { font-family: var(--font-display); font-size: clamp(24px, 4vw, 32px); letter-spacing: -0.02em; text-transform: uppercase; }
+    .admin-top p { font-size: 15px; color: var(--text-secondary); margin-top: 8px; max-width: 48ch; line-height: 1.6; }
+    .admin-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+    .btn { height: 42px; padding: 0 18px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; border-radius: 12px; font-size: 14px; font-weight: 500; cursor: pointer; border: 1px solid var(--border); background: var(--surface); color: var(--text); transition: background 150ms, border-color 150ms; white-space: nowrap; }
+    .btn:hover { background: var(--surface-2); border-color: var(--border-strong); }
+    .btn-primary { background: var(--ink); color: var(--text-inverse); border-color: transparent; }
+    .btn-primary:hover { background: var(--ink-hover); }
+    .btn-danger { color: #b3261e; border-color: rgba(179,38,30,.25); }
+    .status-pill { font-size: 12px; color: var(--text-tertiary); padding: 6px 12px; border-radius: 9999px; background: var(--surface-2); border: 1px solid var(--border); }
+    .status-pill.saved { color: #15803d; border-color: rgba(21,128,61,.25); background: rgba(21,128,61,.08); }
+    .status-pill.error { color: #b3261e; border-color: rgba(179,38,30,.25); background: rgba(179,38,30,.08); }
+    .project-list { display: flex; flex-direction: column; gap: 16px; }
+    .project-row { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 20px; box-shadow: var(--shadow-sm); display: grid; grid-template-columns: 160px 1fr auto; gap: 20px; align-items: start; }
+    @media (max-width: 720px) { .project-row { grid-template-columns: 1fr; } }
+    .row-actions { display: flex; flex-direction: column; gap: 8px; align-items: center; }
+    .move-btn { width: 38px; height: 32px; border-radius: 8px; background: var(--surface-2); border: 1px solid var(--border); color: var(--text-secondary); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; line-height: 1; transition: background 150ms, color 150ms, opacity 150ms; }
+    .move-btn:hover:not(:disabled) { background: var(--surface); color: var(--text); border-color: var(--border-strong); }
+    .move-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+    .project-preview { width: 160px; height: 120px; border-radius: 10px; overflow: hidden; background: var(--surface-2); border: 1px solid var(--border-strong); display: flex; align-items: center; justify-content: center; }
+    .project-preview img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .project-preview-empty { font-size: 12px; color: var(--text-tertiary); text-align: center; padding: 12px; }
+    .field { margin-bottom: 12px; }
+    .field:last-child { margin-bottom: 0; }
+    .field label { display: block; font-size: 12px; font-weight: 500; color: var(--text-secondary); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.06em; }
+    .form-input { width: 100%; background: var(--surface-2); border: 1px solid var(--border); border-radius: 10px; padding: 0 14px; height: 42px; font-family: var(--font-body); font-size: 14px; color: var(--text); outline: none; transition: border-color 150ms; -webkit-appearance: none; }
+    .form-input:focus { border-color: var(--border-strong); }
+    .form-input::placeholder { color: var(--text-tertiary); }
+    .file-input { font-size: 13px; color: var(--text-secondary); width: 100%; }
+    .hint { font-size: 12px; color: var(--text-tertiary); margin-top: 6px; line-height: 1.5; }
+    .icon-btn { width: 38px; height: 38px; border-radius: 10px; background: var(--surface-2); border: 1px solid var(--border); color: var(--text-secondary); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 150ms, color 150ms; }
+    .icon-btn:hover { background: rgba(179,38,30,.08); color: #b3261e; border-color: rgba(179,38,30,.25); }
+    .admin-footer { margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--border); display: flex; gap: 12px; flex-wrap: wrap; align-items: center; justify-content: space-between; }
+  </style>
+  <script src="pixel-icons.js"></script>
+  <script src="projects-store.js"></script>
+</helmet>
+
+<div class="admin-wrap">
+  <div class="admin-top">
+    <div>
+      <p style="font-family:var(--font-display);font-size:12px;letter-spacing:0.08em;color:var(--text-tertiary);text-transform:uppercase;margin-bottom:8px;">Internal</p>
+      <h1>Projects admin</h1>
+      <p>Edit titles, tags, and images for the portfolio projects section. Changes save automatically and appear on the main site after refresh.</p>
+    </div>
+    <div class="admin-actions">
+      <span class="{{ statusClass }}">{{ statusText }}</span>
+      <a href="Portfolio.dc.html" class="btn">← View site</a>
+      <button onClick="{{ resetDefaults }}" class="btn btn-danger" type="button">Reset defaults</button>
+      <button onClick="{{ addProject }}" class="btn btn-primary" type="button">+ Add project</button>
+    </div>
+  </div>
+
+  <div class="project-list">
+    <sc-for list="{{ projects }}" as="proj" hint-placeholder-count="3">
+      <div class="project-row">
+        <div>
+          <div class="project-preview">
+            <sc-if value="{{ proj.hasImage }}" hint-placeholder-val="{{ false }}">
+              <img src="{{ proj.previewSrc }}" alt="{{ proj.title }}">
+            </sc-if>
+            <sc-if value="{{ proj.noImage }}" hint-placeholder-val="{{ true }}">
+              <span class="project-preview-empty">No image</span>
+            </sc-if>
+          </div>
+        </div>
+        <div>
+          <div class="field">
+            <label for="title-{{ proj.id }}">Title</label>
+            <input id="title-{{ proj.id }}" type="text" class="form-input" value="{{ proj.title }}" placeholder="Project title" onInput="{{ proj.onTitleChange }}">
+          </div>
+          <div class="field">
+            <label for="tags-{{ proj.id }}">Tags</label>
+            <input id="tags-{{ proj.id }}" type="text" class="form-input" value="{{ proj.tagsText }}" placeholder="Branding, Web Design" onInput="{{ proj.onTagsInput }}" onBlur="{{ proj.onTagsBlur }}">
+            <p class="hint">Separate tags with commas. Press Tab or click away to save.</p>
+          </div>
+          <div class="field">
+            <label for="src-{{ proj.id }}">Image path or URL</label>
+            <input id="src-{{ proj.id }}" type="text" class="form-input" value="{{ proj.src }}" placeholder="uploads/projects/my-project.jpg" onInput="{{ proj.onSrcChange }}">
+            <p class="hint">Use a path under uploads/ or paste a URL. This is stored as an override; the files in projects-store.js are the defaults.</p>
+          </div>
+          <div class="field">
+            <label for="file-{{ proj.id }}">Upload image</label>
+            <input id="file-{{ proj.id }}" type="file" accept="image/png,image/jpeg,image/webp,image/avif" class="file-input" onChange="{{ proj.onFileChange }}">
+            <p class="hint">Uploads are stored in this browser and sync to the portfolio on refresh.</p>
+          </div>
+        </div>
+        <div class="row-actions">
+          <button onClick="{{ proj.onMoveUp }}" class="move-btn" type="button" aria-label="Move up" disabled="{{ proj.isFirst }}"><px-icon name="chevron-up" size="16"></px-icon></button>
+          <button onClick="{{ proj.onMoveDown }}" class="move-btn" type="button" aria-label="Move down" disabled="{{ proj.isLast }}"><px-icon name="chevron-down" size="16"></px-icon></button>
+          <button onClick="{{ proj.onRemove }}" class="icon-btn" type="button" aria-label="Remove project">
+            <px-icon name="delete" size="16"></px-icon>
+          </button>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div class="admin-footer">
+    <p style="font-size:13px;color:var(--text-tertiary);">Custom edits save as overrides. Default image paths live in projects-store.js and will not be overwritten by old snapshots.</p>
+    <a href="Portfolio.dc.html#projects" class="btn btn-primary">Open projects section →</a>
+  </div>
+</div>
+</x-dc>
+
+<script type="text/x-dc" data-dc-script data-props="{}">
+class Component extends DCLogic {
+  state = { projects: [], tagsDraft: {}, saveStatus: 'idle' };
+
+  tagsDraftFrom(projects) {
+    const tagsDraft = {};
+    projects.forEach((p) => {
+      tagsDraft[p.id] = (p.tags || []).join(', ');
+    });
+    return tagsDraft;
+  }
+
+  reloadFromStore() {
+    const store = window.PortfolioProjects;
+    const projects = store.load();
+    this.setState({ projects, tagsDraft: this.tagsDraftFrom(projects) });
+  }
+
+  componentDidMount() {
+    this.reloadFromStore();
+
+    this._onPageShow = (e) => {
+      if (e.persisted) this.reloadFromStore();
+    };
+    this._onStorage = (e) => {
+      if (e.key === window.PortfolioProjects.STORAGE_KEY) this.reloadFromStore();
+    };
+    window.addEventListener('pageshow', this._onPageShow);
+    window.addEventListener('storage', this._onStorage);
+
+    const saved = localStorage.getItem('px-portfolio-theme');
+    const prefersDark = window.matchMedia?.('(prefers-color-scheme: dark)').matches;
+    document.documentElement.setAttribute('data-theme', saved || (prefersDark ? 'dark' : 'light'));
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('pageshow', this._onPageShow);
+    window.removeEventListener('storage', this._onStorage);
+  }
+
+  parseTags(text) {
+    return String(text || '').split(',').map((t) => t.trim()).filter(Boolean);
+  }
+
+  markSaved() {
+    this.setState({ saveStatus: 'saved' });
+    clearTimeout(this._statusTimer);
+    this._statusTimer = setTimeout(() => this.setState({ saveStatus: 'idle' }), 2000);
+  }
+
+  markError() {
+    this.setState({ saveStatus: 'error' });
+  }
+
+  persist(projects, tagsDraft) {
+    const ok = window.PortfolioProjects.save(projects);
+    const nextDraft = tagsDraft || this.state.tagsDraft;
+    this.setState({ projects, tagsDraft: nextDraft });
+    ok ? this.markSaved() : this.markError();
+  }
+
+  updateField(id, field, value) {
+    const next = this.state.projects.map(p => p.id === id ? { ...p, [field]: value } : p);
+    this.persist(next);
+  }
+
+  updateTagsDraft(id, text) {
+    this.setState({ tagsDraft: { ...this.state.tagsDraft, [id]: text } });
+  }
+
+  commitTags(id, text) {
+    const tags = this.parseTags(text);
+    const tagsText = tags.join(', ');
+    const next = this.state.projects.map(p => p.id === id ? { ...p, tags } : p);
+    const tagsDraft = { ...this.state.tagsDraft, [id]: tagsText };
+    this.persist(next, tagsDraft);
+  }
+
+  moveProject(id, delta) {
+    const idx = this.state.projects.findIndex(p => p.id === id);
+    const target = idx + delta;
+    if (idx < 0 || target < 0 || target >= this.state.projects.length) return;
+    const next = [...this.state.projects];
+    [next[idx], next[target]] = [next[target], next[idx]];
+    this.persist(next);
+  }
+
+  addProject() {
+    const id = 'p' + Date.now();
+    const next = [...this.state.projects, {
+      id,
+      title: 'New project',
+      tags: [],
+      src: '',
+    }];
+    const tagsDraft = { ...this.state.tagsDraft, [id]: '' };
+    this.persist(next, tagsDraft);
+  }
+
+  removeProject(id) {
+    if (!confirm('Remove this project from the portfolio?')) return;
+    const next = this.state.projects.filter(p => p.id !== id);
+    const tagsDraft = { ...this.state.tagsDraft };
+    delete tagsDraft[id];
+    this.persist(next, tagsDraft);
+  }
+
+  resetDefaults() {
+    if (!confirm('Reset all projects to the built-in defaults? This cannot be undone.')) return;
+    window.PortfolioProjects.resetToDefaults();
+    const next = window.PortfolioProjects.load();
+    this.setState({ projects: next, tagsDraft: this.tagsDraftFrom(next) });
+    this.markSaved();
+  }
+
+  readImageFile(file, cb) {
+    const reader = new FileReader();
+    reader.onload = () => cb(reader.result);
+    reader.onerror = () => this.markError();
+    reader.readAsDataURL(file);
+  }
+
+  renderVals() {
+    const { projects, tagsDraft, saveStatus } = this.state;
+    const lastIndex = projects.length - 1;
+    const statusClass = saveStatus === 'saved' ? 'status-pill saved'
+      : saveStatus === 'error' ? 'status-pill error' : 'status-pill';
+    const statusText = saveStatus === 'saved' ? 'Saved'
+      : saveStatus === 'error' ? 'Save failed' : 'Auto-save on';
+
+    const projectVals = projects.map((p, i) => ({
+      ...p,
+      tagsText: tagsDraft[p.id] ?? (p.tags || []).join(', '),
+      previewSrc: window.PortfolioProjects.displaySrc(p),
+      hasImage: !!p.src,
+      noImage: !p.src,
+      isFirst: i === 0,
+      isLast: i === lastIndex,
+      onTitleChange: (e) => this.updateField(p.id, 'title', e.target.value),
+      onTagsInput: (e) => this.updateTagsDraft(p.id, e.target.value),
+      onTagsBlur: (e) => this.commitTags(p.id, e.target.value),
+      onSrcChange: (e) => {
+        const src = e.target.value.trim();
+        const next = this.state.projects.map((item) => item.id === p.id ? { ...item, src, rev: Date.now() } : item);
+        this.persist(next);
+      },
+      onFileChange: (e) => {
+        const file = e.target.files && e.target.files[0];
+        if (!file) return;
+        this.readImageFile(file, (dataUrl) => this.updateField(p.id, 'src', dataUrl));
+        e.target.value = '';
+      },
+      onMoveUp: () => this.moveProject(p.id, -1),
+      onMoveDown: () => this.moveProject(p.id, 1),
+      onRemove: () => this.removeProject(p.id),
+    }));
+
+    return {
+      projects: projectVals,
+      statusClass,
+      statusText,
+      addProject: () => this.addProject(),
+      resetDefaults: () => this.resetDefaults(),
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,1311 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <title>Tristan Dexter — Product &amp; Design Consultant</title>
+  <meta name="description" content="Malta-based product and design consultant. 15+ years designing digital products, brands, and websites for startups and scale-ups.">
+  <meta property="og:title" content="Tristan Dexter — Product &amp; Design Consultant">
+  <meta property="og:description" content="I design products, build the websites, and shape the brands. Based in Malta.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="uploads/projects/p1-drytripping.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Tristan Dexter — Product &amp; Design Consultant">
+  <meta name="twitter:description" content="I design products, build the websites, and shape the brands. Based in Malta.">
+  <link rel="icon" href="uploads/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="transitions-root.css">
+  <link rel="stylesheet" href="transitions.css?v=shake">
+  <style>
+    @font-face {
+      font-family: 'PX Display';
+      src: url('uploads/fonts/px-display-medium.woff2') format('woff2'),
+           url('uploads/fonts/px-display-medium.woff') format('woff'),
+           url('uploads/fonts/px-display-medium.ttf') format('truetype');
+      font-weight: 100 900;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Geist';
+      src: url('uploads/fonts/geist-latin-400.woff2') format('woff2');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Geist';
+      src: url('uploads/fonts/geist-latin-500.woff2') format('woff2');
+      font-weight: 500;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Geist';
+      src: url('uploads/fonts/geist-latin-600.woff2') format('woff2');
+      font-weight: 600;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Inter';
+      src: url('uploads/fonts/inter-latin-400.woff2') format('woff2');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Inter';
+      src: url('uploads/fonts/inter-latin-500.woff2') format('woff2');
+      font-weight: 500;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Inter';
+      src: url('uploads/fonts/inter-latin-600.woff2') format('woff2');
+      font-weight: 600;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Space Mono';
+      src: url('uploads/fonts/space-mono-latin-400.woff2') format('woff2');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html.lenis, html.lenis body { height: auto; }
+    .lenis.lenis-smooth { scroll-behavior: auto !important; }
+    .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+    .lenis.lenis-stopped { overflow: hidden; }
+    body { font-family: var(--font-body); background-color: var(--bg); background-image: radial-gradient(circle, var(--dot-color) 1px, transparent 1px); background-size: 22px 22px; background-attachment: fixed; color: var(--text); transition: background-color 200ms, color 200ms; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+    html.theme-pixelating, html.theme-pixelating body,
+    html.theme-pixelating body *,
+    html.theme-pixelating body *::before,
+    html.theme-pixelating body *::after { transition: none !important; }
+    .theme-pixel-canvas { image-rendering: pixelated; image-rendering: crisp-edges; }
+    img { max-width: 100%; display: block; }
+    px-icon { display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; color: inherit; vertical-align: middle; line-height: 0; }
+    px-icon svg { display: block; image-rendering: pixelated; image-rendering: crisp-edges; }
+    h1, h2, h3, h4 { font-weight: normal; }
+    h1, h2 { text-transform: uppercase; }
+    a { color: inherit; text-decoration: none; }
+    :root {
+      --font-display: 'PX Display', 'Space Mono', ui-monospace, monospace;
+      --font-body: 'Geist', 'Inter', system-ui, -apple-system, sans-serif;
+      --bg: #FAFAFA; --surface: #FFFFFF; --surface-2: #F4F4F5;
+      --border: #E4E4E7; --border-strong: #D4D4D8;
+      --text: #18181B; --text-secondary: #71717A; --text-tertiary: #A1A1AA;
+      --text-inverse: #FAFAFA; --ink: #18181B; --ink-hover: #27272A;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,.04);
+      --shadow-md: 0 4px 16px rgba(0,0,0,.06);
+      --shadow-lg: 0 12px 40px rgba(0,0,0,.08);
+      --dot-color: rgba(0,0,0,.08);
+      --process-line: #A1A1AA; --process-glow: #18181B;
+      --nav-bg: rgba(255,255,255,.62); --contact-bg:#18181B; --contact-fg:#FFFFFF;
+      --cta-pill-bg:#18181B; --cta-pill-fg:#FAFAFA; --cta-mark-bg:#FAFAFA; --cta-mark-fg:#18181B;
+      --section-y: clamp(48px, 6vw, 88px);
+      --section-head-gap: 36px;
+    }
+    [data-theme="dark"] {
+      --bg: #09090B; --surface: #18181B; --surface-2: #27272A;
+      --border: #27272A; --border-strong: #3F3F46;
+      --text: #FAFAFA; --text-secondary: #A1A1AA; --text-tertiary: #71717A;
+      --text-inverse: #18181B; --ink: #FAFAFA; --ink-hover: #E4E4E7;
+      --shadow-sm: none; --shadow-md: none; --shadow-lg: none;
+      --dot-color: rgba(255,255,255,.10);
+      --process-line: #71717A; --process-glow: #FAFAFA;
+      --nav-bg: rgba(18,18,21,.55); --contact-bg:#FAFAFA; --contact-fg:#18181B;
+      --cta-pill-bg:#FAFAFA; --cta-pill-fg:#18181B; --cta-mark-bg:#18181B; --cta-mark-fg:#FAFAFA;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme]) {
+        --bg: #09090B; --surface: #18181B; --surface-2: #27272A;
+        --border: #27272A; --border-strong: #3F3F46;
+        --text: #FAFAFA; --text-secondary: #A1A1AA; --text-tertiary: #71717A;
+        --text-inverse: #18181B; --ink: #FAFAFA; --ink-hover: #E4E4E7;
+        --shadow-sm: none; --shadow-md: none; --shadow-lg: none;
+        --dot-color: rgba(255,255,255,.10);
+        --process-line: #71717A; --process-glow: #FAFAFA;
+        --nav-bg: rgba(18,18,21,.55); --contact-bg:#FAFAFA; --contact-fg:#18181B;
+        --cta-pill-bg:#FAFAFA; --cta-pill-fg:#18181B; --cta-mark-bg:#18181B; --cta-mark-fg:#FAFAFA;
+      }
+    }
+    .page-section { padding: var(--section-y) 24px; }
+    .hero-section { min-height:100vh; display:flex; align-items:center; padding: clamp(88px, 12vh, 120px) clamp(24px, 4vw, 48px) clamp(40px, 6vh, 72px); }
+    .hero-copy { width:100%; --stagger-stagger: var(--duration-micro); }
+    .hero-headline { font-family:var(--font-display); font-size:clamp(40px, 8.6vw, 132px); line-height:0.95; letter-spacing:-0.03em; color:var(--text); margin-bottom:28px; }
+    .hero-line { display:block; white-space:nowrap; }
+    .hero-together { display:flex; align-items:baseline; white-space:nowrap; column-gap:0.95em; }
+    #hero-stagger.is-together .hero-together { animation: hero-together-close 700ms var(--ease-bounce) both; }
+    @keyframes hero-together-close {
+      0% { column-gap: 0.95em; }
+      52% { column-gap: 0.02em; }
+      72% { column-gap: 0.34em; }
+      100% { column-gap: 0.18em; }
+    }
+    .hero-actions { display:flex; gap:12px; flex-wrap:wrap; }
+    .hero-lede { font-family:var(--font-body); font-size:clamp(16px, 1.6vw, 20px); line-height:1.65; color:var(--text-secondary); margin-bottom:28px; max-width:36em; }
+    .hero-pills { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:40px; }
+    .hero-pill { position:relative; overflow:hidden; isolation:isolate; display:inline-flex; align-items:center; height:36px; padding:0 14px; border-radius:9999px; border:1px solid var(--border); background:var(--bg); font-family:var(--font-display); font-size:13px; letter-spacing:0.06em; text-transform:uppercase; color:var(--text-secondary); white-space:nowrap; cursor:default; }
+    .hero-pill::after { content:""; position:absolute; inset:-50% -80%; background:linear-gradient(105deg, transparent 38%, rgba(255,255,255,.22) 50%, transparent 62%); transform:translateX(-70%) rotate(8deg); opacity:0; pointer-events:none; z-index:1; }
+    .hero-pill:hover::after { opacity:1; transform:translateX(70%) rotate(8deg); transition:transform 2s var(--ease-smooth-out), opacity 400ms var(--ease-out); }
+    [data-theme="dark"] .hero-pill::after { background:linear-gradient(105deg, transparent 38%, rgba(255,255,255,.12) 50%, transparent 62%); }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme]) .hero-pill::after { background:linear-gradient(105deg, transparent 38%, rgba(255,255,255,.12) 50%, transparent 62%); }
+    }
+    @media (max-width:640px) {
+      .hero-section { min-height:auto; padding-top:88px; padding-bottom:32px; }
+      .hero-headline { font-size:min(40px, calc((100vw - 48px) / 12.2)); margin-bottom:20px; }
+      .hero-together { column-gap: 0.55em; }
+      #hero-stagger.is-together .hero-together { animation-name: hero-together-close-mobile; }
+      @keyframes hero-together-close-mobile {
+        0% { column-gap: 0.55em; }
+        52% { column-gap: 0.02em; }
+        72% { column-gap: 0.28em; }
+        100% { column-gap: 0.16em; }
+      }
+      .hero-pills { margin-bottom:28px; }
+    }
+    .section-head-gap { margin-bottom: var(--section-head-gap); }
+    .reveal { opacity:0; transform:translateY(var(--distance-medium)); transition:opacity var(--duration-very-slow) var(--ease-smooth-out), transform var(--duration-very-slow) var(--ease-smooth-out); }
+    .reveal.visible { opacity:1; transform:translateY(0); }
+    @media (prefers-reduced-motion:reduce) {
+      html { scroll-behavior:auto; }
+      .reveal { opacity:1; transform:none; transition:none; }
+      .project-tile .project-photo, .project-tile .pixel-canvas-wrap, .project-overlay, .project-details,
+      .about-photo .about-portrait, .about-photo .pixel-canvas-wrap { transition:none; }
+      .about-photo .about-portrait { opacity:1; }
+      .process-pulse, .process-joint { animation:none !important; }
+      .theme-pixel-canvas { display:none !important; }
+      .mobile-nav-backdrop { transition:none !important; }
+      .btn, .btn:hover { transform:none; }
+      .btn-primary:has(.btn-mark)::before { transition:none !important; }
+      .hero-pill::after { display:none; }
+      .hero-together, #hero-stagger.is-together .hero-together { column-gap: 0.18em; animation: none; }
+    }
+    html { scrollbar-gutter: stable; }
+    .nav-link { height:40px; padding:0 16px; display:inline-flex; align-items:center; font-family:var(--font-display); font-size:15px; letter-spacing:0.05em; text-transform:uppercase; color:var(--text); border-radius:10px; transition:color var(--duration-quick), background var(--duration-quick); white-space:nowrap; }
+    .nav-link:hover { color:var(--text); background:var(--surface-2); }
+    .nav-desktop { display:flex; align-items:center; gap:2px; }
+    .nav-menu-btn { display:none; width:46px; height:46px; border-radius:14px; background:var(--surface-2); border:1px solid var(--border); cursor:pointer; align-items:center; justify-content:center; color:var(--text); flex-shrink:0; }
+    .nav-menu-btn:hover { background:var(--border); }
+    .site-header { position:fixed; top:20px; left:50%; transform:translateX(-50%); z-index:100; max-width:calc(100vw - 32px); width:max-content; }
+    .nav-shell { position:relative; display:flex; align-items:center; gap:24px; padding:10px; width:max-content; background:var(--nav-bg); backdrop-filter:blur(20px) saturate(160%); -webkit-backdrop-filter:blur(20px) saturate(160%); border:1px solid var(--border); border-radius:24px; box-shadow:var(--shadow-md); }
+    .mobile-nav-backdrop { position:fixed; inset:0; background:rgba(0,0,0,.35); z-index:99; opacity:0; pointer-events:none; transition:opacity var(--dropdown-open-dur) var(--dropdown-ease); }
+    .mobile-nav-backdrop.is-open { opacity:1; pointer-events:all; }
+    .mobile-nav-backdrop.is-closing { opacity:0; pointer-events:none; transition:opacity var(--dropdown-close-dur) var(--dropdown-ease); }
+    .mobile-nav.t-dropdown { position:absolute; top:calc(100% + 10px); left:0; right:0; background:var(--surface); border:1px solid var(--border); border-radius:20px; box-shadow:var(--shadow-lg); padding:10px; display:flex; flex-direction:column; gap:2px; z-index:101; min-width:220px; }
+    .mobile-nav .nav-link { width:100%; justify-content:flex-start; }
+    @media (max-width:640px) {
+      .nav-desktop { display:none; }
+      .nav-menu-btn { display:inline-flex; }
+      .nav-shell .btn-primary { height:40px; font-size:13px; padding:3px 3px 3px 14px; gap:10px; }
+      .nav-shell .btn-mark { width:34px; height:34px; border-radius:10px; }
+      .nav-shell .btn-primary:has(.btn-mark)::before {
+        top:3px; right:3px; bottom:3px;
+        left:calc(100% - 3px - 34px);
+        border-radius:10px;
+      }
+      .site-header { left:16px; right:16px; transform:none; max-width:none; width:auto; }
+      .nav-shell { gap:12px; padding:8px; width:100%; max-width:none; }
+      :root { --section-y: 36px; --section-head-gap: 28px; }
+    }
+    .nav-avatar { width:52px; height:52px; border-radius:14px; overflow:hidden; background:#18181B; flex-shrink:0; display:block; }
+    .nav-avatar image-slot { display:block; width:100%; height:100%; }
+    .nav-avatar image-slot::part(ring) { display:none; }
+    .btn { height:46px; padding:0 20px; display:inline-flex; align-items:center; justify-content:center; gap:12px; border-radius:14px; border:1px solid transparent; font-family:var(--font-display); font-size:15px; letter-spacing:0.06em; text-transform:uppercase; line-height:1; white-space:nowrap; cursor:pointer; flex-shrink:0; text-decoration:none; -webkit-appearance:none; appearance:none; transition:transform var(--duration-quick) var(--ease-smooth-out), box-shadow var(--duration-quick) var(--ease-smooth-out), background var(--duration-quick) var(--ease-smooth-out), border-color var(--duration-quick) var(--ease-smooth-out), color var(--duration-quick) var(--ease-smooth-out), opacity var(--duration-quick); }
+    .btn:hover { transform:translateY(-1px); box-shadow:var(--shadow-md); }
+    .btn-primary { background:var(--cta-pill-bg); color:var(--cta-pill-fg); border-color:var(--cta-pill-bg); }
+    .btn-primary:hover { background:var(--ink-hover); border-color:var(--ink-hover); }
+    .btn-primary:has(.btn-mark) { position:relative; isolation:isolate; overflow:hidden; padding:4px 4px 4px 18px; }
+    .btn-primary:has(.btn-mark)::before {
+      content:"";
+      position:absolute;
+      top:4px; right:4px; bottom:4px;
+      left:calc(100% - 4px - 38px);
+      border-radius:12px;
+      background:var(--cta-mark-bg);
+      z-index:0;
+      pointer-events:none;
+      transition:
+        top var(--duration-fast) var(--ease-smooth-out),
+        right var(--duration-fast) var(--ease-smooth-out),
+        bottom var(--duration-fast) var(--ease-smooth-out),
+        left var(--duration-fast) var(--ease-smooth-out),
+        border-radius var(--duration-fast) var(--ease-smooth-out);
+    }
+    a.btn.btn-primary:has(.btn-mark):hover,
+    a.btn.btn-primary:has(.btn-mark):focus-visible {
+      background:var(--cta-pill-bg);
+      border-color:var(--cta-pill-bg);
+      color:var(--cta-mark-fg);
+    }
+    a.btn.btn-primary:has(.btn-mark):hover .btn-text,
+    a.btn.btn-primary:has(.btn-mark):focus-visible .btn-text {
+      color:var(--cta-mark-fg);
+    }
+    .btn-primary:has(.btn-mark):hover::before,
+    .btn-primary:has(.btn-mark):focus-visible::before {
+      top:2px; right:2px; bottom:2px; left:2px;
+      border-radius:12px;
+    }
+    .btn-primary:has(.btn-mark) .btn-text,
+    .btn-primary:has(.btn-mark) .btn-mark { position:relative; z-index:1; }
+    .btn-mark { width:38px; height:38px; border-radius:12px; background:transparent; color:var(--cta-mark-fg); display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .btn-secondary { background:var(--surface); color:var(--text); border-color:var(--border); }
+    .btn-secondary:hover { background:var(--surface-2); border-color:var(--border-strong); }
+    .btn-outline { background:transparent; color:var(--text); border-color:var(--border-strong); }
+    .btn-outline:hover { background:var(--surface-2); border-color:var(--text); }
+    .btn-block { width:100%; }
+    .btn:disabled, .btn[aria-disabled="true"], .btn.is-disabled { opacity:0.4; pointer-events:none; cursor:not-allowed; transform:none; box-shadow:none; }
+    #hero-stagger .btn.t-stagger-line {
+      transition:
+        opacity var(--stagger-dur) var(--stagger-ease),
+        transform var(--stagger-dur) var(--stagger-ease),
+        filter var(--stagger-dur) var(--stagger-ease),
+        box-shadow var(--duration-quick) var(--ease-smooth-out),
+        background var(--duration-quick) var(--ease-smooth-out),
+        border-color var(--duration-quick) var(--ease-smooth-out),
+        color var(--duration-quick) var(--ease-smooth-out);
+    }
+    #hero-stagger .t-stagger-line--2 { transition-delay: var(--stagger-stagger); }
+    #hero-stagger .t-stagger-line--3 { transition-delay: calc(var(--stagger-stagger) * 2); }
+    #hero-stagger .t-stagger-line--4 { transition-delay: calc(var(--stagger-stagger) * 3); }
+    #hero-stagger .t-stagger-line--5 { transition-delay: calc(var(--stagger-stagger) * 4); }
+    #hero-stagger .t-stagger-line--6 { transition-delay: calc(var(--stagger-stagger) * 5); }
+    #hero-stagger .t-stagger-line--7 { transition-delay: calc(var(--stagger-stagger) * 6); }
+    #hero-stagger .t-stagger-line--8,
+    #hero-stagger .btn.t-stagger-line--8 { transition-delay: calc(var(--stagger-stagger) * 7); }
+    #hero-stagger .t-stagger-line--9,
+    #hero-stagger .btn.t-stagger-line--9 { transition-delay: calc(var(--stagger-stagger) * 8); }
+    #hero-stagger.is-settled .t-stagger-line { transition-delay: 0s; filter: none; will-change: auto; }
+    #hero-stagger.is-settled .btn.t-stagger-line { transition: transform var(--duration-quick) var(--ease-smooth-out), box-shadow var(--duration-quick) var(--ease-smooth-out), background var(--duration-quick) var(--ease-smooth-out), border-color var(--duration-quick) var(--ease-smooth-out), color var(--duration-quick) var(--ease-smooth-out), opacity var(--duration-quick); }
+    .pricing-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; align-items:stretch; }
+    @media (max-width:1024px) { .pricing-grid { grid-template-columns:repeat(2,1fr); } }
+    @media (max-width:640px) { .pricing-grid { grid-template-columns:1fr; } }
+    .theme-btn { width:46px; height:46px; border-radius:14px; background:var(--surface-2); border:1px solid var(--border); cursor:pointer; display:flex; align-items:center; justify-content:center; color:var(--text-secondary); transition:background var(--duration-quick), color var(--duration-quick); flex-shrink:0; }
+    .theme-btn:hover { background:var(--border); color:var(--text); }
+    .pricing-tilt, .services-tilt { height:100%; }
+    .pricing-tilt .t-tilt-card { height:100%; border-radius:20px; display:flex; flex-direction:column; background:var(--surface); border:1px solid var(--border); box-shadow:var(--shadow-sm); padding:clamp(28px,3vw,36px); }
+    .pricing-tilt.is-featured .t-tilt-card { border:1.5px solid var(--ink); box-shadow:var(--shadow-lg); }
+    .services-tilt .t-tilt-card { height:100%; border-radius:16px; background:var(--surface); border:1px solid var(--border); box-shadow:var(--shadow-sm); padding:clamp(24px,3vw,32px); }
+    .masonry { column-count:3; column-gap:16px; }
+    .masonry-item { break-inside:avoid; margin-bottom:16px; min-height:160px; }
+    @media (max-width:1024px) { .masonry { column-count:2; } }
+    @media (max-width:640px) { .masonry { column-count:1; } }
+    .project-tile { position:relative; overflow:hidden; border-radius:16px; cursor:default; background:var(--surface-2); }
+    .project-tile .project-photo { width:100%; height:100%; display:block; object-fit:cover; transition:transform var(--duration-fast) var(--ease-smooth-out), opacity var(--duration-quick); }
+    .project-tile .pixel-canvas-wrap { position:absolute; inset:0; z-index:1; opacity:0; pointer-events:none; overflow:hidden; transition:transform var(--duration-fast) var(--ease-smooth-out); }
+    .project-tile .pixel-canvas-wrap canvas { display:block; width:100%; height:100%; }
+    .project-tile.pixel-active:not(.pixel-done) .project-photo { opacity:0; }
+    .project-tile.pixel-done .pixel-canvas-wrap { display:none; }
+    .project-tile.pixel-skip .project-photo { opacity:1; }
+    .project-tile:hover .project-photo,
+    .project-tile:hover .pixel-canvas-wrap { transform:scale(1.04); }
+    .project-overlay { position:absolute; inset:0; z-index:2; background:linear-gradient(to top,rgba(0,0,0,.82) 0%,rgba(0,0,0,.08) 55%,transparent 100%); opacity:0; transition:opacity var(--duration-fast) var(--ease-smooth-out); padding:20px; display:flex; align-items:flex-end; }
+    .project-tile:hover .project-overlay { opacity:1; }
+    .project-details { transform:translateY(var(--distance-base)); transition:transform var(--duration-fast) var(--ease-smooth-out); flex:1; }
+    .project-tile:hover .project-details { transform:translateY(0); }
+    @media (max-width:640px) {
+      .project-overlay { opacity:1; background:linear-gradient(to top,rgba(0,0,0,.65) 0%,transparent 55%); }
+      .project-details { transform:none; }
+    }
+    .services-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    @media (max-width:1024px) { .services-grid { grid-template-columns:repeat(2,1fr); } }
+    @media (max-width:640px) { .services-grid { grid-template-columns:1fr; } }
+    .exp-item:last-child { border-bottom:none !important; }
+    .exp-row { display:grid; grid-template-columns:240px 1fr; gap:32px; align-items:start; }
+    @media (max-width:768px) { .exp-row { grid-template-columns:1fr; gap:8px; } .exp-impact { padding-top:0 !important; } }
+    .contact-grid { display:grid; grid-template-columns:1fr 360px; gap:48px; align-items:start; }
+    @media (max-width:900px) { .contact-grid { grid-template-columns:1fr; } }
+    .form-input { width:100%; background:var(--surface-2); border:1px solid var(--border); border-radius:12px; padding:0 16px; height:48px; font-family:var(--font-body); font-size:16px; color:var(--text); outline:none; transition:border-color 150ms ease-out, box-shadow 150ms; -webkit-appearance:none; }
+    .form-input::placeholder { color:var(--text-tertiary); }
+    .form-input:focus { border-color:var(--border-strong); }
+    .form-input.t-input.is-error,
+    .form-input.t-input.is-error:focus { border-color:#EF4444; }
+    .field-req { color:#EF4444; }
+    .t-error-msg { margin:8px 0 0; font-family:var(--font-body); font-size:13px; color:#EF4444; }
+    .contact-link { font-family:var(--font-display); font-size:clamp(14px,1.6vw,18px); color:var(--text); display:inline-flex; align-items:center; gap:10px; line-height:1.4; transition:color 150ms; margin-bottom:10px; }
+    [data-theme="dark"] .form-input:focus { box-shadow:0 0 0 3px rgba(250,250,250,.06); }
+    textarea.form-input { height:auto; min-height:140px; padding:14px 16px; resize:vertical; line-height:1.6; }
+    .lightbox { position:fixed; inset:0; background:rgba(0,0,0,.88); z-index:999; display:flex; align-items:center; justify-content:center; opacity:0; pointer-events:none; transition:opacity 250ms; padding:24px; }
+    .lightbox.open { opacity:1; pointer-events:all; }
+    .lightbox-img { max-width:min(90vw,1200px); max-height:88vh; object-fit:contain; border-radius:16px; }
+    .lightbox-close { position:absolute; top:20px; right:20px; width:44px; height:44px; background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.18); border-radius:50%; color:#fff; font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:background 150ms; line-height:1; }
+    .lightbox-close:hover { background:rgba(255,255,255,.24); }
+    a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible { outline:2px solid var(--ink); outline-offset:2px; border-radius:4px; }
+    ::-webkit-scrollbar { width:5px; }
+    ::-webkit-scrollbar-track { background:transparent; }
+    ::-webkit-scrollbar-thumb { background:var(--border-strong); border-radius:3px; }
+    .about-grid { display:grid; grid-template-columns:minmax(280px, 0.92fr) minmax(0, 1.08fr); gap:48px 64px; align-items:start; }
+    .about-copy { padding-top:28px; }
+    .about-photo { position:relative; width:100%; aspect-ratio:1; border-radius:20px; overflow:hidden; background:#18181B; box-shadow:var(--shadow-sm); }
+    .about-photo .about-portrait { width:100%; height:100%; display:block; object-fit:cover; opacity:0; transition:opacity var(--duration-quick); }
+    .about-photo .pixel-canvas-wrap { position:absolute; inset:0; z-index:1; opacity:0; pointer-events:none; overflow:hidden; }
+    .about-photo .pixel-canvas-wrap canvas { display:block; width:100%; height:100%; }
+    .about-photo.pixel-done .pixel-canvas-wrap { display:none; }
+    .about-photo.pixel-done .about-portrait,
+    .about-photo.pixel-skip .about-portrait { opacity:1; }
+    .about-copy h2 { font-family:var(--font-display); font-size:clamp(28px,3.6vw,40px); line-height:1.1; color:var(--text); letter-spacing:-0.01em; margin:0 0 20px; }
+    .about-bio { font-family:var(--font-body); font-size:16px; line-height:1.7; color:var(--text-secondary); max-width:54ch; margin:0 0 36px; }
+    .about-tools-label { font-family:var(--font-display); font-size:clamp(22px,2.6vw,28px); letter-spacing:0.04em; color:var(--text); text-transform:uppercase; margin:0 0 52px; }
+    .tool-row { display:flex; flex-wrap:wrap; gap:12px; list-style:none; margin:0; padding:0; }
+    .about-copy .t-tt-group { display:block; }
+    .about-copy .t-tt { z-index:4; font-family:var(--font-body); font-size:13px; font-weight:500; }
+    .tool-tile { width:56px; height:56px; border-radius:14px; background:#E4E4E7; display:grid; place-items:center; border:0; padding:0; cursor:pointer; appearance:none; -webkit-appearance:none; color:inherit; transition:transform var(--duration-quick) var(--ease-smooth-out), box-shadow var(--duration-quick) var(--ease-smooth-out); }
+    .tool-tile:hover { transform:translateY(-2px); box-shadow:var(--shadow-sm); }
+    .tool-tile img { width:26px; height:26px; display:block; pointer-events:none; }
+    @media (max-width:900px) {
+      .about-grid { grid-template-columns:1fr; gap:28px; }
+      .about-photo { max-width:420px; }
+    }
+    .process-map { position:relative; display:grid; grid-template-columns:1fr 1fr; column-gap:52px; row-gap:56px; padding:4px 0 12px; }
+    .process-wires { position:absolute; inset:0; width:100%; height:100%; overflow:visible; pointer-events:none; z-index:0; }
+    .process-wire { fill:none; stroke:var(--process-line); stroke-width:1.5; }
+    .process-pulse { fill:none; stroke:var(--process-glow); stroke-width:2.5; stroke-linecap:round; filter:drop-shadow(0 0 6px var(--process-glow)); animation-name:processPulse; animation-timing-function:linear; animation-iteration-count:infinite; }
+    .process-pulse-glow { stroke-width:9; filter:none; }
+    .process-joint { fill:var(--surface); stroke:var(--process-glow); stroke-width:1.5; transform-box:fill-box; transform-origin:center; }
+    .process-joint.is-hot { animation-name:processJoint; animation-timing-function:linear; animation-iteration-count:infinite; }
+    .process-anchor { position:absolute; width:0; height:0; pointer-events:none; }
+    .process-tilt { position:relative; z-index:1; width:100%; }
+    .process-tilt:nth-of-type(1) { grid-column:1; grid-row:1; }
+    .process-tilt:nth-of-type(2) { grid-column:2; grid-row:1; transform:translateY(22px); }
+    .process-tilt:nth-of-type(3) { grid-column:2; grid-row:2; transform:translateX(14px); }
+    .process-tilt:nth-of-type(4) { grid-column:1; grid-row:2; transform:translate(-10px, 18px); }
+    .process-tilt:nth-of-type(5) { grid-column:1; grid-row:3; transform:translateX(8px); }
+    .process-tilt:nth-of-type(6) { grid-column:2; grid-row:3; transform:translateY(20px); }
+    .process-card { width:100%; box-sizing:border-box; background:var(--surface); border:1px solid var(--border); border-radius:20px; padding:22px 22px 24px; box-shadow:var(--shadow-sm); display:flex; flex-direction:column; transition:border-color var(--duration-quick), transform var(--tilt-return) var(--tilt-return-ease); }
+    .process-card.is-tilting { transition:border-color var(--duration-quick), transform var(--tilt-follow) var(--tilt-follow-ease); }
+    .process-card:hover { border-color:var(--border-strong); }
+    .process-card .process-num { font-family:var(--font-display); font-size:12px; letter-spacing:0.04em; color:var(--text-tertiary); margin-bottom:14px; line-height:1; }
+    .process-card h3 { font-family:var(--font-body); font-size:16px; font-weight:600; color:var(--text); line-height:1.35; margin-bottom:8px; }
+    .process-card p { font-family:var(--font-body); font-size:14px; line-height:1.65; color:var(--text-secondary); }
+    @media (max-width:720px) {
+      .process-map { grid-template-columns:1fr; row-gap:48px; }
+      .process-tilt { grid-column:1 !important; grid-row:auto !important; width:calc(100% - 28px) !important; transform:none; }
+      .process-tilt:nth-of-type(odd) { margin-right:auto; }
+      .process-tilt:nth-of-type(even) { margin-left:auto; }
+    }
+    .svc-stack { position:relative; width:100%; height:220px; margin:8px auto 0; overflow:visible; }
+    .svc-card { position:absolute; left:50%; top:50%; width:240px; height:190px; border-radius:8px; overflow:hidden; box-shadow:var(--shadow-sm); background:var(--surface); border:1px solid var(--border-strong); animation:svcCardCycle 7.5s cubic-bezier(.16,1,.3,1) infinite; will-change:transform; }
+    .svc-card:nth-child(1) { transform:translate(-50%,-50%); z-index:30; }
+    .svc-card:nth-child(2) { transform:translate(-50%,-50%) translateX(58px) rotate(8deg) scale(.88); z-index:10; opacity:.78; }
+    .svc-card:nth-child(3) { transform:translate(-50%,-50%) translateX(-58px) rotate(-8deg) scale(.88); z-index:20; opacity:.78; }
+    .svc-card img { display:block; width:100%; height:100%; object-fit:contain; border-radius:8px; background:var(--surface); }
+    @keyframes svcCardCycle {
+      0%, 27%    { transform:translate(-50%,-50%) translateX(0) rotate(0deg) scale(1); z-index:30; opacity:1; }
+      33.3%, 60% { transform:translate(-50%,-50%) translateX(58px) rotate(8deg) scale(.88); z-index:10; opacity:.78; }
+      66.6%, 93% { transform:translate(-50%,-50%) translateX(-58px) rotate(-8deg) scale(.88); z-index:20; opacity:.78; }
+      100%       { transform:translate(-50%,-50%) translateX(0) rotate(0deg) scale(1); z-index:30; opacity:1; }
+    }
+    .svc-label-pill { display:grid; place-items:center; width:max-content; margin:18px auto 0; height:46px; padding:0 26px; background:var(--surface); border:1px solid var(--border); border-radius:9999px; box-shadow:var(--shadow-sm); }
+    .svc-label { grid-area:1/1; font-family:var(--font-display); font-size:15px; letter-spacing:0.04em; color:var(--text); white-space:nowrap; opacity:0; animation:svcLabelFade 7.5s linear infinite; }
+    .svc-label:nth-child(1) { opacity:1; }
+    @keyframes svcLabelFade { 0%{opacity:1;} 28%{opacity:1;} 34%{opacity:0;} 100%{opacity:0;} }
+    @media (prefers-reduced-motion:reduce) { .svc-card, .svc-label { animation:none; } }
+  </style>
+  <script src="pixel-icons.js?v=chat"></script>
+  <script src="projects-store.js"></script>
+  <script src="image-slot.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+  <script src="pixel-loading.js?v=form"></script>
+</helmet>
+
+<!-- ── NAV ─────────────────────────────────────────── -->
+<div class="{{ mobileNavBackdropClass }}" onClick="{{ closeMobileNav }}" aria-hidden="{{ mobileNavAriaHidden }}"></div>
+<header class="site-header">
+  <nav class="nav-shell">
+    <a href="#home" class="nav-avatar" aria-label="Home" onClick="{{ closeMobileNav }}"><image-slot id="nav-avatar" shape="rounded" radius="14" placeholder="you" style="width:100%;height:100%;"></image-slot></a>
+    <div class="nav-desktop" style="margin-left:8px;">
+      <a href="#about" class="nav-link">About</a>
+      <a href="#projects" class="nav-link">Projects</a>
+      <a href="#experience" class="nav-link">Career</a>
+      <a href="#process" class="nav-link">Process</a>
+      <a href="#pricing" class="nav-link">Pricing</a>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;margin-left:auto;">
+      <a href="#contact" class="btn btn-primary" onClick="{{ closeMobileNav }}"><span class="btn-text">Contact</span><span class="btn-mark" aria-hidden="true"><px-icon name="chat" size="16"></px-icon></span></a>
+      <button onClick="{{ toggleMobileNav }}" class="nav-menu-btn" aria-label="{{ mobileNavLabel }}" aria-expanded="{{ mobileNavExpanded }}">
+        <span class="t-icon-swap" data-state="{{ menuIconState }}">
+          <span class="t-icon" data-icon="a"><px-icon name="menu" size="16"></px-icon></span>
+          <span class="t-icon" data-icon="b"><px-icon name="close" size="16"></px-icon></span>
+        </span>
+      </button>
+      <button onClick="{{ toggleTheme }}" class="theme-btn" aria-label="Toggle theme">
+        <span class="t-icon-swap" data-state="{{ themeIconState }}">
+          <span class="t-icon" data-icon="a"><px-icon name="moon" size="16"></px-icon></span>
+          <span class="t-icon" data-icon="b"><px-icon name="sun" size="16"></px-icon></span>
+        </span>
+      </button>
+    </div>
+    <div class="{{ mobileNavClass }}" data-origin="top-center" aria-hidden="{{ mobileNavAriaHidden }}">
+      <a href="#about" class="nav-link" onClick="{{ closeMobileNav }}">About</a>
+      <a href="#projects" class="nav-link" onClick="{{ closeMobileNav }}">Projects</a>
+      <a href="#experience" class="nav-link" onClick="{{ closeMobileNav }}">Career</a>
+      <a href="#process" class="nav-link" onClick="{{ closeMobileNav }}">Process</a>
+      <a href="#pricing" class="nav-link" onClick="{{ closeMobileNav }}">Pricing</a>
+    </div>
+  </nav>
+</header>
+
+<!-- ── HERO ─────────────────────────────────────────── -->
+<section id="home" class="hero-section">
+  <div class="hero-copy t-stagger" id="hero-stagger">
+    <h1 class="hero-headline">
+      <span class="t-stagger-line t-stagger-line--1 hero-line">Big ideas.</span>
+      <span class="t-stagger-line t-stagger-line--2 hero-line hero-together t-shimmer" data-text="Brought together."><span>Brought</span><span>together.</span></span>
+    </h1>
+    <p class="t-stagger-line t-stagger-line--3 hero-lede">From your brand to your website or digital product, I shape, design and manage the build from start to finish.</p>
+    <div class="hero-pills">
+      <span class="hero-pill t-stagger-line t-stagger-line--4">Branding</span>
+      <span class="hero-pill t-stagger-line t-stagger-line--5">UI/UX</span>
+      <span class="hero-pill t-stagger-line t-stagger-line--6">Product Management</span>
+      <span class="hero-pill t-stagger-line t-stagger-line--7">Development</span>
+    </div>
+    <div class="hero-actions">
+      <a href="#contact" class="btn btn-primary t-stagger-line t-stagger-line--8"><span class="btn-text">Book a call</span><span class="btn-mark" aria-hidden="true"><px-icon name="chat" size="16"></px-icon></span></a>
+      <a href="#projects" class="btn btn-secondary t-stagger-line t-stagger-line--9">View work</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── PROJECTS ─────────────────────────────────────── -->
+<section id="projects" class="page-section">
+  <div style="max-width:1200px;margin:0 auto;">
+    <div class="reveal section-head-gap">
+      <div>
+        <p style="font-family:var(--font-display);font-size:13px;letter-spacing:0.08em;color:var(--text-secondary);margin-bottom:12px;text-transform:uppercase;">Projects</p>
+        <h2 style="font-family:var(--font-display);font-size:clamp(28px,4vw,48px);line-height:1.1;color:var(--text);letter-spacing:-0.01em;margin:0;">Selected work <span style="color:var(--text-secondary);">across product, brand and web.</span></h2>
+      </div>
+    </div>
+    <div class="masonry">
+      <sc-for list="{{ projects }}" as="proj" hint-placeholder-count="6">
+        <div class="masonry-item project-tile" style="height:{{ proj.tileHeight }}px;">
+          <img class="project-photo" src="{{ proj.imgSrc }}" alt="{{ proj.title }}" width="800" height="600">
+          <div class="project-overlay">
+            <div class="project-details">
+              <p style="font-family:var(--font-display);color:#fff;font-size:15px;font-weight:normal;line-height:1.3;">{{ proj.title }}</p>
+              <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;">
+                <sc-for list="{{ proj.tags }}" as="tag" hint-placeholder-count="2">
+                  <span style="font-family:var(--font-body);font-size:11px;font-weight:500;color:#fff;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.25);padding:3px 9px;border-radius:9999px;">{{ tag }}</span>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+<!-- ── ABOUT ─────────────────────────────────────────── -->
+<section id="about" class="page-section">
+  <div style="max-width:1200px;margin:0 auto;">
+    <p class="reveal" style="font-family:var(--font-display);font-size:13px;letter-spacing:0.08em;color:var(--text-secondary);margin-bottom:12px;text-transform:uppercase;">About</p>
+    <div class="about-grid">
+      <div class="about-photo">
+        <img class="about-portrait" src="uploads/tristan-bw-md.png" alt="Tristan Dexter" width="800" height="800">
+      </div>
+      <div class="about-copy reveal">
+        <h2>Where to begin...</h2>
+        <p class="about-bio">I'm Tristan, a designer and product leader with over 15 years of experience spanning branding, marketing, UX, and website development. My career has taken me from hands-on design to product management and leading design and product teams. Today, I bring that experience together to help individuals and businesses turn their ideas into brands, websites, and digital products.</p>
+        <h3 class="about-tools-label">Proficient in</h3>
+        <span class="t-tt-group">
+          <ul class="tool-row">
+            <li><button type="button" class="t-tt-trigger tool-tile" data-tooltip="Framer" aria-label="Framer" aria-describedby="about-tools-tt"><img src="uploads/tools/framer.svg" alt=""></button></li>
+            <li><button type="button" class="t-tt-trigger tool-tile" data-tooltip="Webflow" aria-label="Webflow" aria-describedby="about-tools-tt"><img src="uploads/tools/webflow.svg" alt=""></button></li>
+            <li><button type="button" class="t-tt-trigger tool-tile" data-tooltip="WordPress" aria-label="WordPress" aria-describedby="about-tools-tt"><img src="uploads/tools/wordpress.svg" alt=""></button></li>
+            <li><button type="button" class="t-tt-trigger tool-tile" data-tooltip="Figma" aria-label="Figma" aria-describedby="about-tools-tt"><img src="uploads/tools/figma.svg" alt=""></button></li>
+            <li><button type="button" class="t-tt-trigger tool-tile" data-tooltip="Canva" aria-label="Canva" aria-describedby="about-tools-tt"><img src="uploads/tools/canva.svg" alt=""></button></li>
+            <li><button type="button" class="t-tt-trigger tool-tile" data-tooltip="Linear" aria-label="Linear" aria-describedby="about-tools-tt"><img src="uploads/tools/linear.svg" alt=""></button></li>
+            <li><button type="button" class="t-tt-trigger tool-tile" data-tooltip="Jira" aria-label="Jira" aria-describedby="about-tools-tt"><img src="uploads/tools/jira.svg" alt=""></button></li>
+            <li><button type="button" class="t-tt-trigger tool-tile" data-tooltip="Adobe" aria-label="Adobe" aria-describedby="about-tools-tt"><img src="uploads/tools/adobe.svg" alt=""></button></li>
+          </ul>
+          <span class="t-tt" id="about-tools-tt" role="tooltip" aria-hidden="true" data-show="false">
+            <span class="t-tt-text"></span>
+          </span>
+        </span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SERVICES ──────────────────────────────────────── -->
+<section id="services" class="page-section">
+  <div style="max-width:1200px;margin:0 auto;">
+    <p class="reveal" style="font-family:var(--font-display);font-size:13px;letter-spacing:0.08em;color:var(--text-secondary);margin-bottom:12px;text-transform:uppercase;">Services</p>
+    <h2 class="reveal section-head-gap" style="font-family:var(--font-display);font-size:clamp(28px,4vw,48px);line-height:1.1;color:var(--text);letter-spacing:-0.01em;">What I do <span style="color:var(--text-secondary);">well.</span></h2>
+    <div class="services-grid">
+      <sc-for list="{{ services }}" as="svc" hint-placeholder-count="6">
+        <div class="t-tilt services-tilt reveal">
+          <div class="t-tilt-card">
+            <p style="font-family:var(--font-display);font-size:12px;color:var(--text-tertiary);margin-bottom:16px;letter-spacing:0.04em;">{{ svc.num }}</p>
+            <h3 style="font-family:var(--font-body);font-size:19px;font-weight:600;color:var(--text);margin-bottom:10px;line-height:1.3;">{{ svc.title }}</h3>
+            <p style="font-family:var(--font-body);font-size:15px;line-height:1.65;color:var(--text-secondary);">{{ svc.desc }}</p>
+            <div class="t-tilt-glare"></div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+<!-- ── EXPERIENCE ────────────────────────────────────── -->
+<section id="experience" class="page-section">
+  <div style="max-width:1200px;margin:0 auto;">
+    <p class="reveal" style="font-family:var(--font-display);font-size:13px;letter-spacing:0.08em;color:var(--text-secondary);margin-bottom:12px;text-transform:uppercase;">Experience</p>
+    <h2 class="reveal section-head-gap" style="font-family:var(--font-display);font-size:clamp(28px,4vw,48px);line-height:1.1;color:var(--text);letter-spacing:-0.01em;">Where I've been, <span style="color:var(--text-secondary);">what I've built.</span></h2>
+    <div class="reveal" style="background:var(--surface);border:1px solid var(--border);border-radius:24px;overflow:hidden;box-shadow:var(--shadow-sm);">
+      <sc-for list="{{ experience }}" as="exp" hint-placeholder-count="6">
+        <div class="exp-item" style="padding:clamp(24px,3vw,36px) clamp(24px,4vw,48px);border-bottom:1px solid var(--border);">
+          <div class="exp-row">
+            <div>
+              <p style="font-family:var(--font-display);font-size:12px;color:var(--text-tertiary);margin-bottom:10px;letter-spacing:0.04em;">{{ exp.num }}</p>
+              <h3 style="font-family:var(--font-body);font-size:17px;font-weight:600;color:var(--text);line-height:1.35;margin-bottom:5px;">{{ exp.role }}</h3>
+              <p style="font-family:var(--font-body);font-size:14px;font-weight:500;color:var(--text-secondary);margin-bottom:4px;">{{ exp.company }}</p>
+              <p style="font-family:var(--font-body);font-size:13px;color:var(--text-tertiary);">{{ exp.period }}</p>
+            </div>
+            <p class="exp-impact" style="font-family:var(--font-body);font-size:15px;line-height:1.7;color:var(--text-secondary);padding-top:28px;">{{ exp.impact }}</p>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+    <a href="https://www.linkedin.com/in/tristan-dexter-21095936/" target="_blank" rel="noopener noreferrer" style="margin-top:24px;display:inline-flex;align-items:center;gap:6px;font-family:var(--font-body);font-size:15px;font-weight:500;color:var(--text-secondary);transition:color 150ms;" style-hover="color:var(--text);">
+      Connect on LinkedIn
+      <px-icon name="external-link" size="14"></px-icon>
+    </a>
+  </div>
+</section>
+
+<!-- ── PROCESS ──────────────────────────────────────── -->
+<section id="process" class="page-section">
+  <div style="max-width:1200px;margin:0 auto;">
+    <p class="reveal" style="font-family:var(--font-display);font-size:13px;letter-spacing:0.08em;color:var(--text-secondary);margin-bottom:12px;text-transform:uppercase;">Process</p>
+    <h2 class="reveal section-head-gap" style="font-family:var(--font-display);font-size:clamp(28px,4vw,48px);line-height:1.1;color:var(--text);letter-spacing:-0.01em;">How we work <span style="color:var(--text-secondary);">together.</span></h2>
+    <div class="process-map reveal">
+      <svg class="process-wires" aria-hidden="true"></svg>
+      <sc-for list="{{ process }}" as="step" hint-placeholder-count="6">
+        <div class="t-tilt process-tilt">
+          <article class="t-tilt-card process-card">
+            <p class="process-num">{{ step.num }}</p>
+            <h3>{{ step.title }}</h3>
+            <p>{{ step.desc }}</p>
+            <div class="t-tilt-glare"></div>
+          </article>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+<!-- ── PRICING ──────────────────────────────────────── -->
+<section id="pricing" class="page-section">
+  <div style="max-width:1200px;margin:0 auto;">
+    <p class="reveal" style="font-family:var(--font-display);font-size:13px;letter-spacing:0.08em;color:var(--text-secondary);margin-bottom:12px;text-transform:uppercase;">Pricing</p>
+    <h2 class="reveal section-head-gap" style="font-family:var(--font-display);font-size:clamp(28px,4vw,48px);line-height:1.1;color:var(--text);letter-spacing:-0.01em;">Simple, transparent <span style="color:var(--text-secondary);">pricing.</span></h2>
+    <div class="pricing-grid">
+
+      <div class="t-tilt pricing-tilt reveal">
+        <div class="t-tilt-card">
+          <p style="font-family:var(--font-body);font-size:16px;font-weight:600;color:var(--text);margin-bottom:6px;">Project</p>
+          <p style="font-family:var(--font-body);font-size:14px;color:var(--text-secondary);margin-bottom:24px;">Fixed-scope product or brand work.</p>
+          <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:24px;">
+            <span style="font-family:var(--font-display);font-size:clamp(30px,3vw,40px);color:var(--text);">€6,000</span>
+            <span style="font-family:var(--font-body);font-size:13px;color:var(--text-tertiary);">from</span>
+          </div>
+          <div style="height:1px;background:var(--border);margin-bottom:24px;"></div>
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:13px;margin-bottom:32px;flex:1;">
+            <li style="display:flex;align-items:flex-start;gap:10px;font-family:var(--font-body);font-size:14px;line-height:1.5;color:var(--text-secondary);"><px-icon name="check" size="15" style="margin-top:2px;color:var(--text);"></px-icon>Discovery &amp; strategy</li>
+            <li style="display:flex;align-items:flex-start;gap:10px;font-family:var(--font-body);font-size:14px;line-height:1.5;color:var(--text-secondary);"><px-icon name="check" size="15" style="margin-top:2px;color:var(--text);"></px-icon>End-to-end UX &amp; UI</li>
+            <li style="display:flex;align-items:flex-start;gap:10px;font-family:var(--font-body);font-size:14px;line-height:1.5;color:var(--text-secondary);"><px-icon name="check" size="15" style="margin-top:2px;color:var(--text);"></px-icon>Dev-ready handoff</li>
+          </ul>
+          <a href="#contact" class="btn btn-outline btn-block">Start a project</a>
+          <div class="t-tilt-glare"></div>
+        </div>
+      </div>
+
+      <div class="t-tilt pricing-tilt is-featured reveal">
+        <div class="t-tilt-card">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+            <p style="font-family:var(--font-body);font-size:16px;font-weight:600;color:var(--text);">Retainer</p>
+            <span style="font-family:var(--font-display);font-size:10px;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-inverse);background:var(--ink);padding:4px 9px;border-radius:9999px;">Popular</span>
+          </div>
+          <p style="font-family:var(--font-body);font-size:14px;color:var(--text-secondary);margin-bottom:8px;">Ongoing design partnership.</p>
+          <p style="font-family:var(--font-body);font-size:13px;font-weight:500;color:var(--text);margin-bottom:24px;">1 spot available for August</p>
+          <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:24px;">
+            <span style="font-family:var(--font-display);font-size:clamp(30px,3vw,40px);color:var(--text);">€4,500</span>
+            <span style="font-family:var(--font-body);font-size:13px;color:var(--text-tertiary);">from</span>
+            <span style="font-family:var(--font-body);font-size:13px;color:var(--text-tertiary);">/ month</span>
+          </div>
+          <div style="height:1px;background:var(--border);margin-bottom:24px;"></div>
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:13px;margin-bottom:32px;flex:1;">
+            <li style="display:flex;align-items:flex-start;gap:10px;font-family:var(--font-body);font-size:14px;line-height:1.5;color:var(--text-secondary);"><px-icon name="check" size="15" style="margin-top:2px;color:var(--text);"></px-icon>Dedicated weekly capacity</li>
+            <li style="display:flex;align-items:flex-start;gap:10px;font-family:var(--font-body);font-size:14px;line-height:1.5;color:var(--text-secondary);"><px-icon name="check" size="15" style="margin-top:2px;color:var(--text);"></px-icon>Product, brand &amp; web</li>
+            <li style="display:flex;align-items:flex-start;gap:10px;font-family:var(--font-body);font-size:14px;line-height:1.5;color:var(--text-secondary);"><px-icon name="check" size="15" style="margin-top:2px;color:var(--text);"></px-icon>Async + weekly calls</li>
+          </ul>
+          <a href="#contact" class="btn btn-primary btn-block">Book a retainer</a>
+          <div class="t-tilt-glare"></div>
+        </div>
+      </div>
+
+      <div class="t-tilt pricing-tilt reveal">
+        <div class="t-tilt-card">
+          <p style="font-family:var(--font-body);font-size:16px;font-weight:600;color:var(--text);margin-bottom:6px;">Advisory</p>
+          <p style="font-family:var(--font-body);font-size:14px;color:var(--text-secondary);margin-bottom:24px;">Strategy &amp; design reviews.</p>
+          <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:24px;">
+            <span style="font-family:var(--font-display);font-size:clamp(30px,3vw,40px);color:var(--text);">€450</span>
+            <span style="font-family:var(--font-body);font-size:13px;color:var(--text-tertiary);">/ day</span>
+          </div>
+          <div style="height:1px;background:var(--border);margin-bottom:24px;"></div>
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:13px;margin-bottom:32px;flex:1;">
+            <li style="display:flex;align-items:flex-start;gap:10px;font-family:var(--font-body);font-size:14px;line-height:1.5;color:var(--text-secondary);"><px-icon name="check" size="15" style="margin-top:2px;color:var(--text);"></px-icon>Roadmap &amp; audits</li>
+            <li style="display:flex;align-items:flex-start;gap:10px;font-family:var(--font-body);font-size:14px;line-height:1.5;color:var(--text-secondary);"><px-icon name="check" size="15" style="margin-top:2px;color:var(--text);"></px-icon>Design critique</li>
+            <li style="display:flex;align-items:flex-start;gap:10px;font-family:var(--font-body);font-size:14px;line-height:1.5;color:var(--text-secondary);"><px-icon name="check" size="15" style="margin-top:2px;color:var(--text);"></px-icon>Team mentoring</li>
+          </ul>
+          <a href="#contact" class="btn btn-outline btn-block">Book a call</a>
+          <div class="t-tilt-glare"></div>
+        </div>
+      </div>
+
+    </div>
+    <p class="reveal" style="font-family:var(--font-body);font-size:13px;color:var(--text-tertiary);margin-top:24px;text-align:center;">Every engagement starts with a free intro call · Prices in EUR, excl. VAT</p>
+  </div>
+</section>
+
+<!-- ── CONTACT ──────────────────────────────────────── -->
+<section id="contact" class="page-section">
+  <div style="max-width:1200px;margin:0 auto;">
+    <p class="reveal" style="font-family:var(--font-display);font-size:13px;letter-spacing:0.08em;color:var(--text-secondary);margin-bottom:12px;text-transform:uppercase;">Contact</p>
+    <h2 class="reveal section-head-gap" style="font-family:var(--font-display);font-size:clamp(28px,4vw,48px);line-height:1.1;color:var(--text);letter-spacing:-0.01em;">Have a project? <span style="color:var(--text-secondary);">Let's talk.</span></h2>
+    <div class="contact-grid reveal">
+      <form id="contact-form" novalidate style="background:var(--surface);border:1px solid var(--border);border-radius:24px;padding:clamp(28px,4vw,48px);box-shadow:var(--shadow-sm);">
+        <div style="margin-bottom:20px;">
+          <label for="f-name" style="display:block;font-family:var(--font-body);font-size:14px;font-weight:500;color:var(--text);margin-bottom:8px;">Name <span class="field-req" aria-hidden="true">*</span></label>
+          <input id="f-name" name="name" type="text" class="form-input" placeholder="John Doe" autocomplete="name">
+        </div>
+        <div class="t-input-wrap" style="margin-bottom:20px;">
+          <label for="f-email" style="display:block;font-family:var(--font-body);font-size:14px;font-weight:500;color:var(--text);margin-bottom:8px;">Email <span class="field-req" aria-hidden="true">*</span></label>
+          <input id="f-email" name="email" type="email" class="form-input t-input" placeholder="john@mail.com" autocomplete="email" aria-describedby="f-email-error">
+          <p class="t-error-msg" id="f-email-error">Please enter a valid email.</p>
+        </div>
+        <div style="margin-bottom:28px;">
+          <label for="f-msg" style="display:block;font-family:var(--font-body);font-size:14px;font-weight:500;color:var(--text);margin-bottom:8px;">Message <span class="field-req" aria-hidden="true">*</span></label>
+          <textarea id="f-msg" name="message" class="form-input" placeholder="Tell me about your project..."></textarea>
+        </div>
+        <button type="submit" id="contact-submit" class="btn btn-primary btn-block" disabled>Send message</button>
+      </form>
+      <div>
+        <div style="margin-bottom:40px;">
+          <p style="font-family:var(--font-body);font-size:12px;font-weight:500;color:var(--text-tertiary);margin-bottom:16px;text-transform:uppercase;letter-spacing:0.08em;">Get in touch</p>
+          <a href="mailto:tristan@iamdexter.com" class="contact-link" style-hover="color:var(--text-secondary);"><px-icon name="mail" size="18"></px-icon>Drop me an E-mail</a>
+          <a href="https://wa.me/35699773224" target="_blank" rel="noopener" class="contact-link" style-hover="color:var(--text-secondary);"><px-icon name="message" size="18"></px-icon>Message me on WhatsApp</a>
+        </div>
+        <div style="margin-bottom:40px;">
+          <p style="font-family:var(--font-body);font-size:12px;font-weight:500;color:var(--text-tertiary);margin-bottom:10px;text-transform:uppercase;letter-spacing:0.08em;">Location</p>
+          <p style="font-family:var(--font-body);font-size:16px;color:var(--text-secondary);line-height:1.6;">Mellieha, Malta</p>
+        </div>
+        <div>
+          <p style="font-family:var(--font-body);font-size:12px;font-weight:500;color:var(--text-tertiary);margin-bottom:14px;text-transform:uppercase;letter-spacing:0.08em;">Find me online</p>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <a href="https://www.linkedin.com/in/tristan-dexter-21095936/" target="_blank" rel="noopener noreferrer" style="font-family:var(--font-body);font-size:15px;color:var(--text-secondary);transition:color 150ms;" style-hover="color:var(--text);">LinkedIn</a>
+            <a href="https://dribbble.com/iamdexter" target="_blank" rel="noopener noreferrer" style="font-family:var(--font-body);font-size:15px;color:var(--text-secondary);transition:color 150ms;" style-hover="color:var(--text);">Dribbble</a>
+            <a href="https://www.instagram.com/dxtr90/" target="_blank" rel="noopener noreferrer" style="font-family:var(--font-body);font-size:15px;color:var(--text-secondary);transition:color 150ms;" style-hover="color:var(--text);">Instagram</a>
+            <a href="https://twitter.com/DXTR_90" target="_blank" rel="noopener noreferrer" style="font-family:var(--font-body);font-size:15px;color:var(--text-secondary);transition:color 150ms;" style-hover="color:var(--text);">X (Twitter)</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ────────────────────────────────────────── -->
+<footer style="padding:28px 24px;border-top:1px solid var(--border);">
+  <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+    <p style="font-family:var(--font-display);font-size:13px;color:var(--text-tertiary);">© 2026 Tristan Dexter</p>
+    <a href="#home" style="font-family:var(--font-body);font-size:13px;font-weight:500;color:var(--text-secondary);display:inline-flex;align-items:center;gap:6px;transition:color 150ms;" style-hover="color:var(--text);">Back to top ↑</a>
+  </div>
+</footer>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;$preview&quot;: { &quot;width&quot;: 1440, &quot;height&quot;: 900 },
+  &quot;showFullExperience&quot;: {
+    &quot;editor&quot;: &quot;boolean&quot;,
+    &quot;default&quot;: true,
+    &quot;section&quot;: &quot;Content&quot;,
+    &quot;tsType&quot;: &quot;boolean&quot;
+  }
+}">
+class Component extends DCLogic {
+  state = { theme: 'light', mobileNavOpen: false, mobileNavClosing: false, projects: [] };
+
+  componentDidMount() {
+    const store = window.PortfolioProjects;
+    const projects = store.load();
+    this.setState({ projects }, () => {
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => window.initProjectPixels?.());
+      });
+    });
+
+    const applyProjects = () => {
+      const next = store.load();
+      this.setState({ projects: next }, () => window.initProjectPixels?.());
+    };
+    this._onStorage = (e) => {
+      if (e.key !== store.STORAGE_KEY) return;
+      applyProjects();
+    };
+    this._onPageShow = (e) => {
+      if (e.persisted) applyProjects();
+    };
+    window.addEventListener('storage', this._onStorage);
+    window.addEventListener('pageshow', this._onPageShow);
+
+    const saved = localStorage.getItem('px-portfolio-theme');
+    const prefersDark = window.matchMedia?.('(prefers-color-scheme: dark)').matches;
+    const theme = saved || (prefersDark ? 'dark' : 'light');
+    document.documentElement.setAttribute('data-theme', theme);
+    this.setState({ theme });
+
+    const mq = window.matchMedia?.('(prefers-color-scheme: dark)');
+    if (mq) {
+      this._mqHandler = (e) => {
+        if (!localStorage.getItem('px-portfolio-theme')) {
+          const t = e.matches ? 'dark' : 'light';
+          document.documentElement.setAttribute('data-theme', t);
+          this.setState({ theme: t });
+        }
+      };
+      mq.addEventListener('change', this._mqHandler);
+      this._mq = mq;
+    }
+
+    this._observer = new IntersectionObserver(
+      entries => entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          this._observer.unobserve(e.target);
+        }
+      }),
+      { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
+    );
+    setTimeout(() => {
+      document.querySelectorAll('.reveal').forEach(el => this._observer.observe(el));
+    }, 80);
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        const hero = document.getElementById('hero-stagger');
+        if (!hero) return;
+        hero.classList.remove('is-hiding', 'is-shown', 'is-settled', 'is-together');
+        const togetherLine = hero.querySelector('.hero-together.t-shimmer');
+        togetherLine?.classList.remove('is-shimmering');
+        void hero.offsetHeight;
+        hero.classList.add('is-shown');
+        const last = hero.querySelector('.t-stagger-line--9') || hero.querySelector('.t-stagger-line:last-child');
+        const delay = last ? parseFloat(getComputedStyle(last).transitionDelay) * 1000 : 0;
+        const dur = last ? parseFloat(getComputedStyle(last).transitionDuration) * 1000 : 500;
+        window.setTimeout(() => {
+          hero.classList.add('is-settled');
+          requestAnimationFrame(() => {
+            void hero.offsetWidth;
+            hero.classList.add('is-together');
+            const togetherEl = hero.querySelector('.hero-together');
+            const togetherMs = togetherEl
+              ? (parseFloat(getComputedStyle(togetherEl).animationDuration) * 1000 || 700)
+              : 700;
+            window.setTimeout(() => {
+              const line = hero.querySelector('.hero-together.t-shimmer');
+              if (!line) return;
+              line.classList.remove('is-shimmering');
+              void line.offsetWidth;
+              line.classList.add('is-shimmering');
+            }, togetherMs);
+          });
+        }, delay + dur + 40);
+      });
+    });
+
+    this.initCardTilt();
+    this.bindProcessMap();
+
+    this._onKey = (e) => {
+      if (e.key === 'Escape' && this.state.mobileNavOpen) this.closeMobileNav();
+    };
+    window.addEventListener('keydown', this._onKey);
+  }
+
+  componentDidUpdate() {
+    this.initCardTilt();
+    this.bindProcessMap();
+  }
+
+  componentWillUnmount() {
+    this._processObserver?.disconnect();
+    cancelAnimationFrame(this._processFrame);
+    this._observer?.disconnect();
+    this._mq?.removeEventListener('change', this._mqHandler);
+    window.removeEventListener('keydown', this._onKey);
+    window.removeEventListener('storage', this._onStorage);
+    window.removeEventListener('pageshow', this._onPageShow);
+    clearTimeout(this._navCloseTimer);
+    clearTimeout(this._processFollowStop);
+    cancelAnimationFrame(this._processFollow);
+    this._tiltCleanups?.forEach((fn) => fn());
+  }
+
+  bindProcessMap() {
+    const map = document.querySelector('.process-map');
+    if (!map) return;
+    if (this._processMap !== map) {
+      this._processObserver?.disconnect();
+      this._processMap = map;
+      this._processObserver = new ResizeObserver(() => this.scheduleProcessWires());
+      this._processObserver.observe(map);
+    }
+    this.scheduleProcessWires();
+  }
+
+  scheduleProcessWires() {
+    cancelAnimationFrame(this._processFrame);
+    this._processFrame = requestAnimationFrame(() => this.drawProcessWires());
+  }
+
+  drawProcessWires() {
+    const map = this._processMap;
+    const svg = map?.querySelector('.process-wires');
+    const cards = map ? [...map.querySelectorAll('.process-card')] : [];
+    if (!svg || cards.length < 2) return;
+    this.equalizeProcessCards(map, cards);
+    map.querySelectorAll('.process-anchor').forEach((el) => el.remove());
+    const mapRect = map.getBoundingClientRect();
+    if (mapRect.width < 8 || mapRect.height < 8) return;
+
+    const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    const rects = cards.map((card) => card.getBoundingClientRect());
+    const links = [];
+    for (let i = 0; i < rects.length - 1; i++) links.push(this.processLink(rects[i], rects[i + 1], mapRect, i));
+    this._processLinks = [];
+
+    const step = 1.35;
+    const cycle = (step * links.length).toFixed(2);
+    this.ensureProcessKeyframes(links.length);
+
+    const ns = 'http://www.w3.org/2000/svg';
+    svg.setAttribute('viewBox', `0 0 ${mapRect.width} ${mapRect.height}`);
+    svg.replaceChildren();
+
+    links.forEach((link, i) => {
+      const anchorA = this.placeProcessAnchor(cards[i], this.anchorEdge(link.a, rects[i], mapRect));
+      const anchorB = this.placeProcessAnchor(cards[i + 1], this.anchorEdge(link.b, rects[i + 1], mapRect));
+      const paths = [];
+      const base = document.createElementNS(ns, 'path');
+      base.setAttribute('class', 'process-wire');
+      base.setAttribute('d', link.d);
+      svg.appendChild(base);
+      paths.push(base);
+
+      const joint = document.createElementNS(ns, 'circle');
+      joint.setAttribute('class', reduce ? 'process-joint' : 'process-joint is-hot');
+      joint.setAttribute('cx', link.b.x);
+      joint.setAttribute('cy', link.b.y);
+      joint.setAttribute('r', '4.5');
+      if (!reduce) {
+        joint.style.animationDuration = cycle + 's';
+        joint.style.animationDelay = (i * step).toFixed(2) + 's';
+      }
+      svg.appendChild(joint);
+
+      const depart = document.createElementNS(ns, 'circle');
+      depart.setAttribute('class', 'process-joint');
+      depart.setAttribute('cx', link.a.x);
+      depart.setAttribute('cy', link.a.y);
+      depart.setAttribute('r', '4.5');
+      svg.appendChild(depart);
+
+      if (reduce) return;
+      const probe = document.createElementNS(ns, 'path');
+      probe.setAttribute('d', link.d);
+      svg.appendChild(probe);
+      const len = probe.getTotalLength();
+      svg.removeChild(probe);
+
+      ['process-pulse process-pulse-glow', 'process-pulse'].forEach((cls) => {
+        const pulse = document.createElementNS(ns, 'path');
+        pulse.setAttribute('class', cls);
+        pulse.setAttribute('d', link.d);
+        pulse.setAttribute('stroke-dasharray', `22 ${len}`);
+        if (cls.includes('glow')) pulse.setAttribute('stroke-opacity', '0.28');
+        pulse.style.setProperty('--wire-len', len + 'px');
+        pulse.style.animationDuration = cycle + 's';
+        pulse.style.animationDelay = (i * step).toFixed(2) + 's';
+        svg.appendChild(pulse);
+        paths.push(pulse);
+      });
+
+      this._processLinks.push({
+        kind: link.kind,
+        bend: link.bend,
+        paths,
+        jointA: depart,
+        jointB: joint,
+        anchorA,
+        anchorB,
+      });
+    });
+
+  }
+
+  placeProcessAnchor(card, edge) {
+    const el = document.createElement('span');
+    el.className = 'process-anchor';
+    if (edge === 'right') {
+      el.style.left = '100%';
+      el.style.top = '50%';
+      el.style.transform = 'translate(7px, -50%)';
+    } else if (edge === 'left') {
+      el.style.left = '0';
+      el.style.top = '50%';
+      el.style.transform = 'translate(-7px, -50%)';
+    } else if (edge === 'bottom') {
+      el.style.left = '50%';
+      el.style.top = '100%';
+      el.style.transform = 'translate(-50%, 7px)';
+    } else {
+      el.style.left = '50%';
+      el.style.top = '0';
+      el.style.transform = 'translate(-50%, -7px)';
+    }
+    card.appendChild(el);
+    return el;
+  }
+
+  anchorEdge(point, rect, mapRect) {
+    const x = point.x - (rect.left - mapRect.left);
+    const y = point.y - (rect.top - mapRect.top);
+    const dist = {
+      left: Math.abs(x),
+      right: Math.abs(rect.width - x),
+      top: Math.abs(y),
+      bottom: Math.abs(rect.height - y),
+    };
+    return Object.keys(dist).reduce((best, key) => dist[key] < dist[best] ? key : best);
+  }
+
+  anchorPoint(el, mapRect) {
+    const rect = el.getBoundingClientRect();
+    return {
+      x: rect.left + rect.width / 2 - mapRect.left,
+      y: rect.top + rect.height / 2 - mapRect.top,
+    };
+  }
+
+  liveProcessPath(link, a, b) {
+    if (link.kind === 'row') {
+      const gutterY = (a.y + b.y) / 2;
+      const cx = (a.x + b.x) / 2 + link.bend;
+      return `M ${a.x.toFixed(1)} ${a.y.toFixed(1)} Q ${cx.toFixed(1)} ${gutterY.toFixed(1)} ${b.x.toFixed(1)} ${b.y.toFixed(1)}`;
+    }
+    const midX = (a.x + b.x) / 2;
+    const midY = (a.y + b.y) / 2 + link.bend;
+    return `M ${a.x.toFixed(1)} ${a.y.toFixed(1)} Q ${midX.toFixed(1)} ${midY.toFixed(1)} ${b.x.toFixed(1)} ${b.y.toFixed(1)}`;
+  }
+
+  syncProcessAnchors() {
+    const map = this._processMap;
+    if (!map || !this._processLinks?.length) return;
+    const mapRect = map.getBoundingClientRect();
+    this._processLinks.forEach((link) => {
+      if (!link.anchorA?.isConnected || !link.anchorB?.isConnected) return;
+      const a = this.anchorPoint(link.anchorA, mapRect);
+      const b = this.anchorPoint(link.anchorB, mapRect);
+      const d = this.liveProcessPath(link, a, b);
+      link.paths.forEach((path) => path.setAttribute('d', d));
+      link.jointA.setAttribute('cx', a.x.toFixed(1));
+      link.jointA.setAttribute('cy', a.y.toFixed(1));
+      link.jointB.setAttribute('cx', b.x.toFixed(1));
+      link.jointB.setAttribute('cy', b.y.toFixed(1));
+    });
+  }
+
+  trackProcessWires() {
+    clearTimeout(this._processFollowStop);
+    this._processFollowing = true;
+    if (this._processFollow) return;
+    const tick = () => {
+      this.syncProcessAnchors();
+      this._processFollow = this._processFollowing ? requestAnimationFrame(tick) : 0;
+    };
+    this._processFollow = requestAnimationFrame(tick);
+  }
+
+  releaseProcessWires() {
+    clearTimeout(this._processFollowStop);
+    this._processFollowStop = setTimeout(() => {
+      this.syncProcessAnchors();
+      this._processFollowing = false;
+    }, 1100);
+  }
+
+  equalizeProcessCards(map, cards) {
+    const width = Math.round(map.getBoundingClientRect().width);
+    if (this._processCardWidth !== width) {
+      this._processCardWidth = width;
+      cards.forEach((card) => { card.style.height = 'auto'; });
+      this._processCardHeight = Math.ceil(Math.max(...cards.map((card) => card.offsetHeight)));
+    }
+    const height = this._processCardHeight;
+    if (!height) return;
+    cards.forEach((card) => {
+      if (card.style.height !== height + 'px') card.style.height = height + 'px';
+    });
+  }
+
+  processLink(from, to, mapRect, index) {
+    const c1 = {
+      x: from.left + from.width / 2 - mapRect.left,
+      y: from.top + from.height / 2 - mapRect.top,
+    };
+    const c2 = {
+      x: to.left + to.width / 2 - mapRect.left,
+      y: to.top + to.height / 2 - mapRect.top,
+    };
+    const bows = [20, -24, 16, -22, 18];
+    const sideBows = [32, -36, 24, -40, 28];
+    const bow = bows[index % bows.length];
+    const side = sideBows[index % sideBows.length];
+    const rowChange = Math.abs(c2.y - c1.y) > Math.min(from.height, to.height) * 0.45;
+    let a, b, d;
+    if (rowChange) {
+      const down = c2.y > c1.y;
+      a = { x: c1.x, y: (down ? from.bottom : from.top) - mapRect.top };
+      b = { x: c2.x, y: (down ? to.top : to.bottom) - mapRect.top };
+      const gutterY = (a.y + b.y) / 2;
+      const cx = (a.x + b.x) / 2 + side;
+      d = `M ${a.x.toFixed(1)} ${a.y.toFixed(1)} Q ${cx.toFixed(1)} ${gutterY.toFixed(1)} ${b.x.toFixed(1)} ${b.y.toFixed(1)}`;
+    } else {
+      const right = c2.x > c1.x;
+      a = { x: (right ? from.right : from.left) - mapRect.left, y: c1.y };
+      b = { x: (right ? to.left : to.right) - mapRect.left, y: c2.y };
+      const midX = (a.x + b.x) / 2;
+      const midY = (a.y + b.y) / 2 + bow;
+      d = `M ${a.x.toFixed(1)} ${a.y.toFixed(1)} Q ${midX.toFixed(1)} ${midY.toFixed(1)} ${b.x.toFixed(1)} ${b.y.toFixed(1)}`;
+    }
+    a = this.nudgeOutside(a, from, mapRect);
+    b = this.nudgeOutside(b, to, mapRect);
+    return {
+      a,
+      b,
+      d: this.shiftPathEnds(d, a, b),
+      kind: rowChange ? 'row' : 'side',
+      bend: rowChange ? side : bow,
+    };
+  }
+
+  nudgeOutside(point, rect, mapRect) {
+    const cx = rect.left + rect.width / 2 - mapRect.left;
+    const cy = rect.top + rect.height / 2 - mapRect.top;
+    const dx = point.x - cx;
+    const dy = point.y - cy;
+    const len = Math.hypot(dx, dy) || 1;
+    return { x: point.x + (dx / len) * 7, y: point.y + (dy / len) * 7 };
+  }
+
+  shiftPathEnds(d, a, b) {
+    return d
+      .replace(/^M [\d.-]+ [\d.-]+/, `M ${a.x.toFixed(1)} ${a.y.toFixed(1)}`)
+      .replace(/[\d.-]+ [\d.-]+$/, `${b.x.toFixed(1)} ${b.y.toFixed(1)}`);
+  }
+
+  ensureProcessKeyframes(count) {
+    const slice = 100 / count;
+    const css = `@keyframes processPulse{0%{stroke-dashoffset:0;opacity:0}${ (slice * 0.14).toFixed(2) }%{opacity:1}${ (slice * 0.86).toFixed(2) }%{stroke-dashoffset:calc(var(--wire-len) * -1);opacity:1}${ slice.toFixed(2) }%{stroke-dashoffset:calc((var(--wire-len) + 22px) * -1);opacity:0}100%{stroke-dashoffset:calc((var(--wire-len) + 22px) * -1);opacity:0}}@keyframes processJoint{0%,${ (slice * 0.7).toFixed(2) }%{transform:scale(1)}${ (slice * 0.86).toFixed(2) }%{transform:scale(1.65)}${ slice.toFixed(2) }%,100%{transform:scale(1)}}`;
+    let style = document.getElementById('process-pulse-kf');
+    if (!style) {
+      style = document.createElement('style');
+      style.id = 'process-pulse-kf';
+      document.head.appendChild(style);
+    }
+    if (style.textContent !== css) style.textContent = css;
+  }
+
+  initCardTilt() {
+    this._tiltCleanups?.forEach((fn) => fn());
+    const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)');
+    const fine = window.matchMedia?.('(hover: hover) and (pointer: fine)');
+    const MAX = 10;
+    this._tiltCleanups = [];
+
+    document.querySelectorAll('.pricing-tilt, .services-tilt, .process-tilt').forEach((tilt) => {
+      const card = tilt.querySelector('.t-tilt-card');
+      if (!card) return;
+
+      const reset = () => {
+        tilt.classList.remove('is-hover');
+        card.classList.remove('is-tilting');
+        card.style.setProperty('--tilt-rx', '0deg');
+        card.style.setProperty('--tilt-ry', '0deg');
+      };
+
+      const track = (e) => {
+        if (reduce?.matches || (fine && !fine.matches)) return;
+        if (e.pointerType && e.pointerType !== 'mouse') return;
+        const r = tilt.getBoundingClientRect();
+        const px = Math.min(1, Math.max(0, (e.clientX - r.left) / r.width));
+        const py = Math.min(1, Math.max(0, (e.clientY - r.top) / r.height));
+        tilt.classList.add('is-hover');
+        card.classList.add('is-tilting');
+        card.style.setProperty('--tilt-ry', ((px - 0.5) * MAX).toFixed(2) + 'deg');
+        card.style.setProperty('--tilt-rx', ((0.5 - py) * MAX).toFixed(2) + 'deg');
+        card.style.setProperty('--tilt-gx', (px * 100).toFixed(1) + '%');
+        card.style.setProperty('--tilt-gy', (py * 100).toFixed(1) + '%');
+        if (tilt.classList.contains('process-tilt')) this.trackProcessWires();
+      };
+
+      const leave = () => {
+        reset();
+        if (tilt.classList.contains('process-tilt')) this.releaseProcessWires();
+      };
+
+      tilt.addEventListener('pointermove', track);
+      tilt.addEventListener('pointerleave', leave);
+      this._tiltCleanups.push(() => {
+        tilt.removeEventListener('pointermove', track);
+        tilt.removeEventListener('pointerleave', leave);
+      });
+    });
+  }
+
+  async toggleTheme(e) {
+    if (this._themeLock) return;
+    this._themeLock = true;
+
+    const prev = this.state.theme;
+    const next = prev === 'dark' ? 'light' : 'dark';
+    const origin = e?.currentTarget || document.querySelector('.theme-btn');
+
+    try {
+      const anim = window.animateThemeSwitch?.(prev, next, origin);
+      if (anim) await anim;
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('px-portfolio-theme', next);
+      this.setState({ theme: next });
+    } finally {
+      // Unlock after the wipe finishes so rapid clicks don't stack overlays.
+      setTimeout(() => { this._themeLock = false; }, 780);
+    }
+  }
+
+  dropdownCloseMs() {
+    const raw = getComputedStyle(document.documentElement).getPropertyValue('--dropdown-close-dur');
+    const n = parseFloat(raw);
+    return Number.isFinite(n) ? n : 150;
+  }
+
+  syncBodyScroll() {
+    if (this.state.mobileNavOpen) {
+      const sb = window.innerWidth - document.documentElement.clientWidth;
+      document.body.style.overflow = 'hidden';
+      document.body.style.paddingRight = sb > 0 ? `${sb}px` : '';
+    } else {
+      document.body.style.overflow = '';
+      document.body.style.paddingRight = '';
+    }
+  }
+
+  openMobileNav() {
+    clearTimeout(this._navCloseTimer);
+    this.setState({ mobileNavOpen: true, mobileNavClosing: false }, () => this.syncBodyScroll());
+  }
+
+  closeMobileNav() {
+    if (!this.state.mobileNavOpen && !this.state.mobileNavClosing) return;
+    clearTimeout(this._navCloseTimer);
+    this.setState({ mobileNavOpen: false, mobileNavClosing: true }, () => {
+      this.syncBodyScroll();
+      this._navCloseTimer = setTimeout(() => {
+        this.setState({ mobileNavClosing: false });
+      }, this.dropdownCloseMs());
+    });
+  }
+
+  toggleMobileNav() {
+    if (this.state.mobileNavOpen) this.closeMobileNav();
+    else this.openMobileNav();
+  }
+
+  renderVals() {
+    const { theme, mobileNavOpen, mobileNavClosing, projects } = this.state;
+    const isDark = theme === 'dark';
+    const tileHeights = [420, 470, 380, 560, 250, 430, 340];
+    const projectVals = projects.map((p, i) => ({
+      ...p,
+      imgSrc: window.PortfolioProjects.displaySrc(p),
+      tileHeight: tileHeights[i % tileHeights.length],
+    }));
+
+    let mobileNavClass = 'mobile-nav t-dropdown';
+    if (mobileNavOpen) mobileNavClass += ' is-open';
+    else if (mobileNavClosing) mobileNavClass += ' is-closing';
+
+    let mobileNavBackdropClass = 'mobile-nav-backdrop';
+    if (mobileNavOpen) mobileNavBackdropClass += ' is-open';
+    else if (mobileNavClosing) mobileNavBackdropClass += ' is-closing';
+
+    const allExperience = [
+      { num: '01', role: 'Chief Experience Officer', company: 'Jurnii Ltd', period: 'Jun 2025 – Present', impact: 'Leading platform design and product as the in-house UX expert, ensuring Jurnii UX reports hit home with our clients and help them plan and understand the recommendations.' },
+      { num: '02', role: 'Director of Product & Design', company: 'Gentoo Media', period: 'Jan 2024 – May 2025', impact: 'Led a department of 50+ across product management and design, shaping strategy and delivery across a portfolio of digital products.' },
+      { num: '03', role: 'Head of Product & Design', company: 'Gentoo Media', period: 'Oct 2022 – Jan 2024', impact: 'Managed ~35 across product and design, owning UX strategy, roadmaps, design systems, and cross-team delivery.' },
+      { num: '04', role: 'Lead Product Designer', company: 'Gaming Innovation Group', period: 'Jun 2020 – Oct 2022', impact: 'Led a team of 6 across product, graphic, and motion design — focused on conversion and innovative UI for media products.' },
+      { num: '05', role: 'Senior Product Designer', company: 'Gaming Innovation Group', period: 'Mar 2018 – Jun 2020', impact: 'Built products across sports, casino, and affiliate platforms; created a new design system for the GiG platform.' },
+      { num: '06', role: 'Lead Designer', company: 'Multilotto', period: 'Feb 2017 – Mar 2018', impact: 'Led design teams in Malta & China; rebuilt the lotto and casino web product and launched a new mobile app.' },
+      { num: '07', role: 'Senior Graphic Designer', company: 'Tipico', period: 'Jul 2011 – Feb 2017', impact: 'Grew from Junior to Senior over 6 years; owned marketing design, email campaigns, and landing pages across iGaming.' },
+    ];
+
+    return {
+      isDark,
+      isLight: !isDark,
+      toggleTheme: (e) => this.toggleTheme(e),
+      mobileNavOpen,
+      mobileNavClosed: !mobileNavOpen,
+      menuIconState: mobileNavOpen ? 'b' : 'a',
+      themeIconState: isDark ? 'b' : 'a',
+      mobileNavClass,
+      mobileNavBackdropClass,
+      mobileNavAriaHidden: mobileNavOpen ? 'false' : 'true',
+      mobileNavExpanded: mobileNavOpen ? 'true' : 'false',
+      mobileNavLabel: mobileNavOpen ? 'Close menu' : 'Open menu',
+      toggleMobileNav: () => this.toggleMobileNav(),
+      closeMobileNav: () => this.closeMobileNav(),
+      projects: projectVals,
+      services: [
+        { num: '01', title: 'UI/UX Design', desc: 'Interfaces that are clear, usable, and considered — from early concepts to polished product.' },
+        { num: '02', title: 'Organised Tracking', desc: 'All projects mapped and scoped and tracked on Notion for full transparency.' },
+        { num: '03', title: 'Design Systems', desc: 'Scalable component libraries and token systems that let teams ship faster and stay consistent.' },
+        { num: '04', title: 'Branding', desc: 'Identity, visual language, and brand guidelines that give products a distinctive voice.' },
+        { num: '05', title: 'Website Development', desc: 'Clean, responsive builds — from Webflow and Framer to custom HTML/CSS.' },
+        { num: '06', title: 'Marketing Assets', desc: 'Full assets package from social media templates, email marketing, short-form video, all templated for you to run your business.' },
+      ],
+      process: [
+        { num: '01', title: 'Get in touch', desc: 'Share your project idea — goals, timeline, and anything you already have. No polished brief required.' },
+        { num: '02', title: 'Discovery call', desc: 'We jump on a call to unpack the problem, constraints, and what success looks like.' },
+        { num: '03', title: 'Scoped quotation', desc: 'I map the work and get back with a clear quotation within 48 hours.' },
+        { num: '04', title: 'Milestones mapped', desc: 'Once we\'re aligned, the project is broken into key milestones so everyone knows what\'s coming and when.' },
+        { num: '05', title: 'Design & development', desc: 'Work begins with weekly catch-ups or async updates — whichever fits how you like to collaborate.' },
+        { num: '06', title: 'Tracked on Notion', desc: 'Everything is documented and tracked in Notion for full transparency, easy handover, and a clear record of decisions.' },
+      ],
+      experience: this.props.showFullExperience === false ? allExperience.slice(0, 4) : allExperience,
+    };
+  }
+}
+</script>
+</body>
+</html>
