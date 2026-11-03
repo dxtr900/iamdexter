@@ -1,4 +1,8 @@
 {
+  "framework": null,
+  "buildCommand": "",
+  "installCommand": "",
+  "outputDirectory": ".",
   "redirects": [
     { "source": "/Portfolio.dc.html", "destination": "/", "permanent": true }
   ],
