@@ -138,8 +138,8 @@
       }
     }
     .page-section { padding: var(--section-y) 24px; }
-    .hero-section { min-height:100vh; display:flex; align-items:center; padding: clamp(88px, 12vh, 120px) clamp(24px, 4vw, 48px) clamp(40px, 6vh, 72px); }
-    .hero-copy { width:100%; --stagger-stagger: var(--duration-micro); }
+    .hero-section { min-height:100vh; display:flex; align-items:center; padding: clamp(88px, 12vh, 120px) 24px clamp(40px, 6vh, 72px); }
+    .hero-copy { width:100%; max-width:1200px; margin:0 auto; --stagger-stagger: var(--duration-micro); }
     .hero-headline { font-family:var(--font-display); font-size:clamp(40px, 8.6vw, 132px); line-height:0.95; letter-spacing:-0.03em; color:var(--text); margin-bottom:28px; }
     .hero-line { display:block; white-space:nowrap; }
     .hero-together { display:flex; align-items:baseline; white-space:nowrap; column-gap:0.95em; }
@@ -152,7 +152,14 @@
     }
     .hero-actions { display:flex; gap:12px; flex-wrap:wrap; }
     .hero-lede { font-family:var(--font-body); font-size:clamp(16px, 1.6vw, 20px); line-height:1.65; color:var(--text-secondary); margin-bottom:28px; max-width:36em; }
-    .hero-pills { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:40px; }
+    .hero-pills { margin:0 0 40px; }
+    .hero-pills-track { display:flex; width:max-content; }
+    .hero-pills-set { display:flex; gap:8px; }
+    .hero-pills-set[aria-hidden="true"] { display:none; }
+    @keyframes hero-pills-marquee {
+      from { transform:translateX(0); }
+      to { transform:translateX(-50%); }
+    }
     .hero-pill { position:relative; overflow:hidden; isolation:isolate; display:inline-flex; align-items:center; height:36px; padding:0 14px; border-radius:9999px; border:1px solid var(--border); background:var(--bg); font-family:var(--font-display); font-size:13px; letter-spacing:0.06em; text-transform:uppercase; color:var(--text-secondary); white-space:nowrap; cursor:default; }
     .hero-pill::after { content:""; position:absolute; inset:-50% -80%; background:linear-gradient(105deg, transparent 38%, rgba(255,255,255,.22) 50%, transparent 62%); transform:translateX(-70%) rotate(8deg); opacity:0; pointer-events:none; z-index:1; }
     .hero-pill:hover::after { opacity:1; transform:translateX(70%) rotate(8deg); transition:transform 2s var(--ease-smooth-out), opacity 400ms var(--ease-out); }
@@ -161,17 +168,26 @@
       :root:not([data-theme]) .hero-pill::after { background:linear-gradient(105deg, transparent 38%, rgba(255,255,255,.12) 50%, transparent 62%); }
     }
     @media (max-width:640px) {
-      .hero-section { min-height:auto; padding-top:88px; padding-bottom:32px; }
-      .hero-headline { font-size:min(40px, calc((100vw - 48px) / 12.2)); margin-bottom:20px; }
-      .hero-together { column-gap: 0.55em; }
+      .hero-section { min-height:auto; padding-top:148px; padding-bottom:40px; }
+      .hero-headline { font-size:clamp(52px, 15vw, 68px); margin-bottom:24px; }
+      .hero-together { column-gap:0.45em; flex-wrap:wrap; white-space:normal; }
       #hero-stagger.is-together .hero-together { animation-name: hero-together-close-mobile; }
       @keyframes hero-together-close-mobile {
-        0% { column-gap: 0.55em; }
+        0% { column-gap: 0.45em; }
         52% { column-gap: 0.02em; }
         72% { column-gap: 0.28em; }
         100% { column-gap: 0.16em; }
       }
-      .hero-pills { margin-bottom:28px; }
+      .hero-pills {
+        overflow:hidden;
+        margin:0 calc(var(--hero-x) * -1) 32px;
+        mask-image:linear-gradient(to right, transparent, #000 16px, #000 calc(100% - 16px), transparent);
+        -webkit-mask-image:linear-gradient(to right, transparent, #000 16px, #000 calc(100% - 16px), transparent);
+      }
+      .hero-pills-track { animation:hero-pills-marquee 16s var(--ease-linear) infinite; }
+      .hero-pills-set { padding-right:8px; }
+      .hero-pills-set[aria-hidden="true"] { display:flex; }
+      .hero-pills:hover .hero-pills-track { animation-play-state:paused; }
     }
     .section-head-gap { margin-bottom: var(--section-head-gap); }
     .reveal { opacity:0; transform:translateY(var(--distance-medium)); transition:opacity var(--duration-very-slow) var(--ease-smooth-out), transform var(--duration-very-slow) var(--ease-smooth-out); }
@@ -189,6 +205,10 @@
       .btn-primary:has(.btn-mark)::before { transition:none !important; }
       .hero-pill::after { display:none; }
       .hero-together, #hero-stagger.is-together .hero-together { column-gap: 0.18em; animation: none; }
+      .hero-pills-track { animation: none; }
+      .hero-pills-set[aria-hidden="true"] { display: none; }
+      .hero-pills { overflow:visible; mask-image:none; -webkit-mask-image:none; margin-left:0; margin-right:0; }
+      .hero-pills-set { flex-wrap:wrap; padding-right:0; }
     }
     html { scrollbar-gutter: stable; }
     .nav-link { height:40px; padding:0 16px; display:inline-flex; align-items:center; font-family:var(--font-display); font-size:15px; letter-spacing:0.05em; text-transform:uppercase; color:var(--text); border-radius:10px; transition:color var(--duration-quick), background var(--duration-quick); white-space:nowrap; }
@@ -206,20 +226,18 @@
     @media (max-width:640px) {
       .nav-desktop { display:none; }
       .nav-menu-btn { display:inline-flex; }
-      .nav-shell .btn-primary { height:40px; font-size:13px; padding:3px 3px 3px 14px; gap:10px; }
-      .nav-shell .btn-mark { width:34px; height:34px; border-radius:10px; }
-      .nav-shell .btn-primary:has(.btn-mark)::before {
-        top:3px; right:3px; bottom:3px;
-        left:calc(100% - 3px - 34px);
-        border-radius:10px;
-      }
       .site-header { left:16px; right:16px; transform:none; max-width:none; width:auto; }
       .nav-shell { gap:12px; padding:8px; width:100%; max-width:none; }
       :root { --section-y: 36px; --section-head-gap: 28px; }
     }
     .nav-avatar { width:52px; height:52px; border-radius:14px; overflow:hidden; background:#18181B; flex-shrink:0; display:block; }
-    .nav-avatar image-slot { display:block; width:100%; height:100%; }
-    .nav-avatar image-slot::part(ring) { display:none; }
+    .nav-avatar img { display:block; width:100%; height:100%; object-fit:cover; }
+    a.btn.nav-contact-menu { display:none; }
+    @media (max-width:640px) {
+      a.btn.nav-contact-bar { display:none; }
+      a.btn.nav-contact-menu { display:inline-flex; width:100%; margin-bottom:8px; }
+      .mobile-nav .btn-primary { height:46px; justify-content:space-between; }
+    }
     .btn { height:46px; padding:0 20px; display:inline-flex; align-items:center; justify-content:center; gap:12px; border-radius:14px; border:1px solid transparent; font-family:var(--font-display); font-size:15px; letter-spacing:0.06em; text-transform:uppercase; line-height:1; white-space:nowrap; cursor:pointer; flex-shrink:0; text-decoration:none; -webkit-appearance:none; appearance:none; transition:transform var(--duration-quick) var(--ease-smooth-out), box-shadow var(--duration-quick) var(--ease-smooth-out), background var(--duration-quick) var(--ease-smooth-out), border-color var(--duration-quick) var(--ease-smooth-out), color var(--duration-quick) var(--ease-smooth-out), opacity var(--duration-quick); }
     .btn:hover { transform:translateY(-1px); box-shadow:var(--shadow-md); }
     .btn-primary { background:var(--cta-pill-bg); color:var(--cta-pill-fg); border-color:var(--cta-pill-bg); }
@@ -278,13 +296,10 @@
     #hero-stagger .t-stagger-line--2 { transition-delay: var(--stagger-stagger); }
     #hero-stagger .t-stagger-line--3 { transition-delay: calc(var(--stagger-stagger) * 2); }
     #hero-stagger .t-stagger-line--4 { transition-delay: calc(var(--stagger-stagger) * 3); }
-    #hero-stagger .t-stagger-line--5 { transition-delay: calc(var(--stagger-stagger) * 4); }
-    #hero-stagger .t-stagger-line--6 { transition-delay: calc(var(--stagger-stagger) * 5); }
-    #hero-stagger .t-stagger-line--7 { transition-delay: calc(var(--stagger-stagger) * 6); }
-    #hero-stagger .t-stagger-line--8,
-    #hero-stagger .btn.t-stagger-line--8 { transition-delay: calc(var(--stagger-stagger) * 7); }
-    #hero-stagger .t-stagger-line--9,
-    #hero-stagger .btn.t-stagger-line--9 { transition-delay: calc(var(--stagger-stagger) * 8); }
+    #hero-stagger .t-stagger-line--5,
+    #hero-stagger .btn.t-stagger-line--5 { transition-delay: calc(var(--stagger-stagger) * 4); }
+    #hero-stagger .t-stagger-line--6,
+    #hero-stagger .btn.t-stagger-line--6 { transition-delay: calc(var(--stagger-stagger) * 5); }
     #hero-stagger.is-settled .t-stagger-line { transition-delay: 0s; filter: none; will-change: auto; }
     #hero-stagger.is-settled .btn.t-stagger-line { transition: transform var(--duration-quick) var(--ease-smooth-out), box-shadow var(--duration-quick) var(--ease-smooth-out), background var(--duration-quick) var(--ease-smooth-out), border-color var(--duration-quick) var(--ease-smooth-out), color var(--duration-quick) var(--ease-smooth-out), opacity var(--duration-quick); }
     .pricing-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; align-items:stretch; }
@@ -388,10 +403,15 @@
     .process-card h3 { font-family:var(--font-body); font-size:16px; font-weight:600; color:var(--text); line-height:1.35; margin-bottom:8px; }
     .process-card p { font-family:var(--font-body); font-size:14px; line-height:1.65; color:var(--text-secondary); }
     @media (max-width:720px) {
-      .process-map { grid-template-columns:1fr; row-gap:48px; }
-      .process-tilt { grid-column:1 !important; grid-row:auto !important; width:calc(100% - 28px) !important; transform:none; }
-      .process-tilt:nth-of-type(odd) { margin-right:auto; }
-      .process-tilt:nth-of-type(even) { margin-left:auto; }
+      .process-map { grid-template-columns:1fr; row-gap:20px; padding:8px 0 12px 40px; }
+      .process-tilt:nth-of-type(n) {
+        grid-column:1 !important;
+        grid-row:auto !important;
+        width:100% !important;
+        max-width:none;
+        transform:none !important;
+        margin:0 !important;
+      }
     }
     .svc-stack { position:relative; width:100%; height:220px; margin:8px auto 0; overflow:visible; }
     .svc-card { position:absolute; left:50%; top:50%; width:240px; height:190px; border-radius:8px; overflow:hidden; box-shadow:var(--shadow-sm); background:var(--surface); border:1px solid var(--border-strong); animation:svcCardCycle 7.5s cubic-bezier(.16,1,.3,1) infinite; will-change:transform; }
@@ -413,7 +433,6 @@
   </style>
   <script src="pixel-icons.js?v=chat"></script>
   <script src="projects-store.js"></script>
-  <script src="image-slot.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
   <script src="pixel-loading.js?v=form"></script>
 </helmet>
@@ -422,7 +441,7 @@
 <div class="{{ mobileNavBackdropClass }}" onClick="{{ closeMobileNav }}" aria-hidden="{{ mobileNavAriaHidden }}"></div>
 <header class="site-header">
   <nav class="nav-shell">
-    <a href="#home" class="nav-avatar" aria-label="Home" onClick="{{ closeMobileNav }}"><image-slot id="nav-avatar" shape="rounded" radius="14" placeholder="you" style="width:100%;height:100%;"></image-slot></a>
+    <a href="#home" class="nav-avatar" aria-label="Home" onClick="{{ closeMobileNav }}"><img src="uploads/nav-avatar.webp" alt="Tristan Dexter" width="104" height="104"></a>
     <div class="nav-desktop" style="margin-left:8px;">
       <a href="#about" class="nav-link">About</a>
       <a href="#projects" class="nav-link">Projects</a>
@@ -431,7 +450,7 @@
       <a href="#pricing" class="nav-link">Pricing</a>
     </div>
     <div style="display:flex;align-items:center;gap:8px;margin-left:auto;">
-      <a href="#contact" class="btn btn-primary" onClick="{{ closeMobileNav }}"><span class="btn-text">Contact</span><span class="btn-mark" aria-hidden="true"><px-icon name="chat" size="16"></px-icon></span></a>
+      <a href="#contact" class="btn btn-primary nav-contact-bar" onClick="{{ closeMobileNav }}"><span class="btn-text">Contact</span><span class="btn-mark" aria-hidden="true"><px-icon name="chat" size="16"></px-icon></span></a>
       <button onClick="{{ toggleMobileNav }}" class="nav-menu-btn" aria-label="{{ mobileNavLabel }}" aria-expanded="{{ mobileNavExpanded }}">
         <span class="t-icon-swap" data-state="{{ menuIconState }}">
           <span class="t-icon" data-icon="a"><px-icon name="menu" size="16"></px-icon></span>
@@ -446,6 +465,7 @@
       </button>
     </div>
     <div class="{{ mobileNavClass }}" data-origin="top-center" aria-hidden="{{ mobileNavAriaHidden }}">
+      <a href="#contact" class="btn btn-primary nav-contact-menu" onClick="{{ closeMobileNav }}"><span class="btn-text">Contact</span><span class="btn-mark" aria-hidden="true"><px-icon name="chat" size="16"></px-icon></span></a>
       <a href="#about" class="nav-link" onClick="{{ closeMobileNav }}">About</a>
       <a href="#projects" class="nav-link" onClick="{{ closeMobileNav }}">Projects</a>
       <a href="#experience" class="nav-link" onClick="{{ closeMobileNav }}">Career</a>
@@ -463,15 +483,25 @@
       <span class="t-stagger-line t-stagger-line--2 hero-line hero-together t-shimmer" data-text="Brought together."><span>Brought</span><span>together.</span></span>
     </h1>
     <p class="t-stagger-line t-stagger-line--3 hero-lede">From your brand to your website or digital product, I shape, design and manage the build from start to finish.</p>
-    <div class="hero-pills">
-      <span class="hero-pill t-stagger-line t-stagger-line--4">Branding</span>
-      <span class="hero-pill t-stagger-line t-stagger-line--5">UI/UX</span>
-      <span class="hero-pill t-stagger-line t-stagger-line--6">Product Management</span>
-      <span class="hero-pill t-stagger-line t-stagger-line--7">Development</span>
+    <div class="hero-pills t-stagger-line t-stagger-line--4" aria-label="Branding, UI/UX, Product Management, Development">
+      <div class="hero-pills-track">
+        <div class="hero-pills-set">
+          <span class="hero-pill">Branding</span>
+          <span class="hero-pill">UI/UX</span>
+          <span class="hero-pill">Product Management</span>
+          <span class="hero-pill">Development</span>
+        </div>
+        <div class="hero-pills-set" aria-hidden="true">
+          <span class="hero-pill">Branding</span>
+          <span class="hero-pill">UI/UX</span>
+          <span class="hero-pill">Product Management</span>
+          <span class="hero-pill">Development</span>
+        </div>
+      </div>
     </div>
     <div class="hero-actions">
-      <a href="#contact" class="btn btn-primary t-stagger-line t-stagger-line--8"><span class="btn-text">Book a call</span><span class="btn-mark" aria-hidden="true"><px-icon name="chat" size="16"></px-icon></span></a>
-      <a href="#projects" class="btn btn-secondary t-stagger-line t-stagger-line--9">View work</a>
+      <a href="#contact" class="btn btn-primary t-stagger-line t-stagger-line--5"><span class="btn-text">Book a call</span><span class="btn-mark" aria-hidden="true"><px-icon name="chat" size="16"></px-icon></span></a>
+      <a href="#projects" class="btn btn-secondary t-stagger-line t-stagger-line--6">View work</a>
     </div>
   </div>
 </section>
@@ -810,7 +840,7 @@ class Component extends DCLogic {
         togetherLine?.classList.remove('is-shimmering');
         void hero.offsetHeight;
         hero.classList.add('is-shown');
-        const last = hero.querySelector('.t-stagger-line--9') || hero.querySelector('.t-stagger-line:last-child');
+        const last = hero.querySelector('.t-stagger-line--6') || hero.querySelector('.t-stagger-line:last-child');
         const delay = last ? parseFloat(getComputedStyle(last).transitionDelay) * 1000 : 0;
         const dur = last ? parseFloat(getComputedStyle(last).transitionDuration) * 1000 : 500;
         window.setTimeout(() => {
@@ -954,6 +984,7 @@ class Component extends DCLogic {
       this._processLinks.push({
         kind: link.kind,
         bend: link.bend,
+        railX: link.railX,
         paths,
         jointA: depart,
         jointB: joint,
@@ -1009,6 +1040,10 @@ class Component extends DCLogic {
   }
 
   liveProcessPath(link, a, b) {
+    if (link.kind === 'timeline') {
+      const x = link.railX;
+      return `M ${x.toFixed(1)} ${a.y.toFixed(1)} L ${x.toFixed(1)} ${b.y.toFixed(1)}`;
+    }
     if (link.kind === 'row') {
       const gutterY = (a.y + b.y) / 2;
       const cx = (a.x + b.x) / 2 + link.bend;
@@ -1029,9 +1064,11 @@ class Component extends DCLogic {
       const b = this.anchorPoint(link.anchorB, mapRect);
       const d = this.liveProcessPath(link, a, b);
       link.paths.forEach((path) => path.setAttribute('d', d));
-      link.jointA.setAttribute('cx', a.x.toFixed(1));
+      const ax = link.kind === 'timeline' ? link.railX : a.x;
+      const bx = link.kind === 'timeline' ? link.railX : b.x;
+      link.jointA.setAttribute('cx', ax.toFixed(1));
       link.jointA.setAttribute('cy', a.y.toFixed(1));
-      link.jointB.setAttribute('cx', b.x.toFixed(1));
+      link.jointB.setAttribute('cx', bx.toFixed(1));
       link.jointB.setAttribute('cy', b.y.toFixed(1));
     });
   }
@@ -1055,7 +1092,17 @@ class Component extends DCLogic {
     }, 1100);
   }
 
+  isProcessTimeline() {
+    return window.matchMedia('(max-width: 720px)').matches;
+  }
+
   equalizeProcessCards(map, cards) {
+    if (this.isProcessTimeline()) {
+      this._processCardWidth = 0;
+      this._processCardHeight = 0;
+      cards.forEach((card) => { card.style.height = 'auto'; });
+      return;
+    }
     const width = Math.round(map.getBoundingClientRect().width);
     if (this._processCardWidth !== width) {
       this._processCardWidth = width;
@@ -1070,6 +1117,19 @@ class Component extends DCLogic {
   }
 
   processLink(from, to, mapRect, index) {
+    if (this.isProcessTimeline()) {
+      const railX = 14;
+      const a = { x: railX, y: from.top + from.height / 2 - mapRect.top };
+      const b = { x: railX, y: to.top + to.height / 2 - mapRect.top };
+      return {
+        a,
+        b,
+        d: `M ${a.x.toFixed(1)} ${a.y.toFixed(1)} L ${b.x.toFixed(1)} ${b.y.toFixed(1)}`,
+        kind: 'timeline',
+        bend: 0,
+        railX,
+      };
+    }
     const c1 = {
       x: from.left + from.width / 2 - mapRect.left,
       y: from.top + from.height / 2 - mapRect.top,
