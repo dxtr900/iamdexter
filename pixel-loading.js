@@ -839,6 +839,119 @@
     });
   }
 
+  const BOOK_EMBED_URL = 'https://calendar.google.com/calendar/appointments/schedules/AcZssZ1driA3rSYEF7i8QtGCcYaMqsoyRV1CY8KcRx_fjUhcOAmuRfZJyrUTbPVRBIDkJVjPfER3iZYD?gv=true';
+
+  function siteTheme() {
+    return document.documentElement.getAttribute('data-theme')
+      || (window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  }
+
+  function initBookCallModal() {
+    if (document.getElementById('book-overlay')) return;
+
+    const overlay = document.createElement('div');
+    overlay.id = 'book-overlay';
+    overlay.className = 'book-overlay';
+    overlay.innerHTML = `
+      <div class="book-overlay-backdrop" data-book-close></div>
+      <div class="t-modal book-modal" role="dialog" aria-modal="true" aria-labelledby="book-modal-title">
+        <div class="book-modal-bar">
+          <p class="book-modal-title" id="book-modal-title">Book a call</p>
+          <button type="button" class="book-modal-close" data-book-close aria-label="Close scheduling">
+            <px-icon name="close" size="16"></px-icon>
+          </button>
+        </div>
+        <div class="book-modal-body">
+          <p class="book-modal-loading">Loading schedule…</p>
+          <iframe class="book-modal-frame" title="Google Calendar appointment schedule" allow="fullscreen"></iframe>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(overlay);
+
+    const modal = overlay.querySelector('.t-modal');
+    const iframe = overlay.querySelector('iframe');
+    const closeBtn = overlay.querySelector('.book-modal-close');
+    const closeMs = parseFloat(
+      getComputedStyle(document.documentElement).getPropertyValue('--modal-close-dur')
+    ) || 150;
+    let lastFocus = null;
+    let closeTimer = 0;
+
+    function isOpen() {
+      return overlay.classList.contains('is-open');
+    }
+
+    function applyFrameTheme(forceReload) {
+      const theme = siteTheme();
+      iframe.style.colorScheme = theme;
+      const src = `${BOOK_EMBED_URL}&color_scheme=${encodeURIComponent(theme)}`;
+      if (forceReload || iframe.dataset.theme !== theme) {
+        iframe.dataset.theme = theme;
+        overlay.classList.remove('is-loaded');
+        iframe.src = src;
+      }
+    }
+
+    function openModal() {
+      lastFocus = document.activeElement;
+      clearTimeout(closeTimer);
+      overlay.classList.remove('is-closing');
+      modal.classList.remove('is-closing');
+      applyFrameTheme(true);
+      document.body.style.overflow = 'hidden';
+      requestAnimationFrame(() => {
+        overlay.classList.add('is-open');
+        modal.classList.add('is-open');
+        closeBtn.focus();
+      });
+    }
+
+    function closeModal() {
+      if (!isOpen() && !overlay.classList.contains('is-closing')) return;
+      overlay.classList.remove('is-open');
+      overlay.classList.add('is-closing');
+      modal.classList.remove('is-open');
+      modal.classList.add('is-closing');
+      if (!document.querySelector('.mobile-nav.is-open')) {
+        document.body.style.overflow = '';
+        document.body.style.paddingRight = '';
+      }
+      closeTimer = window.setTimeout(() => {
+        overlay.classList.remove('is-closing');
+        modal.classList.remove('is-closing');
+        lastFocus?.focus?.();
+      }, closeMs);
+    }
+
+    document.addEventListener('click', (e) => {
+      const trigger = e.target.closest?.('.js-book-call');
+      if (trigger) {
+        e.preventDefault();
+        openModal();
+        return;
+      }
+      if (isOpen() && e.target.closest?.('[data-book-close]')) {
+        closeModal();
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && isOpen()) {
+        e.preventDefault();
+        closeModal();
+      }
+    });
+
+    iframe.addEventListener('load', () => {
+      if (iframe.src.includes('calendar.google.com')) overlay.classList.add('is-loaded');
+    });
+
+    new MutationObserver(() => {
+      if (isOpen()) applyFrameTheme(true);
+    }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  }
+
   function boot() {
     initSmoothScroll();
     initProjectPixels();
@@ -847,6 +960,7 @@
     initRecommendations();
     initPricingTabs();
     initPricingCompare();
+    initBookCallModal();
 
     const masonry = document.querySelector('#projects .masonry');
     if (masonry) {

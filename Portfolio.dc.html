@@ -19,7 +19,7 @@
   <meta name="twitter:description" content="I design products, build the websites, and shape the brands. Based in Malta.">
   <link rel="icon" href="uploads/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="transitions-root.css">
-  <link rel="stylesheet" href="transitions.css?v=compare">
+  <link rel="stylesheet" href="transitions.css?v=book">
   <style>
     @font-face {
       font-family: 'PX Display';
@@ -80,6 +80,9 @@
       font-display: swap;
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { overflow-x: hidden; color-scheme: light; }
+    html[data-theme="dark"] { color-scheme: dark; }
+    html[data-theme="light"] { color-scheme: light; }
     html.lenis, html.lenis body { height: auto; }
     .lenis.lenis-smooth { scroll-behavior: auto !important; }
     .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
@@ -127,6 +130,7 @@
       --cmp-check: #4ADE80;
     }
     @media (prefers-color-scheme: dark) {
+      html:not([data-theme]) { color-scheme: dark; }
       :root:not([data-theme]) {
         --bg: #09090B; --surface: #18181B; --surface-2: #27272A;
         --border: #27272A; --border-strong: #3F3F46;
@@ -140,9 +144,9 @@
         --cmp-check: #4ADE80;
       }
     }
-    .page-section { padding: var(--section-y) 24px; }
-    .hero-section { min-height:100vh; display:flex; align-items:center; padding: clamp(88px, 12vh, 120px) 24px clamp(40px, 6vh, 72px); }
-    .hero-copy { width:100%; max-width:1200px; margin:0 auto; --stagger-stagger: var(--duration-micro); }
+    .page-section { padding: var(--section-y) 24px; overflow-x: hidden; }
+    .hero-section { min-height:100vh; display:flex; align-items:center; padding: clamp(88px, 12vh, 120px) 24px clamp(40px, 6vh, 72px); --hero-x: 24px; max-width: 100%; overflow-x: hidden; }
+    .hero-copy { width:100%; max-width:1200px; margin:0 auto; min-width:0; --stagger-stagger: var(--duration-micro); }
     .hero-avail { display:inline-flex; align-items:center; gap:10px; height:36px; padding:0 14px 0 12px; margin:0 0 22px; border-radius:9999px; border:1px solid var(--border); background:var(--surface); box-shadow:var(--shadow-sm); font-family:var(--font-body); font-size:13px; font-weight:500; letter-spacing:0.01em; color:var(--text); white-space:nowrap; }
     .hero-avail-led { position:relative; width:8px; height:8px; flex-shrink:0; }
     .hero-avail-led::before { content:""; position:absolute; inset:0; border-radius:50%; background:#22C55E; animation:hero-avail-core 1.8s ease-in-out infinite; }
@@ -161,7 +165,7 @@
     }
     .hero-actions { display:flex; gap:12px; flex-wrap:wrap; }
     .hero-lede { font-family:var(--font-body); font-size:clamp(16px, 1.6vw, 20px); line-height:1.65; color:var(--text-secondary); margin-bottom:28px; max-width:36em; }
-    .hero-pills { margin:0 0 40px; }
+    .hero-pills { margin:0 0 40px; min-width:0; max-width:100%; }
     .hero-pills-track { display:flex; width:max-content; }
     .hero-pills-set { display:flex; gap:8px; }
     .hero-pills-set[aria-hidden="true"] { display:none; }
@@ -179,6 +183,7 @@
     @media (max-width:640px) {
       .hero-section { min-height:auto; padding-top:148px; padding-bottom:40px; }
       .hero-headline { font-size:clamp(52px, 15vw, 68px); margin-bottom:24px; }
+      .hero-lede { margin-bottom:24px; }
       .hero-together { column-gap:0.45em; flex-wrap:wrap; white-space:normal; }
       #hero-stagger.is-together .hero-together { animation-name: hero-together-close-mobile; }
       @keyframes hero-together-close-mobile {
@@ -188,8 +193,10 @@
         100% { column-gap: 0.16em; }
       }
       .hero-pills {
-        overflow:hidden;
-        margin:0 calc(var(--hero-x) * -1) 32px;
+        width: calc(100% + (var(--hero-x) * 2));
+        max-width: none;
+        overflow: hidden;
+        margin: 0 calc(var(--hero-x) * -1) 24px;
         mask-image:linear-gradient(to right, transparent, #000 16px, #000 calc(100% - 16px), transparent);
         -webkit-mask-image:linear-gradient(to right, transparent, #000 16px, #000 calc(100% - 16px), transparent);
       }
@@ -197,6 +204,44 @@
       .hero-pills-set { padding-right:8px; }
       .hero-pills-set[aria-hidden="true"] { display:flex; }
       .hero-pills:hover .hero-pills-track { animation-play-state:paused; }
+      .hero-actions {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        align-items: stretch;
+        gap: 12px;
+        width: 100%;
+      }
+      .hero-actions .btn {
+        width: 100%;
+        height: 56px;
+        flex-shrink: 0;
+      }
+      .hero-actions .btn-primary:has(.btn-mark) {
+        justify-content: center;
+        padding: 4px;
+      }
+      .hero-actions .btn-primary:has(.btn-mark)::before {
+        left: auto;
+        width: 46px;
+      }
+      .hero-actions .btn-primary:has(.btn-mark):hover::before,
+      .hero-actions .btn-primary:has(.btn-mark):focus-visible::before {
+        width: auto;
+      }
+      .hero-actions .btn-primary:has(.btn-mark) .btn-text {
+        position: absolute;
+        left: 0;
+        right: 0;
+        text-align: center;
+      }
+      .hero-actions .btn-primary:has(.btn-mark) .btn-mark {
+        width: 46px;
+        height: 46px;
+        margin-left: auto;
+        flex-shrink: 0;
+        aspect-ratio: 1;
+      }
     }
     .section-head-gap { margin-bottom: var(--section-head-gap); }
     .reveal { opacity:0; transform:translateY(var(--distance-medium)); transition:opacity var(--duration-very-slow) var(--ease-smooth-out), transform var(--duration-very-slow) var(--ease-smooth-out); }
@@ -220,7 +265,7 @@
       .hero-pills { overflow:visible; mask-image:none; -webkit-mask-image:none; margin-left:0; margin-right:0; }
       .hero-pills-set { flex-wrap:wrap; padding-right:0; }
     }
-    html { scrollbar-gutter: stable; }
+    html { scrollbar-gutter: stable; overflow-x: hidden; }
     .nav-link { height:40px; padding:0 16px; display:inline-flex; align-items:center; font-family:var(--font-display); font-size:15px; letter-spacing:0.05em; text-transform:uppercase; color:var(--text); border-radius:10px; transition:color var(--duration-quick), background var(--duration-quick); white-space:nowrap; }
     .nav-link:hover { color:var(--text); background:var(--surface-2); }
     .nav-desktop { display:flex; align-items:center; gap:2px; }
@@ -344,9 +389,19 @@
     .pricing-compare .t-acc-chevron { width: 16px; height: 16px; color: var(--text); }
     .pricing-compare .t-acc-chevron svg { width: 16px; height: 16px; display: block; }
     .pricing-compare .t-acc-panel-inner { padding-top: 20px; }
+    .pricing-compare,
+    .pricing-compare .t-acc-panel,
+    .pricing-compare .t-acc-panel-inner {
+      max-width: 100%;
+      min-width: 0;
+    }
     .cmp-wrap {
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
+      overscroll-behavior-x: contain;
       border: 1px solid var(--border);
       border-radius: 20px;
       background: var(--surface);
@@ -598,11 +653,151 @@
       .rec-progress-btn.is-active .rec-progress-fill { width: 100%; animation: none; }
       .rec-arrow:hover { transform: none; }
     }
+    .book-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 220;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: max(16px, env(safe-area-inset-top)) 16px max(16px, env(safe-area-inset-bottom));
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition:
+        opacity var(--modal-open-dur) var(--modal-ease),
+        visibility var(--modal-open-dur) var(--modal-ease);
+    }
+    .book-overlay.is-open {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+    .book-overlay.is-closing {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition:
+        opacity var(--modal-close-dur) var(--modal-ease),
+        visibility var(--modal-close-dur) var(--modal-ease);
+    }
+    .book-overlay-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(9, 9, 11, 0.48);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+    html[data-theme="dark"] .book-overlay-backdrop,
+    html:not([data-theme]) .book-overlay-backdrop {
+      background: rgba(0, 0, 0, 0.62);
+    }
+    @media (prefers-color-scheme: light) {
+      html:not([data-theme]) .book-overlay-backdrop { background: rgba(9, 9, 11, 0.48); }
+    }
+    .book-modal {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      width: min(920px, 100%);
+      height: min(780px, calc(100dvh - 32px));
+      max-height: calc(100dvh - 32px);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      box-shadow: var(--shadow-lg);
+      overflow: hidden;
+      color-scheme: light;
+    }
+    html[data-theme="dark"] .book-modal { color-scheme: dark; }
+    .book-modal-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-shrink: 0;
+      padding: 10px 10px 10px 20px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+    }
+    .book-modal-title {
+      font-family: var(--font-display);
+      font-size: 15px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text);
+    }
+    .book-modal-close {
+      width: 40px;
+      height: 40px;
+      border: 0;
+      border-radius: 12px;
+      background: var(--surface-2);
+      color: var(--text);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .book-modal-close:hover { background: var(--border); }
+    .book-modal-body {
+      position: relative;
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    .book-modal-loading {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0;
+      font-family: var(--font-body);
+      font-size: 14px;
+      color: var(--text-secondary);
+      pointer-events: none;
+    }
+    .book-modal-frame {
+      position: relative;
+      z-index: 1;
+      flex: 1;
+      min-height: 0;
+      width: 100%;
+      border: 0;
+      background: transparent;
+      color-scheme: light;
+    }
+    html[data-theme="dark"] .book-modal-frame {
+      color-scheme: dark;
+    }
+    .book-overlay.is-loaded .book-modal-loading { display: none; }
+    .book-overlay.is-loaded .book-modal-frame { background: #fff; }
+    html[data-theme="dark"] .book-overlay.is-loaded .book-modal-frame { background: #131314; }
+    @media (max-width: 640px) {
+      .book-overlay {
+        padding: 0;
+        align-items: stretch;
+        justify-content: stretch;
+      }
+      .book-modal {
+        width: 100%;
+        height: 100dvh;
+        max-height: 100dvh;
+        border-radius: 0;
+        border: 0;
+      }
+      .book-modal-bar {
+        padding-top: max(10px, env(safe-area-inset-top));
+      }
+    }
   </style>
   <script src="pixel-icons.js?v=quote"></script>
   <script src="projects-store.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
-  <script src="pixel-loading.js?v=compare"></script>
+  <script src="pixel-loading.js?v=book"></script>
 </helmet>
 
 <!-- ── NAV ─────────────────────────────────────────── -->
@@ -672,7 +867,7 @@
       </div>
     </div>
     <div class="hero-actions">
-      <a href="#contact" class="btn btn-primary t-stagger-line t-stagger-line--6"><span class="btn-text">Book a call</span><span class="btn-mark" aria-hidden="true"><px-icon name="chat" size="16"></px-icon></span></a>
+      <a href="https://calendar.app.google/FpWwUVSa5uybA2B8A" class="btn btn-primary t-stagger-line t-stagger-line--6 js-book-call" target="_blank" rel="noopener noreferrer" aria-haspopup="dialog"><span class="btn-text">Book a call</span><span class="btn-mark" aria-hidden="true"><px-icon name="chat" size="16"></px-icon></span></a>
       <a href="#projects" class="btn btn-secondary t-stagger-line t-stagger-line--7">View work</a>
     </div>
   </div>
@@ -910,7 +1105,7 @@
               <li style="display:flex;align-items:flex-start;gap:10px;font-family:var(--font-body);font-size:14px;line-height:1.5;color:var(--text-secondary);"><px-icon name="check" size="15" style="margin-top:2px;color:var(--text);"></px-icon>Tailored brand programme</li>
               <li style="display:flex;align-items:flex-start;gap:10px;font-family:var(--font-body);font-size:14px;line-height:1.5;color:var(--text-secondary);"><px-icon name="check" size="15" style="margin-top:2px;color:var(--text);"></px-icon>Quote after the call</li>
             </ul>
-            <a href="#contact" class="btn btn-outline btn-block">Book a call</a>
+            <a href="https://calendar.app.google/FpWwUVSa5uybA2B8A" class="btn btn-outline btn-block js-book-call" target="_blank" rel="noopener noreferrer" aria-haspopup="dialog">Book a call</a>
             <div class="t-tilt-glare"></div>
           </div>
         </div>
@@ -1103,7 +1298,7 @@
               <li style="display:flex;align-items:flex-start;gap:10px;font-family:var(--font-body);font-size:14px;line-height:1.5;color:var(--text-secondary);"><px-icon name="check" size="15" style="margin-top:2px;color:var(--text);"></px-icon>Tailored UX programme</li>
               <li style="display:flex;align-items:flex-start;gap:10px;font-family:var(--font-body);font-size:14px;line-height:1.5;color:var(--text-secondary);"><px-icon name="check" size="15" style="margin-top:2px;color:var(--text);"></px-icon>Quote after the call</li>
             </ul>
-            <a href="#contact" class="btn btn-outline btn-block">Book a call</a>
+            <a href="https://calendar.app.google/FpWwUVSa5uybA2B8A" class="btn btn-outline btn-block js-book-call" target="_blank" rel="noopener noreferrer" aria-haspopup="dialog">Book a call</a>
             <div class="t-tilt-glare"></div>
           </div>
         </div>
@@ -1156,7 +1351,7 @@
               <li style="display:flex;align-items:flex-start;gap:10px;font-family:var(--font-body);font-size:14px;line-height:1.5;color:var(--text-secondary);"><px-icon name="check" size="15" style="margin-top:2px;color:var(--text);"></px-icon>Tailored build programme</li>
               <li style="display:flex;align-items:flex-start;gap:10px;font-family:var(--font-body);font-size:14px;line-height:1.5;color:var(--text-secondary);"><px-icon name="check" size="15" style="margin-top:2px;color:var(--text);"></px-icon>Quote after the call</li>
             </ul>
-            <a href="#contact" class="btn btn-outline btn-block">Book a call</a>
+            <a href="https://calendar.app.google/FpWwUVSa5uybA2B8A" class="btn btn-outline btn-block js-book-call" target="_blank" rel="noopener noreferrer" aria-haspopup="dialog">Book a call</a>
             <div class="t-tilt-glare"></div>
           </div>
         </div>
@@ -1337,7 +1532,7 @@
             <div class="price-block"><span class="price-from">from</span><span class="price-amount">Let's talk</span></div>
             <div style="height:1px;background:var(--border);margin-bottom:24px;"></div>
             <p style="font-family:var(--font-body);font-size:14px;line-height:1.65;color:var(--text-secondary);margin-bottom:32px;flex:1;">Let's discuss the items — a quote will be provided after the discovery call.</p>
-            <a href="#contact" class="btn btn-primary btn-block">Book a call</a>
+            <a href="https://calendar.app.google/FpWwUVSa5uybA2B8A" class="btn btn-primary btn-block js-book-call" target="_blank" rel="noopener noreferrer" aria-haspopup="dialog">Book a call</a>
             <div class="t-tilt-glare"></div>
           </div>
         </div>
@@ -1352,7 +1547,7 @@
               <li style="display:flex;align-items:flex-start;gap:10px;font-family:var(--font-body);font-size:14px;line-height:1.5;color:var(--text-secondary);"><px-icon name="check" size="15" style="margin-top:2px;color:var(--text);"></px-icon>Design critique</li>
               <li style="display:flex;align-items:flex-start;gap:10px;font-family:var(--font-body);font-size:14px;line-height:1.5;color:var(--text-secondary);"><px-icon name="check" size="15" style="margin-top:2px;color:var(--text);"></px-icon>Team mentoring</li>
             </ul>
-            <a href="#contact" class="btn btn-outline btn-block">Book a call</a>
+            <a href="https://calendar.app.google/FpWwUVSa5uybA2B8A" class="btn btn-outline btn-block js-book-call" target="_blank" rel="noopener noreferrer" aria-haspopup="dialog">Book a call</a>
             <div class="t-tilt-glare"></div>
           </div>
         </div>
