@@ -114,9 +114,23 @@
     }
 
     reveal() {
-      if (!this.wrap) return;
+      if (!this.wrap) return false;
+      this.setCanvasSize();
+      if (!this.wrap.offsetWidth || !this.wrap.offsetHeight) {
+        this.animated = true;
+        this.tile.classList.add('pixel-skip', 'pixel-done');
+        return false;
+      }
       this.wrap.style.opacity = '1';
       this.tile.classList.add('pixel-active');
+      return true;
+    }
+
+    startReveal() {
+      this.observer?.disconnect();
+      this.observer = null;
+      if (!this.reveal()) return;
+      this.animatePixels();
     }
 
     animatePixels() {
@@ -156,14 +170,16 @@
         (entries) => {
           entries.forEach((entry) => {
             if (!entry.isIntersecting) return;
-            this.reveal();
-            this.animatePixels();
-            this.observer?.disconnect();
+            this.startReveal();
           });
         },
-        { root: null, rootMargin: '0px 0px -10% 0px', threshold: 0.08 }
+        { root: null, rootMargin: '20% 0px', threshold: 0.01 }
       );
       this.observer.observe(this.tile);
+      const rect = this.tile.getBoundingClientRect();
+      if (rect.bottom > 0 && rect.top < window.innerHeight) {
+        this.startReveal();
+      }
     }
 
     destroy() {
@@ -525,11 +541,312 @@
     syncSubmit();
   }
 
+  function initRecommendations() {
+    const root = document.querySelector('.rec-carousel');
+    if (!root) return;
+
+    const track = () => root.querySelector('.rec-track');
+    const originals = () => [...root.querySelectorAll('.rec-slide:not(.rec-clone)')];
+    const dots = () => [...root.querySelectorAll('.rec-progress-btn')];
+    const ready = () => {
+      const list = originals();
+      return list.length > 0 && list.length === dots().length && list.every((slide) => {
+        const name = slide.querySelector('.rec-name')?.textContent?.trim() || '';
+        return name && !name.includes('{{');
+      });
+    };
+
+    const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    const DURATION = 3000;
+    const PEEK = 2;
+    let index = 0;
+    let timer = 0;
+    let lastKey = '';
+    let wrapTo = null;
+
+    const offset = () => Number(track()?.dataset.recOffset || 0);
+
+    const restart = () => {
+      clearTimeout(timer);
+      if (reduce || document.hidden || root.classList.contains('is-paused') || !ready()) return;
+      timer = window.setTimeout(() => go(current() + 1), DURATION);
+    };
+
+    const current = () => {
+      const i = originals().findIndex((slide) => slide.classList.contains('is-active'));
+      return i < 0 ? index : i;
+    };
+
+    const setX = (pos, instant) => {
+      const el = track();
+      if (!el) return;
+      if (instant || reduce) el.style.transition = 'none';
+      el.style.transform = `translate3d(calc(-1 * ${pos} * (var(--rec-card-w) + var(--rec-gap))), 0, 0)`;
+      if (instant || reduce) {
+        void el.offsetWidth;
+        if (!reduce) el.style.transition = '';
+      }
+    };
+
+    const mark = (logical) => {
+      root.querySelectorAll('.rec-slide').forEach((slide) => {
+        slide.classList.toggle('is-active', Number(slide.dataset.recIndex) === logical);
+      });
+      dots().forEach((dot, i) => {
+        dot.classList.remove('is-active', 'is-done');
+        if (i < logical) dot.classList.add('is-done');
+        if (i === logical) {
+          void dot.offsetWidth;
+          dot.classList.add('is-active');
+        }
+        dot.setAttribute('aria-selected', i === logical ? 'true' : 'false');
+        dot.tabIndex = i === logical ? 0 : -1;
+      });
+    };
+
+    const go = (next) => {
+      const list = originals();
+      const controls = dots();
+      const n = list.length;
+      if (!n || n !== controls.length) return;
+      const prev = index;
+      let logical;
+      let pos;
+      let snapPos = null;
+
+      if (next === n) {
+        logical = 0;
+        pos = offset() + n;
+        snapPos = offset();
+      } else if (next === -1) {
+        logical = n - 1;
+        pos = offset() - 1;
+        snapPos = offset() + n - 1;
+      } else {
+        logical = ((next % n) + n) % n;
+        pos = offset() + logical;
+      }
+
+      if (reduce && snapPos != null) {
+        pos = snapPos;
+        snapPos = null;
+      }
+
+      const step = next === n ? n : next === -1 ? -1 : logical;
+      const instant = Math.abs(step - prev) !== 1;
+      index = logical;
+      wrapTo = !instant && snapPos != null ? snapPos : null;
+      setX(pos, instant);
+      mark(logical);
+      restart();
+    };
+
+    const ensureLoop = () => {
+      const el = track();
+      if (!el) return false;
+      const items = originals();
+      if (items.length < 2) return false;
+      if (el.querySelector('.rec-clone')) return false;
+      items.forEach((slide, i) => {
+        slide.dataset.recIndex = String(i);
+      });
+      const cloneOf = (slide) => {
+        const copy = slide.cloneNode(true);
+        copy.classList.add('rec-clone');
+        copy.classList.remove('is-active');
+        copy.setAttribute('aria-hidden', 'true');
+        return copy;
+      };
+      const head = items.slice(0, PEEK).map(cloneOf);
+      const tail = items.slice(-PEEK).map(cloneOf);
+      el.dataset.recOffset = String(PEEK);
+      tail.reverse().forEach((copy) => el.insertBefore(copy, el.firstChild));
+      head.forEach((copy) => el.appendChild(copy));
+      return true;
+    };
+
+    const sync = () => {
+      if (!ready()) return;
+      const key = originals().map((slide) => slide.querySelector('.rec-name')?.textContent?.trim()).join('|');
+      const fresh = key !== lastKey;
+      lastKey = key;
+      const cloned = ensureLoop();
+      if (fresh) go(0);
+      if (fresh || cloned) document.dispatchEvent(new Event('recs:ready'));
+    };
+
+    if (!root._recBound) {
+      root._recBound = true;
+      const viewport = root.querySelector('.rec-viewport');
+      root.addEventListener('click', (e) => {
+        if (!ready()) return;
+        if (e.target.closest('.rec-prev')) {
+          go(current() - 1);
+          return;
+        }
+        if (e.target.closest('.rec-next')) {
+          go(current() + 1);
+          return;
+        }
+        const btn = e.target.closest('.rec-progress-btn');
+        if (btn) {
+          const i = dots().indexOf(btn);
+          if (i >= 0) go(i);
+          return;
+        }
+        const slide = e.target.closest('.rec-slide');
+        if (!slide) return;
+        const i = Number(slide.dataset.recIndex);
+        if (Number.isNaN(i)) return;
+        const cur = current();
+        const n = originals().length;
+        const el = track();
+        if (slide.classList.contains('rec-clone') && el) {
+          const pos = [...el.children].indexOf(slide);
+          const curPos = offset() + cur;
+          if (pos > curPos && i < cur) go(n);
+          else if (pos < curPos && i > cur) go(-1);
+          else if (i !== cur) go(i);
+          return;
+        }
+        if (i !== cur) go(i);
+      });
+      root.addEventListener('keydown', (e) => {
+        if (!ready()) return;
+        if (e.key === 'ArrowLeft') {
+          e.preventDefault();
+          go(current() - 1);
+        } else if (e.key === 'ArrowRight') {
+          e.preventDefault();
+          go(current() + 1);
+        }
+      });
+      track()?.addEventListener('transitionend', (e) => {
+        if (e.target !== track() || e.propertyName !== 'transform' || wrapTo == null) return;
+        const snap = wrapTo;
+        wrapTo = null;
+        setX(snap, true);
+      });
+      let swipeX = 0;
+      let swipeY = 0;
+      let swipeOn = false;
+      let swipeAxis = null;
+      const swipeTarget = viewport || root;
+      swipeTarget.addEventListener('pointerdown', (e) => {
+        if (e.pointerType === 'mouse' && e.button !== 0) return;
+        swipeX = e.clientX;
+        swipeY = e.clientY;
+        swipeOn = true;
+        swipeAxis = null;
+      });
+      swipeTarget.addEventListener('pointermove', (e) => {
+        if (!swipeOn) return;
+        const dx = e.clientX - swipeX;
+        const dy = e.clientY - swipeY;
+        if (swipeAxis == null && (Math.abs(dx) > 10 || Math.abs(dy) > 10)) {
+          swipeAxis = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
+        }
+      });
+      const endSwipe = (e) => {
+        if (!swipeOn) return;
+        swipeOn = false;
+        const dx = e.clientX - swipeX;
+        const axis = swipeAxis;
+        swipeAxis = null;
+        if (axis !== 'x' || Math.abs(dx) < 40 || !ready()) return;
+        if (dx < 0) go(current() + 1);
+        else go(current() - 1);
+      };
+      swipeTarget.addEventListener('pointerup', endSwipe);
+      swipeTarget.addEventListener('pointercancel', () => {
+        swipeOn = false;
+        swipeAxis = null;
+      });
+      const pause = () => {
+        root.classList.add('is-paused');
+        clearTimeout(timer);
+      };
+      const resume = () => {
+        root.classList.remove('is-paused');
+        restart();
+      };
+      (viewport || root).addEventListener('mouseenter', pause);
+      (viewport || root).addEventListener('mouseleave', resume);
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) clearTimeout(timer);
+        else restart();
+      });
+      root._recObs = new MutationObserver(sync);
+      root._recObs.observe(root, { childList: true, subtree: true });
+    }
+
+    sync();
+  }
+
+  function initPricingTabs() {
+    const bar = document.querySelector('.pricing-tabs');
+    if (!bar || bar._tabsBound) return;
+    bar._tabsBound = true;
+    const pill = bar.querySelector('.t-tabs-pill');
+    const tabs = [...bar.querySelectorAll('.t-tab')];
+    const panels = tabs.map((tab) => document.getElementById(tab.getAttribute('aria-controls'))).filter(Boolean);
+
+    const moveTo = (tab, animate) => {
+      if (!pill || !tab) return;
+      if (!animate) {
+        const prev = pill.style.transition;
+        pill.style.transition = 'none';
+        pill.style.transform = `translateX(${tab.offsetLeft}px)`;
+        pill.style.width = `${tab.offsetWidth}px`;
+        void pill.offsetWidth;
+        pill.style.transition = prev;
+      } else {
+        pill.style.transform = `translateX(${tab.offsetLeft}px)`;
+        pill.style.width = `${tab.offsetWidth}px`;
+      }
+    };
+
+    const active = () => tabs.find((t) => t.getAttribute('aria-selected') === 'true') || tabs[0];
+
+    const show = (tab) => {
+      tabs.forEach((t) => t.setAttribute('aria-selected', t === tab ? 'true' : 'false'));
+      panels.forEach((panel) => {
+        const on = panel.id === tab.getAttribute('aria-controls');
+        panel.classList.toggle('is-active', on);
+      });
+      moveTo(tab, true);
+      document.dispatchEvent(new Event('recs:ready'));
+    };
+
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => show(tab));
+    });
+    requestAnimationFrame(() => moveTo(active(), false));
+    window.addEventListener('resize', () => moveTo(active(), false));
+  }
+
+  function initPricingCompare() {
+    document.querySelectorAll('.pricing-compare.t-acc').forEach((acc) => {
+      if (acc._bound) return;
+      acc._bound = true;
+      const head = acc.querySelector('.t-acc-head');
+      if (!head) return;
+      head.addEventListener('click', () => {
+        const open = acc.getAttribute('data-open') === 'true';
+        acc.setAttribute('data-open', String(!open));
+        head.setAttribute('aria-expanded', String(!open));
+      });
+    });
+  }
+
   function boot() {
     initSmoothScroll();
     initProjectPixels();
     initTooltips();
     initContactForm();
+    initRecommendations();
+    initPricingTabs();
+    initPricingCompare();
 
     const masonry = document.querySelector('#projects .masonry');
     if (masonry) {

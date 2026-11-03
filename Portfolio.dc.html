@@ -19,7 +19,7 @@
   <meta name="twitter:description" content="I design products, build the websites, and shape the brands. Based in Malta.">
   <link rel="icon" href="uploads/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="transitions-root.css">
-  <link rel="stylesheet" href="transitions.css?v=shake">
+  <link rel="stylesheet" href="transitions.css?v=compare">
   <style>
     @font-face {
       font-family: 'PX Display';
@@ -112,6 +112,7 @@
       --cta-pill-bg:#18181B; --cta-pill-fg:#FAFAFA; --cta-mark-bg:#FAFAFA; --cta-mark-fg:#18181B;
       --section-y: clamp(48px, 6vw, 88px);
       --section-head-gap: 36px;
+      --cmp-check: #166534;
     }
     [data-theme="dark"] {
       --bg: #09090B; --surface: #18181B; --surface-2: #27272A;
@@ -123,6 +124,7 @@
       --process-line: #71717A; --process-glow: #FAFAFA;
       --nav-bg: rgba(18,18,21,.55); --contact-bg:#FAFAFA; --contact-fg:#18181B;
       --cta-pill-bg:#FAFAFA; --cta-pill-fg:#18181B; --cta-mark-bg:#18181B; --cta-mark-fg:#FAFAFA;
+      --cmp-check: #4ADE80;
     }
     @media (prefers-color-scheme: dark) {
       :root:not([data-theme]) {
@@ -135,11 +137,18 @@
         --process-line: #71717A; --process-glow: #FAFAFA;
         --nav-bg: rgba(18,18,21,.55); --contact-bg:#FAFAFA; --contact-fg:#18181B;
         --cta-pill-bg:#FAFAFA; --cta-pill-fg:#18181B; --cta-mark-bg:#18181B; --cta-mark-fg:#FAFAFA;
+        --cmp-check: #4ADE80;
       }
     }
     .page-section { padding: var(--section-y) 24px; }
     .hero-section { min-height:100vh; display:flex; align-items:center; padding: clamp(88px, 12vh, 120px) 24px clamp(40px, 6vh, 72px); }
     .hero-copy { width:100%; max-width:1200px; margin:0 auto; --stagger-stagger: var(--duration-micro); }
+    .hero-avail { display:inline-flex; align-items:center; gap:10px; height:36px; padding:0 14px 0 12px; margin:0 0 22px; border-radius:9999px; border:1px solid var(--border); background:var(--surface); box-shadow:var(--shadow-sm); font-family:var(--font-body); font-size:13px; font-weight:500; letter-spacing:0.01em; color:var(--text); white-space:nowrap; }
+    .hero-avail-led { position:relative; width:8px; height:8px; flex-shrink:0; }
+    .hero-avail-led::before { content:""; position:absolute; inset:0; border-radius:50%; background:#22C55E; animation:hero-avail-core 1.8s ease-in-out infinite; }
+    .hero-avail-led::after { content:""; position:absolute; inset:-4px; border-radius:50%; background:rgba(34,197,94,.35); animation:hero-avail-ring 1.8s ease-in-out infinite; }
+    @keyframes hero-avail-core { 0%, 100% { opacity:1; transform:scale(1); } 50% { opacity:.7; transform:scale(.92); } }
+    @keyframes hero-avail-ring { 0%, 100% { opacity:.55; transform:scale(.7); } 50% { opacity:0; transform:scale(1.35); } }
     .hero-headline { font-family:var(--font-display); font-size:clamp(40px, 8.6vw, 132px); line-height:0.95; letter-spacing:-0.03em; color:var(--text); margin-bottom:28px; }
     .hero-line { display:block; white-space:nowrap; }
     .hero-together { display:flex; align-items:baseline; white-space:nowrap; column-gap:0.95em; }
@@ -204,6 +213,7 @@
       .btn, .btn:hover { transform:none; }
       .btn-primary:has(.btn-mark)::before { transition:none !important; }
       .hero-pill::after { display:none; }
+      .hero-avail-led::before, .hero-avail-led::after { animation:none; }
       .hero-together, #hero-stagger.is-together .hero-together { column-gap: 0.18em; animation: none; }
       .hero-pills-track { animation: none; }
       .hero-pills-set[aria-hidden="true"] { display: none; }
@@ -296,20 +306,133 @@
     #hero-stagger .t-stagger-line--2 { transition-delay: var(--stagger-stagger); }
     #hero-stagger .t-stagger-line--3 { transition-delay: calc(var(--stagger-stagger) * 2); }
     #hero-stagger .t-stagger-line--4 { transition-delay: calc(var(--stagger-stagger) * 3); }
-    #hero-stagger .t-stagger-line--5,
-    #hero-stagger .btn.t-stagger-line--5 { transition-delay: calc(var(--stagger-stagger) * 4); }
+    #hero-stagger .t-stagger-line--5 { transition-delay: calc(var(--stagger-stagger) * 4); }
     #hero-stagger .t-stagger-line--6,
     #hero-stagger .btn.t-stagger-line--6 { transition-delay: calc(var(--stagger-stagger) * 5); }
+    #hero-stagger .t-stagger-line--7,
+    #hero-stagger .btn.t-stagger-line--7 { transition-delay: calc(var(--stagger-stagger) * 6); }
     #hero-stagger.is-settled .t-stagger-line { transition-delay: 0s; filter: none; will-change: auto; }
     #hero-stagger.is-settled .btn.t-stagger-line { transition: transform var(--duration-quick) var(--ease-smooth-out), box-shadow var(--duration-quick) var(--ease-smooth-out), background var(--duration-quick) var(--ease-smooth-out), border-color var(--duration-quick) var(--ease-smooth-out), color var(--duration-quick) var(--ease-smooth-out), opacity var(--duration-quick); }
+    .pricing-tabs-scroller { overflow-x: auto; margin: 0 0 28px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+    .pricing-tabs-scroller::-webkit-scrollbar { display: none; }
+    .pricing-tabs.t-tabs { --tabs-text-muted: var(--text-secondary); --tabs-text-active: var(--text); --tabs-bar-bg: var(--surface-2); --tabs-pill-bg: var(--surface); gap: 4px; padding: 4px; border-radius: 16px; border: 1px solid var(--border); }
+    .pricing-tabs .t-tab { height: 38px; padding: 0 16px; font-family: var(--font-display); font-size: 13px; letter-spacing: 0.05em; text-transform: uppercase; border-radius: 12px; white-space: nowrap; }
+    .pricing-tabs .t-tabs-pill { top: 4px; height: 38px; border-radius: 12px; box-shadow: var(--shadow-sm); }
+    .pricing-panel { display: none; }
+    .pricing-panel.is-active { display: block; }
+    .pricing-compare { margin-top: 28px; }
+    .pricing-compare-trigger { display: flex; justify-content: center; }
+    .pricing-compare .t-acc-head {
+      appearance: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      height: 46px;
+      padding: 0 18px;
+      border-radius: 14px;
+      border: 1px solid var(--border-strong);
+      background: transparent;
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background var(--duration-quick), border-color var(--duration-quick), color var(--duration-quick);
+    }
+    .pricing-compare .t-acc-head:hover { background: var(--surface-2); border-color: var(--text); }
+    .pricing-compare .t-acc-head:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+    .pricing-compare .t-acc-chevron { width: 16px; height: 16px; color: var(--text); }
+    .pricing-compare .t-acc-chevron svg { width: 16px; height: 16px; display: block; }
+    .pricing-compare .t-acc-panel-inner { padding-top: 20px; }
+    .cmp-wrap {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      background: var(--surface);
+      box-shadow: var(--shadow-sm);
+    }
+    .cmp-table { width: 100%; border-collapse: collapse; min-width: 520px; }
+    .cmp-table th, .cmp-table td {
+      padding: 14px 18px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+    }
+    .cmp-table th {
+      font-family: var(--font-display);
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      background: var(--surface-2);
+    }
+    .cmp-table th:not(:first-child),
+    .cmp-table td:not(:first-child) { text-align: center; width: 150px; vertical-align: middle; }
+    .cmp-table td:first-child {
+      font-family: var(--font-body);
+      font-size: 14px;
+      line-height: 1.45;
+      color: var(--text);
+    }
+    .cmp-table tbody tr:last-child th,
+    .cmp-table tbody tr:last-child td { border-bottom: none; }
+    .cmp-table tbody tr:hover td { background: color-mix(in srgb, var(--surface-2) 65%, transparent); }
+    .cmp-group th {
+      font-family: var(--font-display);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      background: var(--bg);
+      padding: 10px 18px;
+    }
+    .cmp-box {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 18px;
+      height: 18px;
+      background: none;
+      border: 0;
+      color: transparent;
+      vertical-align: middle;
+    }
+    .cmp-box.is-on { color: var(--cmp-check); }
+    .cmp-box.is-off { visibility: hidden; }
+    .cmp-box.is-addon { color: var(--text-secondary); }
+    .cmp-note {
+      display: inline-block;
+      max-width: 140px;
+      font-family: var(--font-body);
+      font-size: 12px;
+      line-height: 1.35;
+      color: var(--text-secondary);
+      text-align: center;
+    }
+    @media (max-width:640px) {
+      .cmp-table th, .cmp-table td { padding: 12px 14px; }
+      .cmp-table th:not(:first-child),
+      .cmp-table td:not(:first-child) { width: 72px; }
+    }
     .pricing-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; align-items:stretch; }
+    .pricing-grid-custom { grid-template-columns:repeat(2,1fr); }
     @media (max-width:1024px) { .pricing-grid { grid-template-columns:repeat(2,1fr); } }
-    @media (max-width:640px) { .pricing-grid { grid-template-columns:1fr; } }
+    @media (max-width:640px) { .pricing-grid, .pricing-grid-custom { grid-template-columns:1fr; } }
+    .price-block { margin: 0 0 24px; }
+    .price-from { display: block; font-family: var(--font-body); font-size: 13px; color: var(--text-tertiary); margin: 0 0 4px; }
+    .price-amount { display: block; font-family: var(--font-display); font-size: clamp(30px, 3vw, 40px); color: var(--text); line-height: 1.1; }
+    .price-unit { display: block; font-family: var(--font-body); font-size: 13px; color: var(--text-tertiary); margin-top: 4px; }
     .theme-btn { width:46px; height:46px; border-radius:14px; background:var(--surface-2); border:1px solid var(--border); cursor:pointer; display:flex; align-items:center; justify-content:center; color:var(--text-secondary); transition:background var(--duration-quick), color var(--duration-quick); flex-shrink:0; }
     .theme-btn:hover { background:var(--border); color:var(--text); }
     .pricing-tilt, .services-tilt { height:100%; }
     .pricing-tilt .t-tilt-card { height:100%; border-radius:20px; display:flex; flex-direction:column; background:var(--surface); border:1px solid var(--border); box-shadow:var(--shadow-sm); padding:clamp(28px,3vw,36px); }
     .pricing-tilt.is-featured .t-tilt-card { border:1.5px solid var(--ink); box-shadow:var(--shadow-lg); }
+    .price-card-head { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; margin:0 0 12px; }
+    .price-card-title { font-family:var(--font-display); font-size:16px; letter-spacing:0.06em; text-transform:uppercase; color:var(--text); margin:0 0 12px; }
+    .price-card-head .price-card-title { margin:0; }
+    .price-card-badge { font-family:var(--font-display); font-size:10px; letter-spacing:0.06em; text-transform:uppercase; color:var(--text-inverse); background:var(--ink); padding:4px 9px; border-radius:9999px; flex-shrink:0; }
+    .price-card-desc { font-family:var(--font-body); font-size:14px; line-height:150%; color:var(--text-secondary); margin:0 0 24px; }
     .services-tilt .t-tilt-card { height:100%; border-radius:16px; background:var(--surface); border:1px solid var(--border); box-shadow:var(--shadow-sm); padding:clamp(24px,3vw,32px); }
     .masonry { column-count:3; column-gap:16px; }
     .masonry-item { break-inside:avoid; margin-bottom:16px; min-height:160px; }
@@ -362,9 +485,10 @@
     .about-grid { display:grid; grid-template-columns:minmax(280px, 0.92fr) minmax(0, 1.08fr); gap:48px 64px; align-items:start; }
     .about-copy { padding-top:28px; }
     .about-photo { position:relative; width:100%; aspect-ratio:1; border-radius:20px; overflow:hidden; background:#18181B; box-shadow:var(--shadow-sm); }
-    .about-photo .about-portrait { width:100%; height:100%; display:block; object-fit:cover; opacity:0; transition:opacity var(--duration-quick); }
+    .about-photo .about-portrait { width:100%; height:100%; display:block; object-fit:cover; opacity:1; transition:opacity var(--duration-quick); }
     .about-photo .pixel-canvas-wrap { position:absolute; inset:0; z-index:1; opacity:0; pointer-events:none; overflow:hidden; }
     .about-photo .pixel-canvas-wrap canvas { display:block; width:100%; height:100%; }
+    .about-photo.pixel-active:not(.pixel-done) .about-portrait { opacity:0; }
     .about-photo.pixel-done .pixel-canvas-wrap { display:none; }
     .about-photo.pixel-done .about-portrait,
     .about-photo.pixel-skip .about-portrait { opacity:1; }
@@ -430,11 +554,55 @@
     .svc-label:nth-child(1) { opacity:1; }
     @keyframes svcLabelFade { 0%{opacity:1;} 28%{opacity:1;} 34%{opacity:0;} 100%{opacity:0;} }
     @media (prefers-reduced-motion:reduce) { .svc-card, .svc-label { animation:none; } }
+    #recommendations.page-section { padding-left:0; padding-right:0; overflow:hidden; }
+    .rec-intro { max-width:1200px; margin:0 auto; padding:0 24px; }
+    .rec-carousel { --rec-card-w: min(540px, calc(100vw - 72px)); --rec-gap: 16px; --rec-gutter: max(24px, calc((100vw - 1200px) / 2)); }
+    @media (min-width:900px) { .rec-carousel { --rec-card-w: min(560px, 46vw); --rec-gap: 20px; } }
+    .rec-viewport { margin-left: var(--rec-gutter); overflow: hidden; }
+    .rec-track { display:flex; align-items:stretch; gap: var(--rec-gap); transition: transform var(--duration-fast) var(--ease-smooth-out); will-change: transform; }
+    .rec-slide { width: var(--rec-card-w); flex: 0 0 var(--rec-card-w); min-width: var(--rec-card-w); min-height: 0; display: flex; flex-direction: column; opacity: 0.34; cursor: pointer; transition: opacity var(--duration-fast) var(--ease-in-out); }
+    .rec-slide.is-active { opacity: 1; cursor: default; }
+    @media (hover: hover) and (pointer: fine) {
+      .rec-slide:hover { opacity: 1; z-index: 2; }
+    }
+    .rec-tilt .t-tilt-card { flex: 1 1 auto; width: 100%; min-height: 360px; border-radius: 22px; display: flex; flex-direction: column; background: var(--surface); border: 1px solid var(--border); box-shadow: var(--shadow-sm); padding: clamp(24px, 3vw, 36px); }
+    px-icon.rec-quote-mark { color: var(--text); margin-bottom: 20px; align-self: flex-start; width: 32px; height: 32px; }
+    .rec-quote { font-family: var(--font-body); font-size: clamp(14px, 1.4vw, 16px); line-height: 1.65; color: var(--text); margin: 0; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 7; overflow: hidden; }
+    .rec-person { display: flex; align-items: center; gap: 14px; margin-top: auto; padding-top: 28px; }
+    .rec-avatar { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; background: var(--surface-2); flex-shrink: 0; }
+    .rec-avatar[src$="nassy.jpeg"] { object-position: center 12%; }
+    .rec-name { font-family: var(--font-body); font-size: 15px; font-weight: 600; color: var(--text); margin: 0 0 2px; }
+    .rec-role { font-family: var(--font-body); font-size: 13px; color: var(--text-secondary); margin: 0; }
+    .rec-nav { display: flex; align-items: center; justify-content: space-between; gap: 16px; width: 100%; max-width: 1200px; margin: 22px auto 0; padding: 0 24px; box-sizing: border-box; }
+    .rec-progress { display: flex; gap: 8px; flex: 0 1 auto; }
+    .rec-progress-btn { appearance: none; -webkit-appearance: none; position: relative; width: 36px; height: 18px; padding: 0; border: 0; background: transparent; cursor: pointer; flex: 0 0 36px; }
+    .rec-progress-btn::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 3px; transform: translateY(-50%); border-radius: 999px; background: var(--border); }
+    .rec-progress-fill { position: absolute; left: 0; top: 50%; z-index: 1; display: block; width: 0; height: 3px; transform: translateY(-50%); border-radius: 999px; background: var(--ink); }
+    .rec-progress-btn.is-done .rec-progress-fill { width: 100%; animation: none; }
+    .rec-progress-btn.is-active .rec-progress-fill { animation: rec-fill 3s linear forwards; }
+    .rec-carousel.is-paused .rec-progress-btn.is-active .rec-progress-fill { animation-play-state: paused; }
+    .rec-arrows { display: flex; gap: 8px; margin-left: auto; }
+    .rec-arrow { appearance: none; -webkit-appearance: none; width: 36px; height: 36px; padding: 0; display: inline-flex; align-items: center; justify-content: center; border-radius: 999px; border: 1px solid var(--border); background: var(--surface); color: var(--text); cursor: pointer; flex-shrink: 0; transition: transform var(--duration-quick) var(--ease-smooth-out), background var(--duration-quick) var(--ease-smooth-out), border-color var(--duration-quick) var(--ease-smooth-out); }
+    .rec-arrow:hover { transform: translateY(-1px); background: var(--surface-2); border-color: var(--border-strong); }
+    @keyframes rec-fill { from { width: 0; } to { width: 100%; } }
+    @media (max-width: 640px) {
+      .rec-carousel { --rec-card-w: calc(100vw - 48px); --rec-gap: 16px; --rec-gutter: 24px; }
+      .rec-viewport { margin-right: 24px; touch-action: pan-y; }
+      .rec-arrows { display: none; }
+      .rec-nav { justify-content: stretch; }
+      .rec-progress { flex: 1; width: 100%; }
+      .rec-progress-btn { flex: 1; width: auto; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .rec-track, .rec-slide { transition: none; }
+      .rec-progress-btn.is-active .rec-progress-fill { width: 100%; animation: none; }
+      .rec-arrow:hover { transform: none; }
+    }
   </style>
-  <script src="pixel-icons.js?v=chat"></script>
+  <script src="pixel-icons.js?v=quote"></script>
   <script src="projects-store.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
-  <script src="pixel-loading.js?v=form"></script>
+  <script src="pixel-loading.js?v=compare"></script>
 </helmet>
 
 <!-- ── NAV ─────────────────────────────────────────── -->
@@ -478,12 +646,16 @@
 <!-- ── HERO ─────────────────────────────────────────── -->
 <section id="home" class="hero-section">
   <div class="hero-copy t-stagger" id="hero-stagger">
+    <div class="hero-avail t-stagger-line t-stagger-line--1">
+      <span class="hero-avail-led" aria-hidden="true"></span>
+      <span>1 Spot Available in {{ availMonth }}</span>
+    </div>
     <h1 class="hero-headline">
-      <span class="t-stagger-line t-stagger-line--1 hero-line">Big ideas.</span>
-      <span class="t-stagger-line t-stagger-line--2 hero-line hero-together t-shimmer" data-text="Brought together."><span>Brought</span><span>together.</span></span>
+      <span class="t-stagger-line t-stagger-line--2 hero-line">Big ideas.</span>
+      <span class="t-stagger-line t-stagger-line--3 hero-line hero-together t-shimmer" data-text="Brought together."><span>Brought</span><span>together.</span></span>
     </h1>
-    <p class="t-stagger-line t-stagger-line--3 hero-lede">From your brand to your website or digital product, I shape, design and manage the build from start to finish.</p>
-    <div class="hero-pills t-stagger-line t-stagger-line--4" aria-label="Branding, UI/UX, Product Management, Development">
+    <p class="t-stagger-line t-stagger-line--4 hero-lede">From your brand to your website or digital product, I shape, design and manage the build from start to finish.</p>
+    <div class="hero-pills t-stagger-line t-stagger-line--5" aria-label="Branding, UI/UX, Product Management, Development">
       <div class="hero-pills-track">
         <div class="hero-pills-set">
           <span class="hero-pill">Branding</span>
@@ -500,8 +672,8 @@
       </div>
     </div>
     <div class="hero-actions">
-      <a href="#contact" class="btn btn-primary t-stagger-line t-stagger-line--5"><span class="btn-text">Book a call</span><span class="btn-mark" aria-hidden="true"><px-icon name="chat" size="16"></px-icon></span></a>
-      <a href="#projects" class="btn btn-secondary t-stagger-line t-stagger-line--6">View work</a>
+      <a href="#contact" class="btn btn-primary t-stagger-line t-stagger-line--6"><span class="btn-text">Book a call</span><span class="btn-mark" aria-hidden="true"><px-icon name="chat" size="16"></px-icon></span></a>
+      <a href="#projects" class="btn btn-secondary t-stagger-line t-stagger-line--7">View work</a>
     </div>
   </div>
 </section>
@@ -635,76 +807,558 @@
   </div>
 </section>
 
+<!-- ── RECOMMENDATIONS ──────────────────────────────── -->
+<section id="recommendations" class="page-section rec-section">
+  <div class="rec-intro">
+    <p class="reveal" style="font-family:var(--font-display);font-size:13px;letter-spacing:0.08em;color:var(--text-secondary);margin-bottom:12px;text-transform:uppercase;">Recommendations</p>
+    <h2 class="reveal section-head-gap" style="font-family:var(--font-display);font-size:clamp(28px,4vw,48px);line-height:1.1;color:var(--text);letter-spacing:-0.01em;">From people I've <span style="color:var(--text-secondary);">worked with.</span></h2>
+  </div>
+  <div class="rec-carousel reveal" aria-roledescription="carousel" aria-label="LinkedIn recommendations">
+    <div class="rec-viewport">
+      <div class="rec-track">
+        <sc-for list="{{ recommendations }}" as="rec" hint-placeholder-count="7">
+          <article class="t-tilt rec-tilt rec-slide" role="group" aria-label="{{ rec.name }}">
+            <div class="t-tilt-card rec-card">
+              <px-icon class="rec-quote-mark" name="quote" size="28"></px-icon>
+              <blockquote class="rec-quote">{{ rec.quote }}</blockquote>
+              <div class="rec-person">
+                <img class="rec-avatar" src="{{ rec.avatar }}" alt="" width="48" height="48">
+                <div>
+                  <p class="rec-name">{{ rec.name }}</p>
+                  <p class="rec-role">{{ rec.role }}</p>
+                </div>
+              </div>
+              <div class="t-tilt-glare"></div>
+            </div>
+          </article>
+        </sc-for>
+      </div>
+    </div>
+    <div class="rec-nav">
+      <div class="rec-progress" role="tablist" aria-label="Choose a recommendation">
+        <sc-for list="{{ recommendations }}" as="rec" hint-placeholder-count="7">
+          <button type="button" class="rec-progress-btn" role="tab" aria-label="Show recommendation from {{ rec.name }}"><span class="rec-progress-fill"></span></button>
+        </sc-for>
+      </div>
+      <div class="rec-arrows">
+        <button type="button" class="rec-arrow rec-prev" aria-label="Previous recommendation"><px-icon name="chevron-left" size="18"></px-icon></button>
+        <button type="button" class="rec-arrow rec-next" aria-label="Next recommendation"><px-icon name="chevron-right" size="18"></px-icon></button>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ── PRICING ──────────────────────────────────────── -->
 <section id="pricing" class="page-section">
   <div style="max-width:1200px;margin:0 auto;">
     <p class="reveal" style="font-family:var(--font-display);font-size:13px;letter-spacing:0.08em;color:var(--text-secondary);margin-bottom:12px;text-transform:uppercase;">Pricing</p>
     <h2 class="reveal section-head-gap" style="font-family:var(--font-display);font-size:clamp(28px,4vw,48px);line-height:1.1;color:var(--text);letter-spacing:-0.01em;">Simple, transparent <span style="color:var(--text-secondary);">pricing.</span></h2>
-    <div class="pricing-grid">
 
-      <div class="t-tilt pricing-tilt reveal">
-        <div class="t-tilt-card">
-          <p style="font-family:var(--font-body);font-size:16px;font-weight:600;color:var(--text);margin-bottom:6px;">Project</p>
-          <p style="font-family:var(--font-body);font-size:14px;color:var(--text-secondary);margin-bottom:24px;">Fixed-scope product or brand work.</p>
-          <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:24px;">
-            <span style="font-family:var(--font-display);font-size:clamp(30px,3vw,40px);color:var(--text);">€6,000</span>
-            <span style="font-family:var(--font-body);font-size:13px;color:var(--text-tertiary);">from</span>
-          </div>
-          <div style="height:1px;background:var(--border);margin-bottom:24px;"></div>
-          <ul style="list-style:none;display:flex;flex-direction:column;gap:13px;margin-bottom:32px;flex:1;">
-            <li style="display:flex;align-items:flex-start;gap:10px;font-family:var(--font-body);font-size:14px;line-height:1.5;color:var(--text-secondary);"><px-icon name="check" size="15" style="margin-top:2px;color:var(--text);"></px-icon>Discovery &amp; strategy</li>
-            <li style="display:flex;align-items:flex-start;gap:10px;font-family:var(--font-body);font-size:14px;line-height:1.5;color:var(--text-secondary);"><px-icon name="check" size="15" style="margin-top:2px;color:var(--text);"></px-icon>End-to-end UX &amp; UI</li>
-            <li style="display:flex;align-items:flex-start;gap:10px;font-family:var(--font-body);font-size:14px;line-height:1.5;color:var(--text-secondary);"><px-icon name="check" size="15" style="margin-top:2px;color:var(--text);"></px-icon>Dev-ready handoff</li>
-          </ul>
-          <a href="#contact" class="btn btn-outline btn-block">Start a project</a>
-          <div class="t-tilt-glare"></div>
-        </div>
+    <div class="pricing-tabs-scroller reveal">
+      <div class="t-tabs pricing-tabs" role="tablist" aria-label="Pricing categories">
+        <span class="t-tabs-pill" aria-hidden="true"></span>
+        <button type="button" class="t-tab" role="tab" id="pricing-tab-branding" aria-controls="pricing-branding" aria-selected="true">Branding</button>
+        <button type="button" class="t-tab" role="tab" id="pricing-tab-uiux" aria-controls="pricing-uiux" aria-selected="false">UI/UX</button>
+        <button type="button" class="t-tab" role="tab" id="pricing-tab-web" aria-controls="pricing-web" aria-selected="false" aria-label="Website development">Website</button>
+        <button type="button" class="t-tab" role="tab" id="pricing-tab-custom" aria-controls="pricing-custom" aria-selected="false">Custom</button>
       </div>
-
-      <div class="t-tilt pricing-tilt is-featured reveal">
-        <div class="t-tilt-card">
-          <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
-            <p style="font-family:var(--font-body);font-size:16px;font-weight:600;color:var(--text);">Retainer</p>
-            <span style="font-family:var(--font-display);font-size:10px;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-inverse);background:var(--ink);padding:4px 9px;border-radius:9999px;">Popular</span>
-          </div>
-          <p style="font-family:var(--font-body);font-size:14px;color:var(--text-secondary);margin-bottom:8px;">Ongoing design partnership.</p>
-          <p style="font-family:var(--font-body);font-size:13px;font-weight:500;color:var(--text);margin-bottom:24px;">1 spot available for August</p>
-          <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:24px;">
-            <span style="font-family:var(--font-display);font-size:clamp(30px,3vw,40px);color:var(--text);">€4,500</span>
-            <span style="font-family:var(--font-body);font-size:13px;color:var(--text-tertiary);">from</span>
-            <span style="font-family:var(--font-body);font-size:13px;color:var(--text-tertiary);">/ month</span>
-          </div>
-          <div style="height:1px;background:var(--border);margin-bottom:24px;"></div>
-          <ul style="list-style:none;display:flex;flex-direction:column;gap:13px;margin-bottom:32px;flex:1;">
-            <li style="display:flex;align-items:flex-start;gap:10px;font-family:var(--font-body);font-size:14px;line-height:1.5;color:var(--text-secondary);"><px-icon name="check" size="15" style="margin-top:2px;color:var(--text);"></px-icon>Dedicated weekly capacity</li>
-            <li style="display:flex;align-items:flex-start;gap:10px;font-family:var(--font-body);font-size:14px;line-height:1.5;color:var(--text-secondary);"><px-icon name="check" size="15" style="margin-top:2px;color:var(--text);"></px-icon>Product, brand &amp; web</li>
-            <li style="display:flex;align-items:flex-start;gap:10px;font-family:var(--font-body);font-size:14px;line-height:1.5;color:var(--text-secondary);"><px-icon name="check" size="15" style="margin-top:2px;color:var(--text);"></px-icon>Async + weekly calls</li>
-          </ul>
-          <a href="#contact" class="btn btn-primary btn-block">Book a retainer</a>
-          <div class="t-tilt-glare"></div>
-        </div>
-      </div>
-
-      <div class="t-tilt pricing-tilt reveal">
-        <div class="t-tilt-card">
-          <p style="font-family:var(--font-body);font-size:16px;font-weight:600;color:var(--text);margin-bottom:6px;">Advisory</p>
-          <p style="font-family:var(--font-body);font-size:14px;color:var(--text-secondary);margin-bottom:24px;">Strategy &amp; design reviews.</p>
-          <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:24px;">
-            <span style="font-family:var(--font-display);font-size:clamp(30px,3vw,40px);color:var(--text);">€450</span>
-            <span style="font-family:var(--font-body);font-size:13px;color:var(--text-tertiary);">/ day</span>
-          </div>
-          <div style="height:1px;background:var(--border);margin-bottom:24px;"></div>
-          <ul style="list-style:none;display:flex;flex-direction:column;gap:13px;margin-bottom:32px;flex:1;">
-            <li style="display:flex;align-items:flex-start;gap:10px;font-family:var(--font-body);font-size:14px;line-height:1.5;color:var(--text-secondary);"><px-icon name="check" size="15" style="margin-top:2px;color:var(--text);"></px-icon>Roadmap &amp; audits</li>
-            <li style="display:flex;align-items:flex-start;gap:10px;font-family:var(--font-body);font-size:14px;line-height:1.5;color:var(--text-secondary);"><px-icon name="check" size="15" style="margin-top:2px;color:var(--text);"></px-icon>Design critique</li>
-            <li style="display:flex;align-items:flex-start;gap:10px;font-family:var(--font-body);font-size:14px;line-height:1.5;color:var(--text-secondary);"><px-icon name="check" size="15" style="margin-top:2px;color:var(--text);"></px-icon>Team mentoring</li>
-          </ul>
-          <a href="#contact" class="btn btn-outline btn-block">Book a call</a>
-          <div class="t-tilt-glare"></div>
-        </div>
-      </div>
-
     </div>
+
+    <div class="pricing-panel is-active" id="pricing-branding" role="tabpanel" aria-labelledby="pricing-tab-branding">
+      <div class="pricing-grid">
+        <div class="t-tilt pricing-tilt">
+          <div class="t-tilt-card">
+            <p class="price-card-title">Lite</p>
+            <p class="price-card-desc">A solid brand foundation for early-stage businesses and smaller projects.</p>
+            <div class="price-block"><span class="price-from">from</span><span class="price-amount">€3,500</span></div>
+            <div style="height:1px;background:var(--border);margin-bottom:24px;"></div>
+            <ul style="list-style:none;display:flex;flex-direction:column;gap:13px;margin-bottom:32px;flex:1;">
+              <li style="display:flex;align-items:flex-start;gap:10px;font-family:var(--font-body);font-size:14px;line-height:1.5;color:var(--text-secondary);"><px-icon name="check" size="15" style="margin-top:2px;color:var(--text);"></px-icon>Brand discovery call</li>
+              <li style="display:flex;align-items:flex-start;gap:10px;font-family:var(--font-body);font-size:14px;line-height:1.5;color:var(--text-secondary);"><px-icon name="check" size="15" style="margin-top:2px;color:var(--text);"></px-icon>Primary logo, 3 concepts + 2 revisions</li>
+              <li style="display:flex;align-items:flex-start;gap:10px;font-family:var(--font-body);font-size:14px;line-height:1.5;color:var(--text-secondary);"><px-icon name="check" size="15" style="margin-top:2px;color:var(--text);"></px-icon>Mini brand guide (4–6 pages)</li>
+            </ul>
+            <a href="#contact" class="btn btn-outline btn-block">Start a project</a>
+            <div class="t-tilt-glare"></div>
+          </div>
+        </div>
+        <div class="t-tilt pricing-tilt is-featured">
+          <div class="t-tilt-card">
+            <div class="price-card-head">
+              <p class="price-card-title">Pro</p>
+              <span class="price-card-badge">Popular</span>
+            </div>
+            <p class="price-card-desc">Expanded identity system and core assets for growing brands.</p>
+            <div class="price-block"><span class="price-from">from</span><span class="price-amount">€5,500</span></div>
+            <div style="height:1px;background:var(--border);margin-bottom:24px;"></div>
+            <ul style="list-style:none;display:flex;flex-direction:column;gap:13px;margin-bottom:32px;flex:1;">
+              <li style="display:flex;align-items:flex-start;gap:10px;font-family:var(--font-body);font-size:14px;line-height:1.5;color:var(--text-secondary);"><px-icon name="check" size="15" style="margin-top:2px;color:var(--text);"></px-icon>Everything in Lite</li>
+              <li style="display:flex;align-items:flex-start;gap:10px;font-family:var(--font-body);font-size:14px;line-height:1.5;color:var(--text-secondary);"><px-icon name="check" size="15" style="margin-top:2px;color:var(--text);"></px-icon>Full colour, type &amp; pattern systems</li>
+              <li style="display:flex;align-items:flex-start;gap:10px;font-family:var(--font-body);font-size:14px;line-height:1.5;color:var(--text-secondary);"><px-icon name="check" size="15" style="margin-top:2px;color:var(--text);"></px-icon>Enhanced brand guidelines (10–20 pages)</li>
+            </ul>
+            <a href="#contact" class="btn btn-primary btn-block">Start a project</a>
+            <div class="t-tilt-glare"></div>
+          </div>
+        </div>
+        <div class="t-tilt pricing-tilt">
+          <div class="t-tilt-card">
+            <p class="price-card-title">Custom</p>
+            <p class="price-card-desc">Scoped around your brand needs.</p>
+            <div class="price-block"><span class="price-from">from</span><span class="price-amount">Custom</span></div>
+            <div style="height:1px;background:var(--border);margin-bottom:24px;"></div>
+            <ul style="list-style:none;display:flex;flex-direction:column;gap:13px;margin-bottom:32px;flex:1;">
+              <li style="display:flex;align-items:flex-start;gap:10px;font-family:var(--font-body);font-size:14px;line-height:1.5;color:var(--text-secondary);"><px-icon name="check" size="15" style="margin-top:2px;color:var(--text);"></px-icon>Dedicated discovery</li>
+              <li style="display:flex;align-items:flex-start;gap:10px;font-family:var(--font-body);font-size:14px;line-height:1.5;color:var(--text-secondary);"><px-icon name="check" size="15" style="margin-top:2px;color:var(--text);"></px-icon>Tailored brand programme</li>
+              <li style="display:flex;align-items:flex-start;gap:10px;font-family:var(--font-body);font-size:14px;line-height:1.5;color:var(--text-secondary);"><px-icon name="check" size="15" style="margin-top:2px;color:var(--text);"></px-icon>Quote after the call</li>
+            </ul>
+            <a href="#contact" class="btn btn-outline btn-block">Book a call</a>
+            <div class="t-tilt-glare"></div>
+          </div>
+        </div>
+      </div>
+      <div class="pricing-compare t-acc" data-open="false">
+        <div class="pricing-compare-trigger">
+          <button type="button" class="t-acc-head" aria-expanded="false" aria-controls="branding-compare">
+            See comparison
+            <span class="t-acc-chevron" aria-hidden="true">
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"><path d="M4 6.5L8 10.5L12 6.5"/></svg>
+            </span>
+          </button>
+        </div>
+        <div class="t-acc-panel" id="branding-compare">
+          <div class="t-acc-panel-inner">
+            <div class="cmp-wrap">
+              <table class="cmp-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Included</th>
+                    <th scope="col">Lite</th>
+                    <th scope="col">Pro</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="cmp-group"><th scope="colgroup" colspan="3">Brand foundation</th></tr>
+                  <tr>
+                    <td>Brand discovery call</td>
+                    <td><span class="cmp-box is-on" aria-label="Included"><px-icon name="check" size="12"></px-icon></span></td>
+                    <td><span class="cmp-box is-on" aria-label="Included"><px-icon name="check" size="12"></px-icon></span></td>
+                  </tr>
+                  <tr>
+                    <td>Moodboard + visual direction</td>
+                    <td><span class="cmp-box is-on" aria-label="Included"><px-icon name="check" size="12"></px-icon></span></td>
+                    <td><span class="cmp-box is-on" aria-label="Included"><px-icon name="check" size="12"></px-icon></span></td>
+                  </tr>
+                  <tr>
+                    <td>Primary logo design (up to 3 concepts + 2 revisions)</td>
+                    <td><span class="cmp-box is-on" aria-label="Included"><px-icon name="check" size="12"></px-icon></span></td>
+                    <td><span class="cmp-box is-on" aria-label="Included"><px-icon name="check" size="12"></px-icon></span></td>
+                  </tr>
+                  <tr>
+                    <td>Basic colour palette</td>
+                    <td><span class="cmp-box is-on" aria-label="Included"><px-icon name="check" size="12"></px-icon></span></td>
+                    <td><span class="cmp-box is-on" aria-label="Included"><px-icon name="check" size="12"></px-icon></span></td>
+                  </tr>
+                  <tr>
+                    <td>Basic typography pairing</td>
+                    <td><span class="cmp-box is-on" aria-label="Included"><px-icon name="check" size="12"></px-icon></span></td>
+                    <td><span class="cmp-box is-on" aria-label="Included"><px-icon name="check" size="12"></px-icon></span></td>
+                  </tr>
+                  <tr>
+                    <td>Brand usage examples (simple mockups)</td>
+                    <td><span class="cmp-box is-on" aria-label="Included"><px-icon name="check" size="12"></px-icon></span></td>
+                    <td><span class="cmp-box is-on" aria-label="Included"><px-icon name="check" size="12"></px-icon></span></td>
+                  </tr>
+                  <tr>
+                    <td>Final logo files (PNG, SVG, PDF)</td>
+                    <td><span class="cmp-box is-on" aria-label="Included"><px-icon name="check" size="12"></px-icon></span></td>
+                    <td><span class="cmp-box is-on" aria-label="Included"><px-icon name="check" size="12"></px-icon></span></td>
+                  </tr>
+                  <tr>
+                    <td>Mini brand guide (4–6 pages)</td>
+                    <td><span class="cmp-box is-on" aria-label="Included"><px-icon name="check" size="12"></px-icon></span></td>
+                    <td><span class="cmp-box is-on" aria-label="Included"><px-icon name="check" size="12"></px-icon></span></td>
+                  </tr>
+                  <tr class="cmp-group"><th scope="colgroup" colspan="3">Pro additions</th></tr>
+                  <tr>
+                    <td>Extended brand exploration + strategic messaging</td>
+                    <td><span class="cmp-box is-off" aria-label="Not included"></span></td>
+                    <td><span class="cmp-box is-on" aria-label="Included"><px-icon name="check" size="12"></px-icon></span></td>
+                  </tr>
+                  <tr>
+                    <td>Full colour system (primary + secondary + accents)</td>
+                    <td><span class="cmp-box is-off" aria-label="Not included"></span></td>
+                    <td><span class="cmp-box is-on" aria-label="Included"><px-icon name="check" size="12"></px-icon></span></td>
+                  </tr>
+                  <tr>
+                    <td>Full typographic system (headings, body, weights)</td>
+                    <td><span class="cmp-box is-off" aria-label="Not included"></span></td>
+                    <td><span class="cmp-box is-on" aria-label="Included"><px-icon name="check" size="12"></px-icon></span></td>
+                  </tr>
+                  <tr>
+                    <td>Icon style direction</td>
+                    <td><span class="cmp-box is-off" aria-label="Not included"></span></td>
+                    <td><span class="cmp-box is-on" aria-label="Included"><px-icon name="check" size="12"></px-icon></span></td>
+                  </tr>
+                  <tr>
+                    <td>Image/illustration treatment rules</td>
+                    <td><span class="cmp-box is-off" aria-label="Not included"></span></td>
+                    <td><span class="cmp-box is-on" aria-label="Included"><px-icon name="check" size="12"></px-icon></span></td>
+                  </tr>
+                  <tr>
+                    <td>Brand pattern design (1–2 variants)</td>
+                    <td><span class="cmp-box is-off" aria-label="Not included"></span></td>
+                    <td><span class="cmp-box is-on" aria-label="Included"><px-icon name="check" size="12"></px-icon></span></td>
+                  </tr>
+                  <tr>
+                    <td>Social media kit (profile images, headers)</td>
+                    <td><span class="cmp-box is-off" aria-label="Not included"></span></td>
+                    <td><span class="cmp-box is-on" aria-label="Included"><px-icon name="check" size="12"></px-icon></span></td>
+                  </tr>
+                  <tr>
+                    <td>Enhanced brand guidelines (10–20 pages)</td>
+                    <td><span class="cmp-box is-off" aria-label="Not included"></span></td>
+                    <td><span class="cmp-box is-on" aria-label="Included"><px-icon name="check" size="12"></px-icon></span></td>
+                  </tr>
+                  <tr class="cmp-group"><th scope="colgroup" colspan="3">Optional add-ons</th></tr>
+                  <tr>
+                    <td>Motion graphics set</td>
+                    <td><span class="cmp-box is-addon" aria-label="Optional add-on"><px-icon name="plus" size="12"></px-icon></span></td>
+                    <td><span class="cmp-box is-addon" aria-label="Optional add-on"><px-icon name="plus" size="12"></px-icon></span></td>
+                  </tr>
+                  <tr>
+                    <td>Slide deck</td>
+                    <td><span class="cmp-box is-addon" aria-label="Optional add-on"><px-icon name="plus" size="12"></px-icon></span></td>
+                    <td><span class="cmp-box is-addon" aria-label="Optional add-on"><px-icon name="plus" size="12"></px-icon></span></td>
+                  </tr>
+                  <tr>
+                    <td>Social media content retainer</td>
+                    <td><span class="cmp-box is-addon" aria-label="Optional add-on"><px-icon name="plus" size="12"></px-icon></span></td>
+                    <td><span class="cmp-box is-addon" aria-label="Optional add-on"><px-icon name="plus" size="12"></px-icon></span></td>
+                  </tr>
+                  <tr>
+                    <td>Packaging design</td>
+                    <td><span class="cmp-box is-addon" aria-label="Optional add-on"><px-icon name="plus" size="12"></px-icon></span></td>
+                    <td><span class="cmp-box is-addon" aria-label="Optional add-on"><px-icon name="plus" size="12"></px-icon></span></td>
+                  </tr>
+                  <tr>
+                    <td>Business cards</td>
+                    <td><span class="cmp-box is-addon" aria-label="Optional add-on"><px-icon name="plus" size="12"></px-icon></span></td>
+                    <td><span class="cmp-box is-addon" aria-label="Optional add-on"><px-icon name="plus" size="12"></px-icon></span></td>
+                  </tr>
+                  <tr>
+                    <td>Brand naming workshop</td>
+                    <td><span class="cmp-box is-addon" aria-label="Optional add-on"><px-icon name="plus" size="12"></px-icon></span></td>
+                    <td><span class="cmp-box is-addon" aria-label="Optional add-on"><px-icon name="plus" size="12"></px-icon></span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pricing-panel" id="pricing-uiux" role="tabpanel" aria-labelledby="pricing-tab-uiux">
+      <div class="pricing-grid">
+        <div class="t-tilt pricing-tilt">
+          <div class="t-tilt-card">
+            <p class="price-card-title">Lite</p>
+            <p class="price-card-desc">A sharp pass on core screens.</p>
+            <div class="price-block"><span class="price-from">from</span><span class="price-amount">€5,000</span></div>
+            <div style="height:1px;background:var(--border);margin-bottom:24px;"></div>
+            <ul style="list-style:none;display:flex;flex-direction:column;gap:13px;margin-bottom:32px;flex:1;">
+              <li style="display:flex;align-items:flex-start;gap:10px;font-family:var(--font-body);font-size:14px;line-height:1.5;color:var(--text-secondary);"><px-icon name="check" size="15" style="margin-top:2px;color:var(--text);"></px-icon>Key screen set</li>
+              <li style="display:flex;align-items:flex-start;gap:10px;font-family:var(--font-body);font-size:14px;line-height:1.5;color:var(--text-secondary);"><px-icon name="check" size="15" style="margin-top:2px;color:var(--text);"></px-icon>UX review</li>
+              <li style="display:flex;align-items:flex-start;gap:10px;font-family:var(--font-body);font-size:14px;line-height:1.5;color:var(--text-secondary);"><px-icon name="check" size="15" style="margin-top:2px;color:var(--text);"></px-icon>One iteration</li>
+            </ul>
+            <a href="#contact" class="btn btn-outline btn-block">Start a project</a>
+            <div class="t-tilt-glare"></div>
+          </div>
+        </div>
+        <div class="t-tilt pricing-tilt is-featured">
+          <div class="t-tilt-card">
+            <div class="price-card-head">
+              <p class="price-card-title">Pro</p>
+              <span class="price-card-badge">Popular</span>
+            </div>
+            <p class="price-card-desc">End-to-end product design.</p>
+            <div class="price-block"><span class="price-from">from</span><span class="price-amount">€10,000</span></div>
+            <div style="height:1px;background:var(--border);margin-bottom:24px;"></div>
+            <ul style="list-style:none;display:flex;flex-direction:column;gap:13px;margin-bottom:32px;flex:1;">
+              <li style="display:flex;align-items:flex-start;gap:10px;font-family:var(--font-body);font-size:14px;line-height:1.5;color:var(--text-secondary);"><px-icon name="check" size="15" style="margin-top:2px;color:var(--text);"></px-icon>Discovery &amp; flows</li>
+              <li style="display:flex;align-items:flex-start;gap:10px;font-family:var(--font-body);font-size:14px;line-height:1.5;color:var(--text-secondary);"><px-icon name="check" size="15" style="margin-top:2px;color:var(--text);"></px-icon>UI system</li>
+              <li style="display:flex;align-items:flex-start;gap:10px;font-family:var(--font-body);font-size:14px;line-height:1.5;color:var(--text-secondary);"><px-icon name="check" size="15" style="margin-top:2px;color:var(--text);"></px-icon>Dev-ready handoff</li>
+            </ul>
+            <a href="#contact" class="btn btn-primary btn-block">Start a project</a>
+            <div class="t-tilt-glare"></div>
+          </div>
+        </div>
+        <div class="t-tilt pricing-tilt">
+          <div class="t-tilt-card">
+            <p class="price-card-title">Custom</p>
+            <p class="price-card-desc">Scoped around your product.</p>
+            <div class="price-block"><span class="price-from">from</span><span class="price-amount">Custom</span></div>
+            <div style="height:1px;background:var(--border);margin-bottom:24px;"></div>
+            <ul style="list-style:none;display:flex;flex-direction:column;gap:13px;margin-bottom:32px;flex:1;">
+              <li style="display:flex;align-items:flex-start;gap:10px;font-family:var(--font-body);font-size:14px;line-height:1.5;color:var(--text-secondary);"><px-icon name="check" size="15" style="margin-top:2px;color:var(--text);"></px-icon>Dedicated discovery</li>
+              <li style="display:flex;align-items:flex-start;gap:10px;font-family:var(--font-body);font-size:14px;line-height:1.5;color:var(--text-secondary);"><px-icon name="check" size="15" style="margin-top:2px;color:var(--text);"></px-icon>Tailored UX programme</li>
+              <li style="display:flex;align-items:flex-start;gap:10px;font-family:var(--font-body);font-size:14px;line-height:1.5;color:var(--text-secondary);"><px-icon name="check" size="15" style="margin-top:2px;color:var(--text);"></px-icon>Quote after the call</li>
+            </ul>
+            <a href="#contact" class="btn btn-outline btn-block">Book a call</a>
+            <div class="t-tilt-glare"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pricing-panel" id="pricing-web" role="tabpanel" aria-labelledby="pricing-tab-web">
+      <div class="pricing-grid">
+        <div class="t-tilt pricing-tilt">
+          <div class="t-tilt-card">
+            <p class="price-card-title">Lite</p>
+            <p class="price-card-desc">Single-page or simple sites.</p>
+            <div class="price-block"><span class="price-from">from</span><span class="price-amount">€5,000</span></div>
+            <div style="height:1px;background:var(--border);margin-bottom:24px;"></div>
+            <ul style="list-style:none;display:flex;flex-direction:column;gap:13px;margin-bottom:32px;flex:1;">
+              <li style="display:flex;align-items:flex-start;gap:10px;font-family:var(--font-body);font-size:14px;line-height:1.5;color:var(--text-secondary);"><px-icon name="check" size="15" style="margin-top:2px;color:var(--text);"></px-icon>Single-page or simple sites</li>
+              <li style="display:flex;align-items:flex-start;gap:10px;font-family:var(--font-body);font-size:14px;line-height:1.5;color:var(--text-secondary);"><px-icon name="check" size="15" style="margin-top:2px;color:var(--text);"></px-icon>No CMS — built on a range of stacks</li>
+              <li style="display:flex;align-items:flex-start;gap:10px;font-family:var(--font-body);font-size:14px;line-height:1.5;color:var(--text-secondary);"><px-icon name="check" size="15" style="margin-top:2px;color:var(--text);"></px-icon>Third-party needs identified, not included</li>
+            </ul>
+            <a href="#contact" class="btn btn-outline btn-block">Start a project</a>
+            <div class="t-tilt-glare"></div>
+          </div>
+        </div>
+        <div class="t-tilt pricing-tilt is-featured">
+          <div class="t-tilt-card">
+            <div class="price-card-head">
+              <p class="price-card-title">Pro</p>
+              <span class="price-card-badge">Popular</span>
+            </div>
+            <p class="price-card-desc">A full website, designed and built.</p>
+            <div class="price-block"><span class="price-from">from</span><span class="price-amount">€10,000</span></div>
+            <div style="height:1px;background:var(--border);margin-bottom:24px;"></div>
+            <ul style="list-style:none;display:flex;flex-direction:column;gap:13px;margin-bottom:32px;flex:1;">
+              <li style="display:flex;align-items:flex-start;gap:10px;font-family:var(--font-body);font-size:14px;line-height:1.5;color:var(--text-secondary);"><px-icon name="check" size="15" style="margin-top:2px;color:var(--text);"></px-icon>Custom design &amp; multi-page build</li>
+              <li style="display:flex;align-items:flex-start;gap:10px;font-family:var(--font-body);font-size:14px;line-height:1.5;color:var(--text-secondary);"><px-icon name="check" size="15" style="margin-top:2px;color:var(--text);"></px-icon>No CMS — built on a range of stacks</li>
+              <li style="display:flex;align-items:flex-start;gap:10px;font-family:var(--font-body);font-size:14px;line-height:1.5;color:var(--text-secondary);"><px-icon name="check" size="15" style="margin-top:2px;color:var(--text);"></px-icon>Third-party needs identified, not included</li>
+            </ul>
+            <a href="#contact" class="btn btn-primary btn-block">Start a project</a>
+            <div class="t-tilt-glare"></div>
+          </div>
+        </div>
+        <div class="t-tilt pricing-tilt">
+          <div class="t-tilt-card">
+            <p class="price-card-title">Custom</p>
+            <p class="price-card-desc">Scoped around your site needs.</p>
+            <div class="price-block"><span class="price-from">from</span><span class="price-amount">Custom</span></div>
+            <div style="height:1px;background:var(--border);margin-bottom:24px;"></div>
+            <ul style="list-style:none;display:flex;flex-direction:column;gap:13px;margin-bottom:32px;flex:1;">
+              <li style="display:flex;align-items:flex-start;gap:10px;font-family:var(--font-body);font-size:14px;line-height:1.5;color:var(--text-secondary);"><px-icon name="check" size="15" style="margin-top:2px;color:var(--text);"></px-icon>Dedicated discovery</li>
+              <li style="display:flex;align-items:flex-start;gap:10px;font-family:var(--font-body);font-size:14px;line-height:1.5;color:var(--text-secondary);"><px-icon name="check" size="15" style="margin-top:2px;color:var(--text);"></px-icon>Tailored build programme</li>
+              <li style="display:flex;align-items:flex-start;gap:10px;font-family:var(--font-body);font-size:14px;line-height:1.5;color:var(--text-secondary);"><px-icon name="check" size="15" style="margin-top:2px;color:var(--text);"></px-icon>Quote after the call</li>
+            </ul>
+            <a href="#contact" class="btn btn-outline btn-block">Book a call</a>
+            <div class="t-tilt-glare"></div>
+          </div>
+        </div>
+      </div>
+      <div class="pricing-compare t-acc" data-open="false">
+        <div class="pricing-compare-trigger">
+          <button type="button" class="t-acc-head" aria-expanded="false" aria-controls="website-compare">
+            See comparison
+            <span class="t-acc-chevron" aria-hidden="true">
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"><path d="M4 6.5L8 10.5L12 6.5"/></svg>
+            </span>
+          </button>
+        </div>
+        <div class="t-acc-panel" id="website-compare">
+          <div class="t-acc-panel-inner">
+            <div class="cmp-wrap">
+              <table class="cmp-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Included</th>
+                    <th scope="col">Lite</th>
+                    <th scope="col">Pro</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="cmp-group"><th scope="colgroup" colspan="3">Website foundation</th></tr>
+                  <tr>
+                    <td>Discovery call + requirements planning</td>
+                    <td><span class="cmp-box is-on" aria-label="Included"><px-icon name="check" size="12"></px-icon></span></td>
+                    <td><span class="cmp-box is-on" aria-label="Included"><px-icon name="check" size="12"></px-icon></span></td>
+                  </tr>
+                  <tr>
+                    <td>Sitemap + content structure</td>
+                    <td><span class="cmp-box is-on" aria-label="Included"><px-icon name="check" size="12"></px-icon></span></td>
+                    <td><span class="cmp-box is-on" aria-label="Included"><px-icon name="check" size="12"></px-icon></span></td>
+                  </tr>
+                  <tr>
+                    <td>Bespoke website design aligned with your brand</td>
+                    <td><span class="cmp-box is-on" aria-label="Included"><px-icon name="check" size="12"></px-icon></span></td>
+                    <td><span class="cmp-box is-on" aria-label="Included"><px-icon name="check" size="12"></px-icon></span></td>
+                  </tr>
+                  <tr>
+                    <td>Website design + development</td>
+                    <td><span class="cmp-note">One-pager or 1–3 simple pages</span></td>
+                    <td><span class="cmp-note">5+ pages, scoped to requirements</span></td>
+                  </tr>
+                  <tr>
+                    <td>Fully responsive across mobile, tablet + desktop</td>
+                    <td><span class="cmp-box is-on" aria-label="Included"><px-icon name="check" size="12"></px-icon></span></td>
+                    <td><span class="cmp-box is-on" aria-label="Included"><px-icon name="check" size="12"></px-icon></span></td>
+                  </tr>
+                  <tr>
+                    <td>Animations + interactive transitions</td>
+                    <td><span class="cmp-box is-on" aria-label="Included"><px-icon name="check" size="12"></px-icon></span></td>
+                    <td><span class="cmp-box is-on" aria-label="Included"><px-icon name="check" size="12"></px-icon></span></td>
+                  </tr>
+                  <tr>
+                    <td>Performance optimisation + image optimisation</td>
+                    <td><span class="cmp-box is-on" aria-label="Included"><px-icon name="check" size="12"></px-icon></span></td>
+                    <td><span class="cmp-box is-on" aria-label="Included"><px-icon name="check" size="12"></px-icon></span></td>
+                  </tr>
+                  <tr>
+                    <td>Basic on-page SEO setup</td>
+                    <td><span class="cmp-box is-on" aria-label="Included"><px-icon name="check" size="12"></px-icon></span></td>
+                    <td><span class="cmp-box is-on" aria-label="Included"><px-icon name="check" size="12"></px-icon></span></td>
+                  </tr>
+                  <tr>
+                    <td>Accessibility best practices</td>
+                    <td><span class="cmp-box is-on" aria-label="Included"><px-icon name="check" size="12"></px-icon></span></td>
+                    <td><span class="cmp-box is-on" aria-label="Included"><px-icon name="check" size="12"></px-icon></span></td>
+                  </tr>
+                  <tr>
+                    <td>Domain connection + hosting setup, if required</td>
+                    <td><span class="cmp-box is-on" aria-label="Included"><px-icon name="check" size="12"></px-icon></span></td>
+                    <td><span class="cmp-box is-on" aria-label="Included"><px-icon name="check" size="12"></px-icon></span></td>
+                  </tr>
+                  <tr>
+                    <td>Browser + device testing</td>
+                    <td><span class="cmp-box is-on" aria-label="Included"><px-icon name="check" size="12"></px-icon></span></td>
+                    <td><span class="cmp-box is-on" aria-label="Included"><px-icon name="check" size="12"></px-icon></span></td>
+                  </tr>
+                  <tr>
+                    <td>Launch support + website handover</td>
+                    <td><span class="cmp-box is-on" aria-label="Included"><px-icon name="check" size="12"></px-icon></span></td>
+                    <td><span class="cmp-box is-on" aria-label="Included"><px-icon name="check" size="12"></px-icon></span></td>
+                  </tr>
+                  <tr class="cmp-group"><th scope="colgroup" colspan="3">Pro additions</th></tr>
+                  <tr>
+                    <td>Extended discovery + user journey planning</td>
+                    <td><span class="cmp-box is-off" aria-label="Not included"></span></td>
+                    <td><span class="cmp-box is-on" aria-label="Included"><px-icon name="check" size="12"></px-icon></span></td>
+                  </tr>
+                  <tr>
+                    <td>Advanced sitemap + navigation planning</td>
+                    <td><span class="cmp-box is-off" aria-label="Not included"></span></td>
+                    <td><span class="cmp-box is-on" aria-label="Included"><px-icon name="check" size="12"></px-icon></span></td>
+                  </tr>
+                  <tr>
+                    <td>Reusable page templates + component system</td>
+                    <td><span class="cmp-box is-off" aria-label="Not included"></span></td>
+                    <td><span class="cmp-box is-on" aria-label="Included"><px-icon name="check" size="12"></px-icon></span></td>
+                  </tr>
+                  <tr>
+                    <td>CMS setup for managing content, where required</td>
+                    <td><span class="cmp-box is-off" aria-label="Not included"></span></td>
+                    <td><span class="cmp-box is-on" aria-label="Included"><px-icon name="check" size="12"></px-icon></span></td>
+                  </tr>
+                  <tr>
+                    <td>Dynamic content, such as blogs, projects or listings</td>
+                    <td><span class="cmp-box is-off" aria-label="Not included"></span></td>
+                    <td><span class="cmp-note">Scoped</span></td>
+                  </tr>
+                  <tr>
+                    <td>Custom functionality + backend development</td>
+                    <td><span class="cmp-box is-off" aria-label="Not included"></span></td>
+                    <td><span class="cmp-note">Scoped</span></td>
+                  </tr>
+                  <tr>
+                    <td>Third-party integrations + API connections</td>
+                    <td><span class="cmp-box is-off" aria-label="Not included"></span></td>
+                    <td><span class="cmp-note">Scoped</span></td>
+                  </tr>
+                  <tr>
+                    <td>CMS training + management walkthrough</td>
+                    <td><span class="cmp-box is-off" aria-label="Not included"></span></td>
+                    <td><span class="cmp-note">Where applicable</span></td>
+                  </tr>
+                  <tr class="cmp-group"><th scope="colgroup" colspan="3">Optional add-ons</th></tr>
+                  <tr>
+                    <td>Analytics setup — GA4 or PostHog</td>
+                    <td><span class="cmp-box is-addon" aria-label="Optional add-on"><px-icon name="plus" size="12"></px-icon></span></td>
+                    <td><span class="cmp-box is-addon" aria-label="Optional add-on"><px-icon name="plus" size="12"></px-icon></span></td>
+                  </tr>
+                  <tr>
+                    <td>Conversion tracking + custom event setup</td>
+                    <td><span class="cmp-box is-addon" aria-label="Optional add-on"><px-icon name="plus" size="12"></px-icon></span></td>
+                    <td><span class="cmp-box is-addon" aria-label="Optional add-on"><px-icon name="plus" size="12"></px-icon></span></td>
+                  </tr>
+                  <tr>
+                    <td>Cookie consent + third-party script management</td>
+                    <td><span class="cmp-box is-addon" aria-label="Optional add-on"><px-icon name="plus" size="12"></px-icon></span></td>
+                    <td><span class="cmp-box is-addon" aria-label="Optional add-on"><px-icon name="plus" size="12"></px-icon></span></td>
+                  </tr>
+                  <tr>
+                    <td>Transactional email setup — automated website emails</td>
+                    <td><span class="cmp-box is-addon" aria-label="Optional add-on"><px-icon name="plus" size="12"></px-icon></span></td>
+                    <td><span class="cmp-box is-addon" aria-label="Optional add-on"><px-icon name="plus" size="12"></px-icon></span></td>
+                  </tr>
+                  <tr>
+                    <td>Marketing email setup — mailing lists, forms + platform connection</td>
+                    <td><span class="cmp-box is-addon" aria-label="Optional add-on"><px-icon name="plus" size="12"></px-icon></span></td>
+                    <td><span class="cmp-box is-addon" aria-label="Optional add-on"><px-icon name="plus" size="12"></px-icon></span></td>
+                  </tr>
+                  <tr>
+                    <td>Existing content migration</td>
+                    <td><span class="cmp-box is-off" aria-label="Not included"></span></td>
+                    <td><span class="cmp-box is-addon" aria-label="Optional add-on"><px-icon name="plus" size="12"></px-icon></span></td>
+                  </tr>
+                  <tr>
+                    <td>Ongoing maintenance + support</td>
+                    <td><span class="cmp-box is-addon" aria-label="Optional add-on"><px-icon name="plus" size="12"></px-icon></span></td>
+                    <td><span class="cmp-box is-addon" aria-label="Optional add-on"><px-icon name="plus" size="12"></px-icon></span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pricing-panel" id="pricing-custom" role="tabpanel" aria-labelledby="pricing-tab-custom">
+      <div class="pricing-grid pricing-grid-custom">
+        <div class="t-tilt pricing-tilt is-featured">
+          <div class="t-tilt-card">
+            <p class="price-card-title">Bespoke</p>
+            <p class="price-card-desc">Got a bespoke project in mind?</p>
+            <div class="price-block"><span class="price-from">from</span><span class="price-amount">Let's talk</span></div>
+            <div style="height:1px;background:var(--border);margin-bottom:24px;"></div>
+            <p style="font-family:var(--font-body);font-size:14px;line-height:1.65;color:var(--text-secondary);margin-bottom:32px;flex:1;">Let's discuss the items — a quote will be provided after the discovery call.</p>
+            <a href="#contact" class="btn btn-primary btn-block">Book a call</a>
+            <div class="t-tilt-glare"></div>
+          </div>
+        </div>
+        <div class="t-tilt pricing-tilt">
+          <div class="t-tilt-card">
+            <p class="price-card-title">Advisory</p>
+            <p class="price-card-desc">Strategy &amp; design reviews.</p>
+            <div class="price-block"><span class="price-from">from</span><span class="price-amount">€450</span><span class="price-unit">/ day</span></div>
+            <div style="height:1px;background:var(--border);margin-bottom:24px;"></div>
+            <ul style="list-style:none;display:flex;flex-direction:column;gap:13px;margin-bottom:32px;flex:1;">
+              <li style="display:flex;align-items:flex-start;gap:10px;font-family:var(--font-body);font-size:14px;line-height:1.5;color:var(--text-secondary);"><px-icon name="check" size="15" style="margin-top:2px;color:var(--text);"></px-icon>Roadmap &amp; audits</li>
+              <li style="display:flex;align-items:flex-start;gap:10px;font-family:var(--font-body);font-size:14px;line-height:1.5;color:var(--text-secondary);"><px-icon name="check" size="15" style="margin-top:2px;color:var(--text);"></px-icon>Design critique</li>
+              <li style="display:flex;align-items:flex-start;gap:10px;font-family:var(--font-body);font-size:14px;line-height:1.5;color:var(--text-secondary);"><px-icon name="check" size="15" style="margin-top:2px;color:var(--text);"></px-icon>Team mentoring</li>
+            </ul>
+            <a href="#contact" class="btn btn-outline btn-block">Book a call</a>
+            <div class="t-tilt-glare"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <p class="reveal" style="font-family:var(--font-body);font-size:13px;color:var(--text-tertiary);margin-top:24px;text-align:center;">Every engagement starts with a free intro call · Prices in EUR, excl. VAT</p>
   </div>
 </section>
@@ -840,7 +1494,7 @@ class Component extends DCLogic {
         togetherLine?.classList.remove('is-shimmering');
         void hero.offsetHeight;
         hero.classList.add('is-shown');
-        const last = hero.querySelector('.t-stagger-line--6') || hero.querySelector('.t-stagger-line:last-child');
+        const last = hero.querySelector('.t-stagger-line--7') || hero.querySelector('.t-stagger-line:last-child');
         const delay = last ? parseFloat(getComputedStyle(last).transitionDelay) * 1000 : 0;
         const dur = last ? parseFloat(getComputedStyle(last).transitionDuration) * 1000 : 500;
         window.setTimeout(() => {
@@ -866,6 +1520,8 @@ class Component extends DCLogic {
 
     this.initCardTilt();
     this.bindProcessMap();
+    this._onRecsReady = () => this.initCardTilt();
+    document.addEventListener('recs:ready', this._onRecsReady);
 
     this._onKey = (e) => {
       if (e.key === 'Escape' && this.state.mobileNavOpen) this.closeMobileNav();
@@ -886,6 +1542,7 @@ class Component extends DCLogic {
     window.removeEventListener('keydown', this._onKey);
     window.removeEventListener('storage', this._onStorage);
     window.removeEventListener('pageshow', this._onPageShow);
+    document.removeEventListener('recs:ready', this._onRecsReady);
     clearTimeout(this._navCloseTimer);
     clearTimeout(this._processFollowStop);
     cancelAnimationFrame(this._processFollow);
@@ -1204,7 +1861,8 @@ class Component extends DCLogic {
     const MAX = 10;
     this._tiltCleanups = [];
 
-    document.querySelectorAll('.pricing-tilt, .services-tilt, .process-tilt').forEach((tilt) => {
+    document.querySelectorAll('.pricing-tilt, .services-tilt, .process-tilt, .rec-tilt').forEach((tilt) => {
+      if (tilt.closest('.pricing-panel') && !tilt.closest('.pricing-panel.is-active')) return;
       const card = tilt.querySelector('.t-tilt-card');
       if (!card) return;
 
@@ -1345,6 +2003,7 @@ class Component extends DCLogic {
       mobileNavLabel: mobileNavOpen ? 'Close menu' : 'Open menu',
       toggleMobileNav: () => this.toggleMobileNav(),
       closeMobileNav: () => this.closeMobileNav(),
+      availMonth: new Date().toLocaleString('en-US', { month: 'long' }),
       projects: projectVals,
       services: [
         { num: '01', title: 'UI/UX Design', desc: 'Interfaces that are clear, usable, and considered — from early concepts to polished product.' },
@@ -1353,6 +2012,50 @@ class Component extends DCLogic {
         { num: '04', title: 'Branding', desc: 'Identity, visual language, and brand guidelines that give products a distinctive voice.' },
         { num: '05', title: 'Website Development', desc: 'Clean, responsive builds — from Webflow and Framer to custom HTML/CSS.' },
         { num: '06', title: 'Marketing Assets', desc: 'Full assets package from social media templates, email marketing, short-form video, all templated for you to run your business.' },
+      ],
+      recommendations: [
+        {
+          name: 'Marko Rosic',
+          role: 'UX Consultant, Beyond Clicks Studio',
+          avatar: 'uploads/recs/marko-rosic.jpg',
+          quote: 'What I appreciated most about working with Tristan was how much he cared about our team and each person’s development. During the transition after our acquisition, he saw the potential in my design system and the way I organized our team’s design work, and encouraged me to bring that approach to the team in Malta. Through workshops and time spent working together, we adopted a more consistent approach and learned from each other. His encouragement really helped me through that transition. Tristan also helped me give senior leadership a clearer picture of our team’s work, progress, and outcomes through regular reviews and presentations. On a personal level, I’m really grateful to have worked with Tristan and for the support he gave me during that time. I’d recommend Tristan to anyone looking for a leader who recognises people’s strengths, helps them grow, and supports his team through change.',
+        },
+        {
+          name: 'Ralph Jones',
+          role: 'Founder & Senior Product Designer, Novatur Design',
+          avatar: 'uploads/recs/ralph-jones.jpg',
+          quote: 'Working with Tristan has been an absolute highlight—both professionally and personally. On the design front, he’s a weapon. From building scalable design systems to pushing holistic thinking across the product lifecycle, he’s someone who truly bridges the gap between vision and execution. Whether it\'s ideation, iteration, or shipping top-notch work, Tristan brings a level of polish and craft that consistently raises the bar.',
+        },
+        {
+          name: 'Christoffer Groot',
+          role: 'Product Owner, AP Pension',
+          avatar: 'uploads/recs/christoffer-groot.jpg',
+          quote: 'Tristan is a visionary leader, who has an excellent ability to motivate people around him. Working with Tristan has learned me the importance of being open minded and searching new opportunities. This as Tristan is able to push product discovery to the next level, never being satisfied with ordinary. Strategically Tristan stands strong and is able to have teams follow the same road. This makes for super efficient and high moral teams, working for the same goal. Nevertheless Tristan has never been afraid of getting his own hands dirty, helping out where ever he can, to make sure that the team lift together. All in all it’s not just a great pleasure to work with Tristan but also a massive learning curve in my professional career.',
+        },
+        {
+          name: 'Karl Muscat',
+          role: 'Head of Design, Wedia Group',
+          avatar: 'uploads/recs/karl-muscat.jpg',
+          quote: 'Tristan is an awesome designer and a great team player. He’s got a sharp eye for style, a solid understanding of the business side, and always brings positive energy to the table. I’d gladly work with him again anytime.',
+        },
+        {
+          name: 'Carl Borg Bartolo',
+          role: 'Founder, Outwithkidz',
+          avatar: 'uploads/recs/carl-borg-bartolo.jpg',
+          quote: 'Working with Tris during my time at Gaming Innovation Group, was really straight forward. His design work was top notch, always ready to challenge assumptions and push the boundaries further by not shying away from collaborating closer with the UX research team. Tris worked his way up in such a short time to leadership positions just because he\'s a natural at it, his vision and approachable character make him really easy to work with, and is capable of shifting the core levers that matter for a business to succeed. I would highly recommend Tris for any capacity.',
+        },
+        {
+          name: 'Anastasia Muljajew',
+          role: 'Customer Experience Insights Manager, Tipico',
+          avatar: 'uploads/recs/nassy.jpeg',
+          quote: 'I highly recommend Tristan Dexter for any design-related role. During my time working with Tristan, I was consistently impressed with his design skills. He has a keen intuition for user experience and prototyping, which enables him to create designs that are both visually appealing and highly functional. He has an outstanding ability to understand the needs of the user and design solutions that meet those needs. In addition, Tristan has incredible presentation skills, making him a natural leader in any design team. He is able to communicate his design decisions clearly and effectively to both technical and non-technical stakeholders. He was able to keep the team and stakeholders aligned with his design solutions. Tristan is also a team player and eager to collaborate with other teams and stakeholders, which made him a pleasure to work with. Tristan is also open to feedback and ready to adapt to new design approaches, this makes him very versatile and a great asset for any team. Overall, I wholeheartedly recommend Tristan for any design-related role. He will undoubtedly be a valuable asset to any team and will bring a wealth of knowledge and expertise to any project.',
+        },
+        {
+          name: 'Christopher Farrugia',
+          role: 'Founder & Creative Director, TillDawn',
+          avatar: 'uploads/recs/christopher-farrugia.jpg',
+          quote: 'I had the pleasure of managing Tristan when he was a product designer at GiG and can confidently say that he is one of the best in the industry. Not only is he incredibly skilled in design, but he also has a deep understanding of the entire product life cycle within the online casino industry. Tristan consistently produces high-quality work that not only meets but often exceeds expectations. He is able to quickly grasp complex concepts and translate them into visually appealing and intuitive designs. In addition, his strong communication skills make him a valuable asset to any project team. I highly recommend Tristan for any product design or product owner role. His dedication, talent, and expertise make him a valuable asset to any organisation.',
+        },
       ],
       process: [
         { num: '01', title: 'Get in touch', desc: 'Share your project idea — goals, timeline, and anything you already have. No polished brief required.' },
