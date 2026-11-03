@@ -1,21 +1,9 @@
 /** Shared project data for Portfolio + Projects-admin pages. */
 window.PortfolioProjects = {
   STORAGE_KEY: 'px-portfolio-projects',
-  /** Bump when default image paths change so old localStorage snapshots cannot pin stale srcs. */
-  DEFAULTS_REVISION: 3,
-  /** Cache-bust query for file replacements at the same path. */
-  ASSETS_REV: '3',
-
-  LOCAL_SRC: {
-    p1: 'uploads/projects/p1-drytripping.jpg',
-    p2: 'uploads/projects/p2-minimuse.png',
-    p3: 'uploads/projects/p3-opman.jpg',
-    p4: 'uploads/projects/p4-jurnii.jpg',
-    p5: 'uploads/projects/p5-livegoals.jpg',
-    p6: 'uploads/projects/p6-mjb-jarvis.jpg',
-    p7: 'uploads/projects/p7-fiteffekt.jpg',
-    p8: 'uploads/projects/p8-surge-fitness.png',
-  },
+  IDB_NAME: 'px-portfolio',
+  IDB_STORE: 'project-images',
+  ASSETS_REV: '4',
 
   DEFAULT_PROJECTS: [
     { id: 'p1', title: 'DryTripping Travel', tags: ['Travel Marketplace', 'Custom CMS'], src: 'uploads/dtt.png' },
@@ -26,24 +14,48 @@ window.PortfolioProjects = {
     { id: 'p6', title: 'MJB Jarvis', tags: ['Construction', 'Website & Branding'], src: 'uploads/mjb-jarvis.png' },
     { id: 'p7', title: 'FitEffekt', tags: ['Gym', 'Website & Branding'], src: 'uploads/fit-effekt.png' },
     { id: 'p8', title: 'Surge Fitness', tags: ['Gym', 'Website & Branding'], src: 'uploads/surge.png' },
+    { id: 'p9', title: 'Karozza', tags: ['Branding', 'Website Development'], src: 'uploads/karozza.jpg' },
+    { id: 'p10', title: 'Food Delivery App', tags: ['UI/UX', 'Mobile App'], src: 'uploads/grubu-mockup.webp' },
+    { id: 'p11', title: 'Marketplace UI', tags: ['UI/UX', 'Marketplace'], src: 'uploads/marketplace.webp' },
   ],
+
+  _objectUrls: Object.create(null),
+
+  cloneDefaults() {
+    return this.DEFAULT_PROJECTS.map((p) => ({
+      id: p.id,
+      title: p.title,
+      tags: [...(p.tags || [])],
+      src: p.src || '',
+      rev: undefined,
+      imageId: null,
+    }));
+  },
 
   isRemoteLegacy(src) {
     return !src || /iamdexter\.com|shortpixel\.ai/.test(src);
+  },
+
+  isDataUrl(src) {
+    return typeof src === 'string' && /^data:/i.test(src);
+  },
+
+  isBlobUrl(src) {
+    return typeof src === 'string' && /^blob:/i.test(src);
+  },
+
+  normTitle(title) {
+    return String(title || '')
+      .toLowerCase()
+      .replace(/deliery/g, 'delivery')
+      .replace(/\s+/g, ' ')
+      .trim();
   },
 
   defaultById() {
     const map = Object.create(null);
     this.DEFAULT_PROJECTS.forEach((p) => { map[p.id] = p; });
     return map;
-  },
-
-  isStaleBundledSrc(id, src) {
-    if (this.isRemoteLegacy(src)) return true;
-    const def = this.defaultById()[id];
-    if (def && src === def.src) return true;
-    if (this.LOCAL_SRC[id] && src === this.LOCAL_SRC[id]) return true;
-    return false;
   },
 
   readRaw() {
@@ -59,185 +71,291 @@ window.PortfolioProjects = {
     try {
       localStorage.setItem(this.STORAGE_KEY, JSON.stringify(payload));
       return true;
-    } catch {
+    } catch (err) {
+      console.warn('PortfolioProjects save failed:', err);
       return false;
     }
   },
 
-  /** Convert a v1 full-array snapshot into field overrides. */
-  overridesFromLegacyArray(list) {
-    const defs = this.defaultById();
-    const overrides = Object.create(null);
-    (list || []).forEach((p) => {
-      if (!p || !p.id) return;
-      const d = defs[p.id];
-      const o = {};
-      if (!d) {
-        overrides[p.id] = {
-          title: p.title || 'New project',
-          tags: Array.isArray(p.tags) ? p.tags : [],
-          src: p.src || '',
-          srcPinned: true,
-          rev: p.rev,
-        };
-        return;
-      }
-      if (p.title && p.title !== d.title) o.title = p.title;
-      const tags = Array.isArray(p.tags) ? p.tags : [];
-      if (JSON.stringify(tags) !== JSON.stringify(d.tags || [])) o.tags = tags;
-      if (p.src && !this.isStaleBundledSrc(p.id, p.src) && p.src !== d.src) {
-        o.src = p.src;
-        o.srcPinned = true;
-      }
-      if (p.rev) o.rev = p.rev;
-      if (Object.keys(o).length) overrides[p.id] = o;
+  openDb() {
+    if (this._db) return Promise.resolve(this._db);
+    if (this._dbP) return this._dbP;
+    if (!window.indexedDB) return Promise.resolve(null);
+    this._dbP = new Promise((resolve) => {
+      const req = indexedDB.open(this.IDB_NAME, 1);
+      req.onupgradeneeded = () => {
+        const db = req.result;
+        if (!db.objectStoreNames.contains(this.IDB_STORE)) db.createObjectStore(this.IDB_STORE);
+      };
+      req.onsuccess = () => {
+        this._db = req.result;
+        resolve(this._db);
+      };
+      req.onerror = () => resolve(null);
     });
+    return this._dbP;
+  },
+
+  async putImage(id, src) {
+    if (!id || !src || this.isBlobUrl(src)) return;
+    const db = await this.openDb();
+    if (!db) return;
+    let value = src;
+    if (this.isDataUrl(src)) {
+      const res = await fetch(src);
+      value = await res.blob();
+    }
+    return new Promise((resolve) => {
+      const tx = db.transaction(this.IDB_STORE, 'readwrite');
+      tx.objectStore(this.IDB_STORE).put(value, id);
+      tx.oncomplete = () => resolve(true);
+      tx.onerror = () => resolve(false);
+    });
+  },
+
+  async getImage(id) {
+    if (!id) return null;
+    const db = await this.openDb();
+    if (!db) return null;
+    return new Promise((resolve) => {
+      const tx = db.transaction(this.IDB_STORE, 'readonly');
+      const req = tx.objectStore(this.IDB_STORE).get(id);
+      req.onsuccess = () => resolve(req.result || null);
+      req.onerror = () => resolve(null);
+    });
+  },
+
+  async deleteImage(id) {
+    const db = await this.openDb();
+    if (!db || !id) return;
+    return new Promise((resolve) => {
+      const tx = db.transaction(this.IDB_STORE, 'readwrite');
+      tx.objectStore(this.IDB_STORE).delete(id);
+      tx.oncomplete = () => resolve();
+      tx.onerror = () => resolve();
+    });
+  },
+
+  objectUrlFor(id, blob) {
+    if (this._objectUrls[id]) URL.revokeObjectURL(this._objectUrls[id]);
+    const url = URL.createObjectURL(blob);
+    this._objectUrls[id] = url;
+    return url;
+  },
+
+  recordFromLegacy(p) {
+    if (!p || !p.id) return null;
+    const src = this.isRemoteLegacy(p.src) ? '' : (p.src || '');
     return {
-      v: 2,
-      defaultsRevision: this.DEFAULTS_REVISION,
-      order: list.map((p) => p.id).filter(Boolean),
-      overrides,
+      id: p.id,
+      title: p.title || 'New project',
+      tags: Array.isArray(p.tags) ? p.tags : [],
+      src: this.isDataUrl(src) ? '' : src,
+      imageId: this.isDataUrl(src) ? p.id : null,
+      rev: p.rev,
+      _inlineSrc: this.isDataUrl(src) ? src : '',
     };
   },
 
-  normalizeStored(raw) {
-    if (!raw) {
-      return { v: 2, defaultsRevision: this.DEFAULTS_REVISION, overrides: {} };
-    }
-    if (Array.isArray(raw)) return this.overridesFromLegacyArray(raw);
-    if (raw.v !== 2 || !raw.overrides || typeof raw.overrides !== 'object') {
-      if (Array.isArray(raw.projects)) return this.overridesFromLegacyArray(raw.projects);
-      return { v: 2, defaultsRevision: this.DEFAULTS_REVISION, overrides: {} };
-    }
-
-    const overrides = { ...raw.overrides };
-    const staleDefaults = (raw.defaultsRevision || 0) < this.DEFAULTS_REVISION;
-    if (staleDefaults) {
-      Object.keys(overrides).forEach((id) => {
-        const o = overrides[id];
-        if (!o) return;
-        if (!o.srcPinned || this.isStaleBundledSrc(id, o.src)) {
-          delete o.src;
-          delete o.srcPinned;
-        }
-        if (!Object.keys(o).length) delete overrides[id];
-        else overrides[id] = o;
-      });
-    }
-
-    return {
-      v: 2,
-      defaultsRevision: this.DEFAULTS_REVISION,
-      order: Array.isArray(raw.order) ? raw.order : undefined,
-      overrides,
-    };
-  },
-
-  merge(payload) {
-    const overrides = payload.overrides || {};
+  fromV2(raw) {
+    const overrides = raw.overrides && typeof raw.overrides === 'object' ? raw.overrides : {};
     const defs = this.DEFAULT_PROJECTS;
+    const defById = this.defaultById();
     const defIds = new Set(defs.map((p) => p.id));
     const extras = Object.keys(overrides).filter((id) => !defIds.has(id));
-    const defaultOrder = defs.map((p) => p.id);
-    const order = (payload.order && payload.order.length)
-      ? payload.order.filter((id, i, arr) => arr.indexOf(id) === i && (defIds.has(id) || overrides[id]))
-      : defaultOrder.concat(extras);
-    extras.forEach((id) => { if (!order.includes(id)) order.push(id); });
-    defaultOrder.forEach((id) => { if (!order.includes(id)) order.push(id); });
-
-    const defById = this.defaultById();
+    let order;
+    if (Array.isArray(raw.order) && raw.order.length) {
+      order = raw.order.filter((id, i, arr) => arr.indexOf(id) === i && (defIds.has(id) || overrides[id]));
+      extras.forEach((id) => { if (!order.includes(id)) order.push(id); });
+    } else {
+      order = defs.map((p) => p.id).concat(extras);
+    }
     return order.map((id) => {
       const d = defById[id] || { id, title: 'New project', tags: [], src: '' };
       const o = overrides[id] || {};
-      let src = o.srcPinned ? o.src : (d.src || '');
-      if (this.isRemoteLegacy(src)) src = d.src || '';
+      let src = (o.src != null && o.src !== '') ? o.src : (d.src || '');
+      if (this.isRemoteLegacy(src) && !this.isDataUrl(src)) src = d.src || '';
+      const inline = this.isDataUrl(src);
       return {
         id,
         title: o.title != null ? o.title : d.title,
         tags: Array.isArray(o.tags) ? o.tags : (d.tags || []),
-        src,
+        src: inline ? '' : src,
+        imageId: inline ? id : null,
         rev: o.rev,
-        srcPinned: !!o.srcPinned,
+        _inlineSrc: inline ? src : '',
       };
     });
   },
 
-  diffOverrides(projects) {
-    const defById = this.defaultById();
-    const defaultOrder = this.DEFAULT_PROJECTS.map((p) => p.id);
-    const order = projects.map((p) => p.id);
-    const overrides = Object.create(null);
-
-    projects.forEach((p) => {
-      const d = defById[p.id];
-      if (!d) {
-        overrides[p.id] = {
-          title: p.title || 'New project',
-          tags: p.tags || [],
-          src: p.src || '',
-          srcPinned: true,
-          rev: p.rev,
-        };
-        return;
-      }
-      const o = {};
-      if (p.title !== d.title) o.title = p.title;
-      if (JSON.stringify(p.tags || []) !== JSON.stringify(d.tags || [])) o.tags = p.tags || [];
-      if ((p.src || '') !== (d.src || '')) {
-        o.src = p.src || '';
-        o.srcPinned = true;
-      }
-      if (p.rev) o.rev = p.rev;
-      if (Object.keys(o).length) overrides[p.id] = o;
-    });
-
-    const payload = {
-      v: 2,
-      defaultsRevision: this.DEFAULTS_REVISION,
-      updatedAt: Date.now(),
-      overrides,
-    };
-    if (order.join() !== defaultOrder.join()) payload.order = order;
-    return payload;
+  fromV3(raw) {
+    return (raw.projects || []).map((p) => {
+      if (!p || !p.id) return null;
+      const src = p.src || '';
+      const inline = this.isDataUrl(src);
+      return {
+        id: p.id,
+        title: p.title || 'New project',
+        tags: Array.isArray(p.tags) ? p.tags : [],
+        src: inline ? '' : src,
+        imageId: p.imageId || (inline ? p.id : null),
+        rev: p.rev,
+        _inlineSrc: inline ? src : '',
+      };
+    }).filter(Boolean);
   },
 
-  purgeStaleImageSlots() {
-    try {
-      const raw = localStorage.getItem('px-image-slots-state');
-      if (!raw) return;
-      const o = JSON.parse(raw);
-      let n = 0;
-      Object.keys(o).forEach((k) => {
-        if (k.indexOf('proj-img-') === 0) { delete o[k]; n++; }
+  dedupeByTitle(list) {
+    const seen = Object.create(null);
+    const out = [];
+    list.forEach((p) => {
+      const key = this.normTitle(p.title);
+      if (!key) {
+        out.push(p);
+        return;
+      }
+      const prev = seen[key];
+      if (!prev) {
+        seen[key] = p;
+        out.push(p);
+        return;
+      }
+      const prevHasCustom = !!(prev._inlineSrc || prev.imageId || (prev.src && !this.DEFAULT_PROJECTS.some((d) => d.id === prev.id && d.src === prev.src)));
+      const nextHasCustom = !!(p._inlineSrc || p.imageId || (p.src && !this.DEFAULT_PROJECTS.some((d) => d.id === p.id && d.src === p.src)));
+      if (nextHasCustom && !prevHasCustom) {
+        const idx = out.indexOf(prev);
+        const merged = {
+          ...p,
+          title: p.title || prev.title,
+          tags: (p.tags && p.tags.length) ? p.tags : prev.tags,
+          src: p.src || prev.src,
+          imageId: p.imageId || prev.imageId,
+          _inlineSrc: p._inlineSrc || prev._inlineSrc,
+        };
+        out[idx] = merged;
+        seen[key] = merged;
+      }
+    });
+    return out;
+  },
+
+  hydrate(raw) {
+    if (!raw) return this.cloneDefaults();
+    let list;
+    if (Array.isArray(raw)) {
+      list = raw.map((p) => this.recordFromLegacy(p)).filter(Boolean);
+    } else if (raw.v === 3 && Array.isArray(raw.projects)) {
+      list = this.fromV3(raw);
+    } else if (raw.v === 2 || raw.overrides) {
+      list = this.fromV2(raw);
+    } else if (Array.isArray(raw.projects)) {
+      list = this.fromV3(raw);
+    } else {
+      return this.cloneDefaults();
+    }
+    if (!list.length) return this.cloneDefaults();
+    const titles = new Set(list.map((p) => this.normTitle(p.title)));
+    const ids = new Set(list.map((p) => p.id));
+    ['p9', 'p10', 'p11'].forEach((id) => {
+      const d = this.defaultById()[id];
+      if (!d || ids.has(id) || titles.has(this.normTitle(d.title))) return;
+      list.push({
+        id: d.id,
+        title: d.title,
+        tags: [...(d.tags || [])],
+        src: d.src || '',
+        imageId: null,
+        rev: undefined,
+        _inlineSrc: '',
       });
-      if (n) localStorage.setItem('px-image-slots-state', JSON.stringify(o));
-    } catch (_) { /* ignore */ }
+    });
+    return this.dedupeByTitle(list);
   },
 
   load() {
-    this.purgeStaleImageSlots();
-    const payload = this.normalizeStored(this.readRaw());
-    this.writeRaw(payload);
-    return this.merge(payload);
+    return this.hydrate(this.readRaw()).map((p) => ({
+      id: p.id,
+      title: p.title,
+      tags: p.tags || [],
+      src: p._inlineSrc || p.src || '',
+      imageId: p.imageId || null,
+      rev: p.rev,
+    }));
   },
 
-  save(projects) {
-    return this.writeRaw(this.diffOverrides(projects));
+  async attachStoredImages(projects) {
+    const next = [];
+    for (const p of projects) {
+      const copy = { ...p };
+      if (!copy.src || this.isBlobUrl(copy.src)) {
+        const blob = await this.getImage(copy.imageId || copy.id);
+        if (blob instanceof Blob) copy.src = this.objectUrlFor(copy.id, blob);
+        else if (typeof blob === 'string' && blob) copy.src = blob;
+      }
+      next.push(copy);
+    }
+    return next;
   },
 
-  resetToDefaults() {
-    return this.writeRaw({
-      v: 2,
-      defaultsRevision: this.DEFAULTS_REVISION,
+  async loadAll() {
+    return this.attachStoredImages(this.load());
+  },
+
+  toStoredRecord(p) {
+    const src = p.src || '';
+    const inline = this.isDataUrl(src);
+    return {
+      id: p.id,
+      title: p.title || 'New project',
+      tags: Array.isArray(p.tags) ? p.tags : [],
+      src: inline || this.isBlobUrl(src) ? '' : src,
+      imageId: inline || this.isBlobUrl(src) || p.imageId ? (p.imageId || p.id) : null,
+      rev: p.rev || undefined,
+    };
+  },
+
+  async save(projects) {
+    for (const p of projects) {
+      if (this.isDataUrl(p.src)) {
+        await this.putImage(p.id, p.src);
+        p.imageId = p.id;
+      }
+    }
+    const payload = {
+      v: 3,
       updatedAt: Date.now(),
-      overrides: {},
+      projects: projects.map((p) => this.toStoredRecord(p)),
+    };
+    let ok = this.writeRaw(payload);
+    if (!ok) {
+      payload.projects.forEach((r) => { r.src = r.src && this.isDataUrl(r.src) ? '' : r.src; });
+      ok = this.writeRaw(payload);
+    }
+    return ok;
+  },
+
+  async resetToDefaults() {
+    const db = await this.openDb();
+    if (db) {
+      await new Promise((resolve) => {
+        const tx = db.transaction(this.IDB_STORE, 'readwrite');
+        tx.objectStore(this.IDB_STORE).clear();
+        tx.oncomplete = () => resolve();
+        tx.onerror = () => resolve();
+      });
+    }
+    Object.keys(this._objectUrls).forEach((id) => URL.revokeObjectURL(this._objectUrls[id]));
+    this._objectUrls = Object.create(null);
+    return this.writeRaw({
+      v: 3,
+      updatedAt: Date.now(),
+      projects: this.cloneDefaults().map((p) => this.toStoredRecord(p)),
     });
   },
 
-  /** URL the thumbnail should actually request. Always cache-busts so replaced files show. */
   displaySrc(project) {
     const src = (project && project.src) || '';
-    if (!src || /^data:/i.test(src)) return src;
+    if (!src || /^data:/i.test(src) || /^blob:/i.test(src)) return src;
     const bust = project.rev || this.ASSETS_REV;
     return src + (src.includes('?') ? '&' : '?') + 'v=' + bust;
   },

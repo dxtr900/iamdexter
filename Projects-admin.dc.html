@@ -69,7 +69,7 @@
     .admin-footer { margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--border); display: flex; gap: 12px; flex-wrap: wrap; align-items: center; justify-content: space-between; }
   </style>
   <script src="pixel-icons.js"></script>
-  <script src="projects-store.js"></script>
+  <script src="projects-store.js?v=list"></script>
 </helmet>
 
 <div class="admin-wrap">
@@ -81,7 +81,7 @@
     </div>
     <div class="admin-actions">
       <span class="{{ statusClass }}">{{ statusText }}</span>
-      <a href="Portfolio.dc.html" class="btn">← View site</a>
+      <a href="index.dc.html" class="btn">← View site</a>
       <button onClick="{{ resetDefaults }}" class="btn btn-danger" type="button">Reset defaults</button>
       <button onClick="{{ addProject }}" class="btn btn-primary" type="button">+ Add project</button>
     </div>
@@ -113,7 +113,7 @@
           <div class="field">
             <label for="src-{{ proj.id }}">Image path or URL</label>
             <input id="src-{{ proj.id }}" type="text" class="form-input" value="{{ proj.src }}" placeholder="uploads/projects/my-project.jpg" onInput="{{ proj.onSrcChange }}">
-            <p class="hint">Use a path under uploads/ or paste a URL. This is stored as an override; the files in projects-store.js are the defaults.</p>
+            <p class="hint">Use a path under uploads/ or paste a URL. Uploaded files are kept separately so they are not overwritten.</p>
           </div>
           <div class="field">
             <label for="file-{{ proj.id }}">Upload image</label>
@@ -133,8 +133,8 @@
   </div>
 
   <div class="admin-footer">
-    <p style="font-size:13px;color:var(--text-tertiary);">Custom edits save as overrides. Default image paths live in projects-store.js and will not be overwritten by old snapshots.</p>
-    <a href="Portfolio.dc.html#projects" class="btn btn-primary">Open projects section →</a>
+    <p style="font-size:13px;color:var(--text-tertiary);">The list you see is the list that publishes. Adding a project keeps it; removing one is the only way it leaves the portfolio.</p>
+    <a href="index.dc.html#projects" class="btn btn-primary">Open projects section →</a>
   </div>
 </div>
 </x-dc>
@@ -153,8 +153,9 @@ class Component extends DCLogic {
 
   reloadFromStore() {
     const store = window.PortfolioProjects;
-    const projects = store.load();
-    this.setState({ projects, tagsDraft: this.tagsDraftFrom(projects) });
+    store.loadAll().then((projects) => {
+      this.setState({ projects, tagsDraft: this.tagsDraftFrom(projects) });
+    });
   }
 
   componentDidMount() {
@@ -194,10 +195,11 @@ class Component extends DCLogic {
   }
 
   persist(projects, tagsDraft) {
-    const ok = window.PortfolioProjects.save(projects);
     const nextDraft = tagsDraft || this.state.tagsDraft;
     this.setState({ projects, tagsDraft: nextDraft });
-    ok ? this.markSaved() : this.markError();
+    Promise.resolve(window.PortfolioProjects.save(projects)).then((ok) => {
+      ok ? this.markSaved() : this.markError();
+    });
   }
 
   updateField(id, field, value) {
@@ -244,21 +246,50 @@ class Component extends DCLogic {
     const tagsDraft = { ...this.state.tagsDraft };
     delete tagsDraft[id];
     this.persist(next, tagsDraft);
+    window.PortfolioProjects.deleteImage(id);
   }
 
   resetDefaults() {
     if (!confirm('Reset all projects to the built-in defaults? This cannot be undone.')) return;
-    window.PortfolioProjects.resetToDefaults();
-    const next = window.PortfolioProjects.load();
-    this.setState({ projects: next, tagsDraft: this.tagsDraftFrom(next) });
-    this.markSaved();
+    Promise.resolve(window.PortfolioProjects.resetToDefaults()).then(() => {
+      this.reloadFromStore();
+      this.markSaved();
+    });
   }
 
-  readImageFile(file, cb) {
-    const reader = new FileReader();
-    reader.onload = () => cb(reader.result);
-    reader.onerror = () => this.markError();
-    reader.readAsDataURL(file);
+  compressImageFile(file) {
+    return new Promise((resolve, reject) => {
+      const url = URL.createObjectURL(file);
+      const img = new Image();
+      img.onload = () => {
+        const max = 1600;
+        let w = img.naturalWidth;
+        let h = img.naturalHeight;
+        if (Math.max(w, h) > max) {
+          const scale = max / Math.max(w, h);
+          w = Math.round(w * scale);
+          h = Math.round(h * scale);
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = w;
+        canvas.height = h;
+        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+        URL.revokeObjectURL(url);
+        const mime = file.type === 'image/png' ? 'image/png' : 'image/jpeg';
+        canvas.toBlob((blob) => {
+          if (!blob) { reject(new Error('compress')); return; }
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = reject;
+          reader.readAsDataURL(blob);
+        }, mime, mime === 'image/jpeg' ? 0.84 : undefined);
+      };
+      img.onerror = () => {
+        URL.revokeObjectURL(url);
+        reject(new Error('image'));
+      };
+      img.src = url;
+    });
   }
 
   renderVals() {
@@ -272,6 +303,7 @@ class Component extends DCLogic {
     const projectVals = projects.map((p, i) => ({
       ...p,
       tagsText: tagsDraft[p.id] ?? (p.tags || []).join(', '),
+      src: (!p.src || /^(data|blob):/i.test(p.src)) ? '' : p.src,
       previewSrc: window.PortfolioProjects.displaySrc(p),
       hasImage: !!p.src,
       noImage: !p.src,
@@ -282,14 +314,21 @@ class Component extends DCLogic {
       onTagsBlur: (e) => this.commitTags(p.id, e.target.value),
       onSrcChange: (e) => {
         const src = e.target.value.trim();
-        const next = this.state.projects.map((item) => item.id === p.id ? { ...item, src, rev: Date.now() } : item);
+        const next = this.state.projects.map((item) => {
+          if (item.id !== p.id) return item;
+          if (!src && item.src && /^(data|blob):/i.test(item.src)) return item;
+          return { ...item, src, rev: Date.now() };
+        });
         this.persist(next);
       },
       onFileChange: (e) => {
         const file = e.target.files && e.target.files[0];
-        if (!file) return;
-        this.readImageFile(file, (dataUrl) => this.updateField(p.id, 'src', dataUrl));
         e.target.value = '';
+        if (!file) return;
+        this.compressImageFile(file).then((dataUrl) => {
+          const next = this.state.projects.map((item) => item.id === p.id ? { ...item, src: dataUrl, imageId: p.id, rev: Date.now() } : item);
+          this.persist(next);
+        }).catch(() => this.markError());
       },
       onMoveUp: () => this.moveProject(p.id, -1),
       onMoveDown: () => this.moveProject(p.id, 1),

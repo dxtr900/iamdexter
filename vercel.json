@@ -1,5 +1,8 @@
 {
+  "redirects": [
+    { "source": "/Portfolio.dc.html", "destination": "/", "permanent": true }
+  ],
   "rewrites": [
-    { "source": "/", "destination": "/Portfolio.dc.html" }
+    { "source": "/", "destination": "/index.dc.html" }
   ]
 }

@@ -1,0 +1,10 @@
+{
+  "name": "iamdexter",
+  "private": true,
+  "scripts": {
+    "build": "echo static"
+  },
+  "dependencies": {
+    "@vercel/analytics": "^2.0.1"
+  }
+}

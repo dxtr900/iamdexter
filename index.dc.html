@@ -795,9 +795,13 @@
     }
   </style>
   <script src="pixel-icons.js?v=quote"></script>
-  <script src="projects-store.js"></script>
+  <script src="projects-store.js?v=list"></script>
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
   <script src="pixel-loading.js?v=book"></script>
+  <script>
+    window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+  </script>
+  <script defer src="/_vercel/insights/script.js"></script>
 </helmet>
 
 <!-- ── NAV ─────────────────────────────────────────── -->
@@ -1627,23 +1631,22 @@ class Component extends DCLogic {
 
   componentDidMount() {
     const store = window.PortfolioProjects;
-    const projects = store.load();
-    this.setState({ projects }, () => {
-      requestAnimationFrame(() => {
+    const applyProjects = (list) => {
+      this.setState({ projects: list }, () => {
         requestAnimationFrame(() => window.initProjectPixels?.());
       });
-    });
+    };
+    store.loadAll().then((projects) => applyProjects(projects));
 
-    const applyProjects = () => {
-      const next = store.load();
-      this.setState({ projects: next }, () => window.initProjectPixels?.());
+    const refreshProjects = () => {
+      store.loadAll().then((next) => applyProjects(next));
     };
     this._onStorage = (e) => {
       if (e.key !== store.STORAGE_KEY) return;
-      applyProjects();
+      refreshProjects();
     };
     this._onPageShow = (e) => {
-      if (e.persisted) applyProjects();
+      if (e.persisted) refreshProjects();
     };
     window.addEventListener('storage', this._onStorage);
     window.addEventListener('pageshow', this._onPageShow);
