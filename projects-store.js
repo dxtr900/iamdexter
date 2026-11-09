@@ -3,14 +3,15 @@ window.PortfolioProjects = {
   STORAGE_KEY: 'px-portfolio-projects',
   IDB_NAME: 'px-portfolio',
   IDB_STORE: 'project-images',
-  ASSETS_REV: '4',
+  ASSETS_REV: '5',
+  REMOVED_IDS: ['p5'],
+  REMOVED_TITLES: ['livegoals', 'live goals'],
 
   DEFAULT_PROJECTS: [
     { id: 'p1', title: 'DryTripping Travel', tags: ['Travel Marketplace', 'Custom CMS'], src: 'uploads/dtt.png' },
     { id: 'p2', title: 'Mini Muse', tags: ['Shopify Website', 'Branding'], src: 'uploads/minimuse.png' },
     { id: 'p3', title: 'Opman', tags: ['AI Workflow Automation', 'Design System'], src: 'uploads/opman.png' },
     { id: 'p4', title: 'Jurnii', tags: ['Product Design', 'Design System'], src: 'uploads/jurnii.png' },
-    { id: 'p5', title: 'Livegoals', tags: ['Live Score & Betting Tips', 'UI/UX'], src: 'uploads/projects/p5-livegoals.jpg' },
     { id: 'p6', title: 'MJB Jarvis', tags: ['Construction', 'Website & Branding'], src: 'uploads/mjb-jarvis.png' },
     { id: 'p7', title: 'FitEffekt', tags: ['Gym', 'Website & Branding'], src: 'uploads/fit-effekt.png' },
     { id: 'p8', title: 'Surge Fitness', tags: ['Gym', 'Website & Branding'], src: 'uploads/surge.png' },
@@ -253,6 +254,10 @@ window.PortfolioProjects = {
     } else {
       return this.cloneDefaults();
     }
+    if (!list.length) return this.cloneDefaults();
+    const removedIds = new Set(this.REMOVED_IDS || []);
+    const removedTitles = new Set((this.REMOVED_TITLES || []).map((t) => this.normTitle(t)));
+    list = list.filter((p) => !removedIds.has(p.id) && !removedTitles.has(this.normTitle(p.title)));
     if (!list.length) return this.cloneDefaults();
     const titles = new Set(list.map((p) => this.normTitle(p.title)));
     const ids = new Set(list.map((p) => p.id));
