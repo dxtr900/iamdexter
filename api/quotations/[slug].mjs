@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url';
 import { keyToToken, openDocument, openWithKey, tokenToKey } from '../../lib/quotation-seal.mjs';
 
 const SESSION_SECONDS = 60 * 60 * 24 * 30;
+const ROBOTS = 'noindex, nofollow, noarchive, nosnippet, noimageindex';
 
 export async function GET(request) {
   try {
@@ -56,7 +57,7 @@ async function handle(request) {
   const key = tokenToKey(readCookie(request, cookieName(slug)));
   const html = key ? openWithKey(sealed, key) : null;
   if (!html) return htmlResponse(loginPage(meta, slug, { username: '' }), 200);
-  return new Response(html, {
+  return new Response(withRobotsMeta(html), {
     status: 200,
     headers: {
       ...baseHeaders(),
@@ -143,7 +144,7 @@ function isHttps(request) {
 function baseHeaders() {
   return {
     'Cache-Control': 'private, no-store',
-    'X-Robots-Tag': 'noindex, nofollow',
+    'X-Robots-Tag': ROBOTS,
     'Referrer-Policy': 'no-referrer',
     'X-Content-Type-Options': 'nosniff',
     'X-Frame-Options': 'DENY',
@@ -201,7 +202,7 @@ function shell({ title, body }) {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="robots" content="noindex, nofollow">
+  <meta name="robots" content="${ROBOTS}">
   <title>${esc(title)}</title>
   <link rel="icon" href="/uploads/favicon.svg" type="image/svg+xml">
   <style>
@@ -267,6 +268,14 @@ function shell({ title, body }) {
   <main>${body}</main>
 </body>
 </html>`;
+}
+
+function withRobotsMeta(html) {
+  const text = Buffer.isBuffer(html) ? html.toString('utf8') : String(html);
+  if (/<meta[^>]+name=["']robots["']/i.test(text)) return text;
+  const tag = `<meta name="robots" content="${ROBOTS}">`;
+  if (/<head[^>]*>/i.test(text)) return text.replace(/<head[^>]*>/i, (open) => `${open}${tag}`);
+  return `<!doctype html><html><head>${tag}</head><body>${text}</body></html>`;
 }
 
 function esc(value) {
