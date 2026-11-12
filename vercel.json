@@ -1,12 +1,27 @@
 {
   "framework": null,
-  "buildCommand": "",
+  "buildCommand": "node scripts/build-site.mjs",
   "installCommand": "",
-  "outputDirectory": ".",
+  "outputDirectory": "dist",
   "redirects": [
     { "source": "/Portfolio.dc.html", "destination": "/", "permanent": true }
   ],
   "rewrites": [
-    { "source": "/", "destination": "/index.dc.html" }
-  ]
+    { "source": "/", "destination": "/index.dc.html" },
+    { "source": "/quotations/:slug", "destination": "/api/quotations/:slug" }
+  ],
+  "headers": [
+    {
+      "source": "/quotations/(.*)",
+      "headers": [
+        { "key": "X-Robots-Tag", "value": "noindex, nofollow" },
+        { "key": "Referrer-Policy", "value": "no-referrer" }
+      ]
+    }
+  ],
+  "functions": {
+    "api/quotations/[slug].mjs": {
+      "includeFiles": "quotations/**"
+    }
+  }
 }

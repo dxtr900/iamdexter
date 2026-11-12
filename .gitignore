@@ -1,4 +1,7 @@
 node_modules/
+dist/
+quotations/**/source.html
+quotations/**/ACCESS.txt
 .DS_Store
 .thumbnail
 generated_images/
