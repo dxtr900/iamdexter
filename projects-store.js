@@ -8,6 +8,7 @@ window.PortfolioProjects = {
   REMOVED_TITLES: ['livegoals', 'live goals'],
 
   DEFAULT_PROJECTS: [
+    { id: 'p12', title: 'Cupbrd', tags: ['Mobile App', 'UI/UX', 'Development'], src: 'uploads/cupbrd.jpg' },
     { id: 'p1', title: 'DryTripping Travel', tags: ['Travel Marketplace', 'Custom CMS'], src: 'uploads/dtt.png' },
     { id: 'p2', title: 'Mini Muse', tags: ['Shopify Website', 'Branding'], src: 'uploads/minimuse.png' },
     { id: 'p3', title: 'Opman', tags: ['AI Workflow Automation', 'Design System'], src: 'uploads/opman.png' },
@@ -261,10 +262,10 @@ window.PortfolioProjects = {
     if (!list.length) return this.cloneDefaults();
     const titles = new Set(list.map((p) => this.normTitle(p.title)));
     const ids = new Set(list.map((p) => p.id));
-    ['p9', 'p10', 'p11'].forEach((id) => {
+    ['p12', 'p9', 'p10', 'p11'].forEach((id) => {
       const d = this.defaultById()[id];
       if (!d || ids.has(id) || titles.has(this.normTitle(d.title))) return;
-      list.push({
+      const record = {
         id: d.id,
         title: d.title,
         tags: [...(d.tags || [])],
@@ -272,7 +273,9 @@ window.PortfolioProjects = {
         imageId: null,
         rev: undefined,
         _inlineSrc: '',
-      });
+      };
+      if (id === 'p12') list.unshift(record);
+      else list.push(record);
     });
     return this.dedupeByTitle(list);
   },
